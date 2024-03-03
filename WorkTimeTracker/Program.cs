@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using WorkTimeTracker.Application.Employees;
 using WorkTimeTracker.Data;
+using WorkTimeTracker.Models.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,9 +12,20 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<Employee>(options =>
+    {
+        options.Password.RequireDigit = true;
+        options.Password.RequiredLength = 8;
+        options.Password.RequireNonAlphanumeric = true;
+        options.Password.RequireUppercase = true;
+        options.Password.RequireLowercase = true;
+        options.Password.RequiredUniqueChars = 6;
+
+        options.SignIn.RequireConfirmedAccount = true;
+    })
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -23,6 +36,26 @@ var pendingMigrations = dbContext.Database.GetPendingMigrations();
 if (pendingMigrations.Any())
 {
     dbContext.Database.Migrate();
+}
+
+var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+if (!dbContext.Roles.Any())
+{
+    await roleManager.CreateAsync(new IdentityRole("HR"));
+    await roleManager.CreateAsync(new IdentityRole("Pracownik"));
+    await roleManager.CreateAsync(new IdentityRole("Manager"));
+    await roleManager.CreateAsync(new IdentityRole("Dyrektor"));
+    await roleManager.CreateAsync(new IdentityRole("Administrator"));
+}
+
+var userManager = scope.ServiceProvider.GetRequiredService<UserManager<Employee>>();
+
+if (!dbContext.Users.Any())
+{
+    var startAdmin = new Employee("Admin", "Admin", "", null, 0, DateTime.Now, null, null);
+    var res1 = await userManager.CreateAsync(startAdmin, "Admin123!");
+    var res2 = await userManager.AddToRoleAsync(startAdmin, "Administrator");
 }
 
 // Configure the HTTP request pipeline.
