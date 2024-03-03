@@ -21,7 +21,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
         options.Password.RequireLowercase = true;
         options.Password.RequiredUniqueChars = 6;
 
-        options.SignIn.RequireConfirmedAccount = true;
+        options.SignIn.RequireConfirmedAccount = false;
     })
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -54,6 +54,8 @@ var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityU
 if (!dbContext.Users.Any())
 {
     var startAdmin = new Employee("Admin", "Admin", "", null, 0, DateTime.Now, null, null);
+    await userManager.SetEmailAsync(startAdmin, "admin@admin.pl");
+    await userManager.SetUserNameAsync(startAdmin, "admin@admin.pl");
     var res1 = await userManager.CreateAsync(startAdmin, "Admin123!");
     var res2 = await userManager.AddToRoleAsync(startAdmin, "Administrator");
 }

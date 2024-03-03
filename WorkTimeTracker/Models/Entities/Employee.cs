@@ -27,7 +27,7 @@ namespace WorkTimeTracker.Models.Entities
             double workload,
             DateTime dateOfEmployment,
             DateTime? contractEndDate,
-            string? badgeId) : base(userName: string.Concat(firstName, lastName))
+            string? badgeId)
         {
             FirstName = firstName;
             LastName = lastName;
