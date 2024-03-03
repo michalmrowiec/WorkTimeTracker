@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34607.119
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkTimeTracker", "WorkTimeTracker\WorkTimeTracker.csproj", "{F9A5ACD7-70E0-475C-ADF9-13ED4FE6C2C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkTimeTracker", "WorkTimeTracker\WorkTimeTracker.csproj", "{F9A5ACD7-70E0-475C-ADF9-13ED4FE6C2C7}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{3E102DEC-8F76-421D-BCE8-4634CC6B7B50}"
 EndProject
