@@ -12,7 +12,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<Employee>(options =>
+builder.Services.AddDefaultIdentity<IdentityUser>(options =>
     {
         options.Password.RequireDigit = true;
         options.Password.RequiredLength = 8;
@@ -49,7 +49,7 @@ if (!dbContext.Roles.Any())
     await roleManager.CreateAsync(new IdentityRole("Administrator"));
 }
 
-var userManager = scope.ServiceProvider.GetRequiredService<UserManager<Employee>>();
+var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
 if (!dbContext.Users.Any())
 {
