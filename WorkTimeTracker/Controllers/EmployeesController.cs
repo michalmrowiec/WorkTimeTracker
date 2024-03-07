@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WorkTimeTracker.Data;
+using WorkTimeTracker.Models;
 using WorkTimeTracker.Models.Dtos;
 using WorkTimeTracker.Models.Entities;
 
@@ -40,5 +41,24 @@ namespace WorkTimeTracker.Controllers
             
             return View(result);
         }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("FirstName,LastName")] CreateEmployeeModel createEmployeeModel)
+        {
+            if (ModelState.IsValid)
+            {
+                //_context.Add(dailyWorkSchedule);
+                //await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(createEmployeeModel);
+        }
+
     }
 }
