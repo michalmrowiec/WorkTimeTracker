@@ -12,11 +12,13 @@ namespace WorkTimeTracker.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public EmployeesController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public EmployeesController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public async Task<IActionResult> Index()
@@ -33,7 +35,7 @@ namespace WorkTimeTracker.Controllers
                     Id = employee.Id,
                     FirstName = employee.FirstName,
                     LastName = employee.LastName,
-                    Roles = string.Join(", ", roles)
+                    Roles = roles.ToList()
                 };
 
                 result.Add(emplDto);
@@ -49,15 +51,19 @@ namespace WorkTimeTracker.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FirstName,LastName")] CreateEmployeeModel createEmployeeModel)
+        public async Task<IActionResult> Create([Bind("FirstName,LastName,Email,Password,ConfirmPassword,Roles")] CreateEmployeeModel employeeModel)
         {
             if (ModelState.IsValid)
             {
-                //_context.Add(dailyWorkSchedule);
-                //await _context.SaveChangesAsync();
+                var employee = new Employee(employeeModel.FirstName, employeeModel.LastName, "", null, 0, DateTime.Now, null, null);
+                await _userManager.SetEmailAsync(employee, employeeModel.Email);
+                await _userManager.SetUserNameAsync(employee, employeeModel.Email);
+                var res1 = await _userManager.CreateAsync(employee, employeeModel.Password);
+                var res2 = await _userManager.AddToRolesAsync(employee, employeeModel.Roles);
+
                 return RedirectToAction(nameof(Index));
             }
-            return View(createEmployeeModel);
+            return View(employeeModel);
         }
 
     }

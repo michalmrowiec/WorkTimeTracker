@@ -42,7 +42,10 @@
                     @Html.DisplayFor(modelItem => item.LastName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Roles)
+                    @foreach (var role in item.Roles)
+                    {
+                        <span class="badge text-white bg-info">@role</span>
+                    }
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
