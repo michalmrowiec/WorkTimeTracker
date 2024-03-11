@@ -1,101 +1,70 @@
-﻿@model IEnumerable<WorkTimeTracker.Models.Entities.DailyWorkSchedule>
+﻿@model IDictionary<WorkTimeTracker.Models.Entities.Employee, List<WorkTimeTracker.Models.Entities.DailyWorkSchedule>>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<body class="no-margin">
+    <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PlannedWorkStart)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PlannedWorkEnd)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.WorkTimeNorm)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BreakTimeNorm)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RealWorkStart)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RealWorkEnd)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.WorkHours)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NightWorkHours)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Overrime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NightOvertime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OvertimeCollected)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PlannedWorkStart)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PlannedWorkEnd)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.WorkTimeNorm)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BreakTimeNorm)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RealWorkStart)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RealWorkEnd)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.WorkHours)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NightWorkHours)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Overrime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NightOvertime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OvertimeCollected)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    @using (Html.BeginForm("Index", "DailyWorkSchedules", FormMethod.Get))
+    {
+        @Html.DropDownList("Year", new SelectList(Enumerable.Range(DateTime.Now.Year - 10, 20)))
+        @Html.DropDownList("Month", new SelectList(Enumerable.Range(1, 12)))
+        <input type="submit" value="Submit" />
+    }
+
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <table class="table no-margin" style="margin-right: 0">
+        <thead>
+            <tr>
+                <th>Employee</th>
+                @for (int i = 1; i < DateTime.DaysInMonth(2024, 03) + 1; i++)
+                {
+                    var a = new DateTime(2024, 03, i);
+
+
+                    <th>@string.Concat(i, '\n', a.ToString("ddd"))</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@string.Concat(item.Key.FirstName, ' ', item.Key.LastName)</td>
+                    @for (int i = 1; i < DateTime.DaysInMonth(2024, 03) + 1; i++)
+                    {
+                        <td>
+                            @if (item.Value.ElementAtOrDefault(i) == null)
+                            {
+                                <a href="@Url.Action("Create", "DailyWorkSchedules", new { EmployeeId = item.Key.Id, Date = new DateTime(2024, 03, i) } )">
+                                    Add
+                                </a>
+
+                            }
+                            else
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.Value.ElementAtOrDefault(i)?.Id">
+                                    @string.Concat(
+                                             item.Value.ElementAtOrDefault(i)?.PlannedWorkStart.ToString("t") ?? "-",
+                                             '\n',
+                                             item.Value.ElementAtOrDefault(i)?.PlannedWorkEnd.ToString("t") ?? "-")
+                                </a>
+                            }
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+
+<style>
+    body.no-margin .container {
+        margin-left: 0;
+        margin-right: 0;
+    }
+</style>

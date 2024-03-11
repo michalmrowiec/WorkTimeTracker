@@ -3,32 +3,40 @@
   "WorkspaceRootPath": "C:\\Users\\micha\\source\\repos\\WorkTimeTracker\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F9A5ACD7-70E0-475C-ADF9-13ED4FE6C2C7}|WorkTimeTracker\\WorkTimeTracker.csproj|c:\\users\\micha\\source\\repos\\worktimetracker\\worktimetracker\\controllers\\employeescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F9A5ACD7-70E0-475C-ADF9-13ED4FE6C2C7}|WorkTimeTracker\\WorkTimeTracker.csproj|solutionrelative:worktimetracker\\controllers\\employeescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F9A5ACD7-70E0-475C-ADF9-13ED4FE6C2C7}|WorkTimeTracker\\WorkTimeTracker.csproj|c:\\users\\micha\\source\\repos\\worktimetracker\\worktimetracker\\views\\dailyworkschedules\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F9A5ACD7-70E0-475C-ADF9-13ED4FE6C2C7}|WorkTimeTracker\\WorkTimeTracker.csproj|solutionrelative:worktimetracker\\views\\dailyworkschedules\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F9A5ACD7-70E0-475C-ADF9-13ED4FE6C2C7}|WorkTimeTracker\\WorkTimeTracker.csproj|c:\\users\\micha\\source\\repos\\worktimetracker\\worktimetracker\\models\\createemployeemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F9A5ACD7-70E0-475C-ADF9-13ED4FE6C2C7}|WorkTimeTracker\\WorkTimeTracker.csproj|solutionrelative:worktimetracker\\models\\createemployeemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F9A5ACD7-70E0-475C-ADF9-13ED4FE6C2C7}|WorkTimeTracker\\WorkTimeTracker.csproj|c:\\users\\micha\\source\\repos\\worktimetracker\\worktimetracker\\views\\dailyworkschedules\\index - copy.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F9A5ACD7-70E0-475C-ADF9-13ED4FE6C2C7}|WorkTimeTracker\\WorkTimeTracker.csproj|solutionrelative:worktimetracker\\views\\dailyworkschedules\\index - copy.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F9A5ACD7-70E0-475C-ADF9-13ED4FE6C2C7}|WorkTimeTracker\\WorkTimeTracker.csproj|c:\\users\\micha\\source\\repos\\worktimetracker\\worktimetracker\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F9A5ACD7-70E0-475C-ADF9-13ED4FE6C2C7}|WorkTimeTracker\\WorkTimeTracker.csproj|solutionrelative:worktimetracker\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F9A5ACD7-70E0-475C-ADF9-13ED4FE6C2C7}|WorkTimeTracker\\WorkTimeTracker.csproj|c:\\users\\micha\\source\\repos\\worktimetracker\\worktimetracker\\views\\dailyworkschedules\\create - copy.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F9A5ACD7-70E0-475C-ADF9-13ED4FE6C2C7}|WorkTimeTracker\\WorkTimeTracker.csproj|solutionrelative:worktimetracker\\views\\dailyworkschedules\\create - copy.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F9A5ACD7-70E0-475C-ADF9-13ED4FE6C2C7}|WorkTimeTracker\\WorkTimeTracker.csproj|c:\\users\\micha\\source\\repos\\worktimetracker\\worktimetracker\\views\\employees\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{F9A5ACD7-70E0-475C-ADF9-13ED4FE6C2C7}|WorkTimeTracker\\WorkTimeTracker.csproj|solutionrelative:worktimetracker\\views\\employees\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F9A5ACD7-70E0-475C-ADF9-13ED4FE6C2C7}|WorkTimeTracker\\WorkTimeTracker.csproj|c:\\users\\micha\\source\\repos\\worktimetracker\\worktimetracker\\views\\shared\\_loginpartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{F9A5ACD7-70E0-475C-ADF9-13ED4FE6C2C7}|WorkTimeTracker\\WorkTimeTracker.csproj|solutionrelative:worktimetracker\\views\\shared\\_loginpartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F9A5ACD7-70E0-475C-ADF9-13ED4FE6C2C7}|WorkTimeTracker\\WorkTimeTracker.csproj|c:\\users\\micha\\source\\repos\\worktimetracker\\worktimetracker\\views\\employees\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{F9A5ACD7-70E0-475C-ADF9-13ED4FE6C2C7}|WorkTimeTracker\\WorkTimeTracker.csproj|solutionrelative:worktimetracker\\views\\employees\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{F9A5ACD7-70E0-475C-ADF9-13ED4FE6C2C7}|WorkTimeTracker\\WorkTimeTracker.csproj|c:\\users\\micha\\source\\repos\\worktimetracker\\worktimetracker\\models\\entities\\dailyworkschedule.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F9A5ACD7-70E0-475C-ADF9-13ED4FE6C2C7}|WorkTimeTracker\\WorkTimeTracker.csproj|solutionrelative:worktimetracker\\models\\entities\\dailyworkschedule.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F9A5ACD7-70E0-475C-ADF9-13ED4FE6C2C7}|WorkTimeTracker\\WorkTimeTracker.csproj|c:\\users\\micha\\source\\repos\\worktimetracker\\worktimetracker\\models\\dtos\\employeedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F9A5ACD7-70E0-475C-ADF9-13ED4FE6C2C7}|WorkTimeTracker\\WorkTimeTracker.csproj|solutionrelative:worktimetracker\\models\\dtos\\employeedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F9A5ACD7-70E0-475C-ADF9-13ED4FE6C2C7}|WorkTimeTracker\\WorkTimeTracker.csproj|c:\\users\\micha\\source\\repos\\worktimetracker\\worktimetracker\\controllers\\dailyworkschedulescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F9A5ACD7-70E0-475C-ADF9-13ED4FE6C2C7}|WorkTimeTracker\\WorkTimeTracker.csproj|solutionrelative:worktimetracker\\controllers\\dailyworkschedulescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F9A5ACD7-70E0-475C-ADF9-13ED4FE6C2C7}|WorkTimeTracker\\WorkTimeTracker.csproj|c:\\users\\micha\\source\\repos\\worktimetracker\\worktimetracker\\views\\dailyworkschedules\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F9A5ACD7-70E0-475C-ADF9-13ED4FE6C2C7}|WorkTimeTracker\\WorkTimeTracker.csproj|solutionrelative:worktimetracker\\views\\dailyworkschedules\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F9A5ACD7-70E0-475C-ADF9-13ED4FE6C2C7}|WorkTimeTracker\\WorkTimeTracker.csproj|c:\\users\\micha\\source\\repos\\worktimetracker\\worktimetracker\\models\\dtos\\dailyworkscheduledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F9A5ACD7-70E0-475C-ADF9-13ED4FE6C2C7}|WorkTimeTracker\\WorkTimeTracker.csproj|solutionrelative:worktimetracker\\models\\dtos\\dailyworkscheduledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F9A5ACD7-70E0-475C-ADF9-13ED4FE6C2C7}|WorkTimeTracker\\WorkTimeTracker.csproj|c:\\users\\micha\\source\\repos\\worktimetracker\\worktimetracker\\views\\dailyworkschedules\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F9A5ACD7-70E0-475C-ADF9-13ED4FE6C2C7}|WorkTimeTracker\\WorkTimeTracker.csproj|solutionrelative:worktimetracker\\views\\dailyworkschedules\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,97 +46,127 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 7,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{57d563b6-44a5-47df-85be-f4199ad6b651}"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "_LoginPartial.cshtml",
-              "DocumentMoniker": "C:\\Users\\micha\\source\\repos\\WorkTimeTracker\\WorkTimeTracker\\Views\\Shared\\_LoginPartial.cshtml",
-              "RelativeDocumentMoniker": "WorkTimeTracker\\Views\\Shared\\_LoginPartial.cshtml",
-              "ToolTip": "C:\\Users\\micha\\source\\repos\\WorkTimeTracker\\WorkTimeTracker\\Views\\Shared\\_LoginPartial.cshtml",
-              "RelativeToolTip": "WorkTimeTracker\\Views\\Shared\\_LoginPartial.cshtml",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAIAAAAtAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-03-09T11:38:57.22Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Create.cshtml",
-              "DocumentMoniker": "C:\\Users\\micha\\source\\repos\\WorkTimeTracker\\WorkTimeTracker\\Views\\Employees\\Create.cshtml",
-              "RelativeDocumentMoniker": "WorkTimeTracker\\Views\\Employees\\Create.cshtml",
-              "ToolTip": "C:\\Users\\micha\\source\\repos\\WorkTimeTracker\\WorkTimeTracker\\Views\\Employees\\Create.cshtml",
-              "RelativeToolTip": "WorkTimeTracker\\Views\\Employees\\Create.cshtml",
-              "ViewState": "AQIAAB4AAAAAAAAAAAAAACoAAABPAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-03-09T11:24:35.576Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\micha\\source\\repos\\WorkTimeTracker\\WorkTimeTracker\\Program.cs",
-              "RelativeDocumentMoniker": "WorkTimeTracker\\Program.cs",
-              "ToolTip": "C:\\Users\\micha\\source\\repos\\WorkTimeTracker\\WorkTimeTracker\\Program.cs",
-              "RelativeToolTip": "WorkTimeTracker\\Program.cs",
-              "ViewState": "AQIAACcAAAAAAAAAAAAAAEEAAABNAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-03-09T11:20:35.601Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "CreateEmployeeModel.cs",
-              "DocumentMoniker": "C:\\Users\\micha\\source\\repos\\WorkTimeTracker\\WorkTimeTracker\\Models\\CreateEmployeeModel.cs",
-              "RelativeDocumentMoniker": "WorkTimeTracker\\Models\\CreateEmployeeModel.cs",
-              "ToolTip": "C:\\Users\\micha\\source\\repos\\WorkTimeTracker\\WorkTimeTracker\\Models\\CreateEmployeeModel.cs",
-              "RelativeToolTip": "WorkTimeTracker\\Models\\CreateEmployeeModel.cs",
-              "ViewState": "AQIAAAgAAAAAAAAAAAAAwCEAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-03-09T11:15:10.659Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\micha\\source\\repos\\WorkTimeTracker\\WorkTimeTracker\\Views\\Employees\\Index.cshtml",
-              "RelativeDocumentMoniker": "WorkTimeTracker\\Views\\Employees\\Index.cshtml",
-              "ToolTip": "C:\\Users\\micha\\source\\repos\\WorkTimeTracker\\WorkTimeTracker\\Views\\Employees\\Index.cshtml",
-              "RelativeToolTip": "WorkTimeTracker\\Views\\Employees\\Index.cshtml",
-              "ViewState": "AQIAAB4AAAAAAAAAAAAAwC4AAAA1AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-03-09T10:46:35.851Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
               "Title": "EmployeeDto.cs",
               "DocumentMoniker": "C:\\Users\\micha\\source\\repos\\WorkTimeTracker\\WorkTimeTracker\\Models\\Dtos\\EmployeeDto.cs",
               "RelativeDocumentMoniker": "WorkTimeTracker\\Models\\Dtos\\EmployeeDto.cs",
               "ToolTip": "C:\\Users\\micha\\source\\repos\\WorkTimeTracker\\WorkTimeTracker\\Models\\Dtos\\EmployeeDto.cs",
               "RelativeToolTip": "WorkTimeTracker\\Models\\Dtos\\EmployeeDto.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAMAAAAFAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-03-09T10:45:42.515Z",
+              "WhenOpened": "2024-03-11T12:02:31.372Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "DailyWorkSchedule.cs",
+              "DocumentMoniker": "C:\\Users\\micha\\source\\repos\\WorkTimeTracker\\WorkTimeTracker\\Models\\Entities\\DailyWorkSchedule.cs",
+              "RelativeDocumentMoniker": "WorkTimeTracker\\Models\\Entities\\DailyWorkSchedule.cs",
+              "ToolTip": "C:\\Users\\micha\\source\\repos\\WorkTimeTracker\\WorkTimeTracker\\Models\\Entities\\DailyWorkSchedule.cs",
+              "RelativeToolTip": "WorkTimeTracker\\Models\\Entities\\DailyWorkSchedule.cs",
+              "ViewState": "AQIAAAQAAAAAAAAAAAAswBEAAAA3AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-11T11:46:20.576Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "DailyWorkScheduleDto.cs",
+              "DocumentMoniker": "C:\\Users\\micha\\source\\repos\\WorkTimeTracker\\WorkTimeTracker\\Models\\Dtos\\DailyWorkScheduleDto.cs",
+              "RelativeDocumentMoniker": "WorkTimeTracker\\Models\\Dtos\\DailyWorkScheduleDto.cs",
+              "ToolTip": "C:\\Users\\micha\\source\\repos\\WorkTimeTracker\\WorkTimeTracker\\Models\\Dtos\\DailyWorkScheduleDto.cs",
+              "RelativeToolTip": "WorkTimeTracker\\Models\\Dtos\\DailyWorkScheduleDto.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAASAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-11T12:02:23.854Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Index - Copy.cshtml",
+              "DocumentMoniker": "C:\\Users\\micha\\source\\repos\\WorkTimeTracker\\WorkTimeTracker\\Views\\DailyWorkSchedules\\Index - Copy.cshtml",
+              "RelativeDocumentMoniker": "WorkTimeTracker\\Views\\DailyWorkSchedules\\Index - Copy.cshtml",
+              "ToolTip": "C:\\Users\\micha\\source\\repos\\WorkTimeTracker\\WorkTimeTracker\\Views\\DailyWorkSchedules\\Index - Copy.cshtml",
+              "RelativeToolTip": "WorkTimeTracker\\Views\\DailyWorkSchedules\\Index - Copy.cshtml",
+              "ViewState": "AQIAAAYAAAAAAAAAAAAAAFwAAAAQAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-03-11T10:26:59.865Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "C:\\Users\\micha\\source\\repos\\WorkTimeTracker\\WorkTimeTracker\\Views\\DailyWorkSchedules\\Details.cshtml",
+              "RelativeDocumentMoniker": "WorkTimeTracker\\Views\\DailyWorkSchedules\\Details.cshtml",
+              "ToolTip": "C:\\Users\\micha\\source\\repos\\WorkTimeTracker\\WorkTimeTracker\\Views\\DailyWorkSchedules\\Details.cshtml",
+              "RelativeToolTip": "WorkTimeTracker\\Views\\DailyWorkSchedules\\Details.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-03-11T10:18:59.198Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\Users\\micha\\source\\repos\\WorkTimeTracker\\WorkTimeTracker\\Views\\DailyWorkSchedules\\Create.cshtml",
+              "RelativeDocumentMoniker": "WorkTimeTracker\\Views\\DailyWorkSchedules\\Create.cshtml",
+              "ToolTip": "C:\\Users\\micha\\source\\repos\\WorkTimeTracker\\WorkTimeTracker\\Views\\DailyWorkSchedules\\Create.cshtml",
+              "RelativeToolTip": "WorkTimeTracker\\Views\\DailyWorkSchedules\\Create.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAPAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-03-11T10:18:11.12Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "EmployeesController.cs",
-              "DocumentMoniker": "C:\\Users\\micha\\source\\repos\\WorkTimeTracker\\WorkTimeTracker\\Controllers\\EmployeesController.cs",
-              "RelativeDocumentMoniker": "WorkTimeTracker\\Controllers\\EmployeesController.cs",
-              "ToolTip": "C:\\Users\\micha\\source\\repos\\WorkTimeTracker\\WorkTimeTracker\\Controllers\\EmployeesController.cs",
-              "RelativeToolTip": "WorkTimeTracker\\Controllers\\EmployeesController.cs",
-              "ViewState": "AQIAABMAAAAAAAAAAAAQwDsAAAATAAAA",
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\micha\\source\\repos\\WorkTimeTracker\\WorkTimeTracker\\Views\\DailyWorkSchedules\\Index.cshtml",
+              "RelativeDocumentMoniker": "WorkTimeTracker\\Views\\DailyWorkSchedules\\Index.cshtml",
+              "ToolTip": "C:\\Users\\micha\\source\\repos\\WorkTimeTracker\\WorkTimeTracker\\Views\\DailyWorkSchedules\\Index.cshtml",
+              "RelativeToolTip": "WorkTimeTracker\\Views\\DailyWorkSchedules\\Index.cshtml",
+              "ViewState": "AQIAACAAAAAAAAAAAAAIwDIAAAAzAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-03-11T08:18:16.746Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "DailyWorkSchedulesController.cs",
+              "DocumentMoniker": "C:\\Users\\micha\\source\\repos\\WorkTimeTracker\\WorkTimeTracker\\Controllers\\DailyWorkSchedulesController.cs",
+              "RelativeDocumentMoniker": "WorkTimeTracker\\Controllers\\DailyWorkSchedulesController.cs",
+              "ToolTip": "C:\\Users\\micha\\source\\repos\\WorkTimeTracker\\WorkTimeTracker\\Controllers\\DailyWorkSchedulesController.cs",
+              "RelativeToolTip": "WorkTimeTracker\\Controllers\\DailyWorkSchedulesController.cs",
+              "ViewState": "AQIAAFgAAAAAAAAAAADwv2EAAAAMAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-03-06T10:01:15.03Z",
+              "WhenOpened": "2024-03-11T08:17:58.581Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Create - Copy.cshtml",
+              "DocumentMoniker": "C:\\Users\\micha\\source\\repos\\WorkTimeTracker\\WorkTimeTracker\\Views\\DailyWorkSchedules\\Create - Copy.cshtml",
+              "RelativeDocumentMoniker": "WorkTimeTracker\\Views\\DailyWorkSchedules\\Create - Copy.cshtml",
+              "ToolTip": "C:\\Users\\micha\\source\\repos\\WorkTimeTracker\\WorkTimeTracker\\Views\\DailyWorkSchedules\\Create - Copy.cshtml",
+              "RelativeToolTip": "WorkTimeTracker\\Views\\DailyWorkSchedules\\Create - Copy.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABQAAAA5AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-03-11T11:57:45.143Z",
               "EditorCaption": ""
             }
           ]

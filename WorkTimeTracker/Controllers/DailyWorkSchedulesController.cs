@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using WorkTimeTracker.Data;
+using WorkTimeTracker.Models.Dtos;
 using WorkTimeTracker.Models.Entities;
 
 namespace WorkTimeTracker.Controllers
@@ -15,9 +17,42 @@ namespace WorkTimeTracker.Controllers
         }
 
         // GET: DailyWorkSchedules
-        public async Task<IActionResult> Index()
+        //public async Task<IActionResult> Index()
+        //{
+        //    return View(await _context.DailyWorkSchedules.ToListAsync());
+        //}
+
+        public async Task<IActionResult> Index(int? year, int? month)
         {
-            return View(await _context.DailyWorkSchedules.ToListAsync());
+            if (year.HasValue && month.HasValue)
+            {
+                year = DateTime.Now.Year;
+                month = DateTime.Now.Month;
+            }
+            //var schedule = await _context.Employees
+            //    .ToDictionaryAsync(
+            //        employee => employee,
+            //        employee => _context.DailyWorkSchedules
+            //            .Where(schedule => schedule.EmployeeId == employee.Id && schedule.Date.Month == month && schedule.Date.Year == year)
+            //            .ToListAsync()
+            //    );
+
+            var employees = await _context.Employees.ToListAsync();
+            var schedules = new Dictionary<Employee, List<DailyWorkSchedule>>();
+
+            foreach (var employee in employees)
+            {
+                schedules[employee] = await _context.DailyWorkSchedules
+                    .Where(schedule => schedule.EmployeeId == employee.Id && schedule.Date.Month == month && schedule.Date.Year == year)
+                    .OrderBy(schedule => schedule.Date)
+                    .ToListAsync();
+            }
+
+            //var schedule = await _context.DailyWorkSchedules
+            //    .Include(dws => dws.Employee)
+            //    .Where(s => s.Date.Year == year && s.Date.Month == month)
+            //    .ToListAsync();
+            return View(schedules);
         }
 
         // GET: DailyWorkSchedules/Details/5
@@ -44,16 +79,33 @@ namespace WorkTimeTracker.Controllers
             return View();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Create(string employeeId, string date)
+        {
+            var dailyWorkSchedule = new DailyWorkScheduleDto { EmployeeId = employeeId, Date = DateTime.Parse(date) };
+            dailyWorkSchedule.Employee = await _context.Employees.FindAsync(employeeId);
+            return View(dailyWorkSchedule);
+        }
+
         // POST: DailyWorkSchedules/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,EmployeeId,Date,PlannedWorkStart,PlannedWorkEnd,WorkTimeNorm,BreakTimeNorm,RealWorkStart,RealWorkEnd,WorkHours,NightWorkHours,Overrime,NightOvertime,OvertimeCollected")] DailyWorkSchedule dailyWorkSchedule)
+        ///[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(
+            [Bind("EmployeeId,Date,PlannedWorkStart,PlannedWorkEnd")] DailyWorkScheduleDto dailyWorkSchedule)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(dailyWorkSchedule);
+                var schedule = new DailyWorkSchedule
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    EmployeeId = dailyWorkSchedule.EmployeeId,
+                    Date = dailyWorkSchedule.Date,
+                    PlannedWorkStart = dailyWorkSchedule.PlannedWorkStart,
+                    PlannedWorkEnd = dailyWorkSchedule.PlannedWorkEnd
+                };
+                _context.Add(schedule);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

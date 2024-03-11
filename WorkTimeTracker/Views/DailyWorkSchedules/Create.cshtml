@@ -1,7 +1,9 @@
-﻿@model WorkTimeTracker.Models.Entities.DailyWorkSchedule
+﻿@model WorkTimeTracker.Models.Dtos.DailyWorkScheduleDto
 
 @{
     ViewData["Title"] = "Create";
+    //Model.EmployeeId = Model.EmployeeId;
+    //Model.Date = Model.Date;
 }
 
 <h1>Create</h1>
@@ -12,20 +14,19 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
+            <input asp-for="EmployeeId" value="@string.Concat(Model?.Employee?.FirstName ?? "", ' ', Model?.Employee?.LastName ?? "")" class="form-control" disabled/>
+            <input asp-for="Date" value="@Model?.Date.ToString("dd-MM-yyyy")" class="form-control" disabled />
+
             <div class="form-group">
                 <label asp-for="EmployeeId" class="control-label"></label>
-                <select asp-for="EmployeeId" class ="form-control" asp-items="ViewBag.EmployeeId"></select>
+                <input asp-for="EmployeeId" class="form-control" value="@Model.EmployeeId" />
             </div>
             <div class="form-group">
                 <label asp-for="Date" class="control-label"></label>
-                <input asp-for="Date" class="form-control" />
+                <input asp-for="Date" class="form-control" value="@Model.Date" />
                 <span asp-validation-for="Date" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="PlannedWorkStart" class="control-label"></label>
                 <input asp-for="PlannedWorkStart" class="form-control" />
@@ -35,51 +36,6 @@
                 <label asp-for="PlannedWorkEnd" class="control-label"></label>
                 <input asp-for="PlannedWorkEnd" class="form-control" />
                 <span asp-validation-for="PlannedWorkEnd" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="WorkTimeNorm" class="control-label"></label>
-                <input asp-for="WorkTimeNorm" class="form-control" />
-                <span asp-validation-for="WorkTimeNorm" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BreakTimeNorm" class="control-label"></label>
-                <input asp-for="BreakTimeNorm" class="form-control" />
-                <span asp-validation-for="BreakTimeNorm" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RealWorkStart" class="control-label"></label>
-                <input asp-for="RealWorkStart" class="form-control" />
-                <span asp-validation-for="RealWorkStart" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RealWorkEnd" class="control-label"></label>
-                <input asp-for="RealWorkEnd" class="form-control" />
-                <span asp-validation-for="RealWorkEnd" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="WorkHours" class="control-label"></label>
-                <input asp-for="WorkHours" class="form-control" />
-                <span asp-validation-for="WorkHours" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NightWorkHours" class="control-label"></label>
-                <input asp-for="NightWorkHours" class="form-control" />
-                <span asp-validation-for="NightWorkHours" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Overrime" class="control-label"></label>
-                <input asp-for="Overrime" class="form-control" />
-                <span asp-validation-for="Overrime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NightOvertime" class="control-label"></label>
-                <input asp-for="NightOvertime" class="form-control" />
-                <span asp-validation-for="NightOvertime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="OvertimeCollected" class="control-label"></label>
-                <input asp-for="OvertimeCollected" class="form-control" />
-                <span asp-validation-for="OvertimeCollected" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

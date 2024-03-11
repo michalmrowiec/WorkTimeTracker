@@ -19,5 +19,6 @@
 
         public List<WorkActionTime>? WorkActions { get; set; }
         public List<BreakActionTime>? BreakActions { get; set; }
+        public Employee? Employee { get; set; }
     }
 }
