@@ -24,18 +24,11 @@ namespace WorkTimeTracker.Controllers
 
         public async Task<IActionResult> Index(int? year, int? month)
         {
-            if (year.HasValue && month.HasValue)
+            if (year.HasValue == false || month.HasValue == false)
             {
                 year = DateTime.Now.Year;
                 month = DateTime.Now.Month;
             }
-            //var schedule = await _context.Employees
-            //    .ToDictionaryAsync(
-            //        employee => employee,
-            //        employee => _context.DailyWorkSchedules
-            //            .Where(schedule => schedule.EmployeeId == employee.Id && schedule.Date.Month == month && schedule.Date.Year == year)
-            //            .ToListAsync()
-            //    );
 
             var employees = await _context.Employees.ToListAsync();
             var schedules = new Dictionary<Employee, List<DailyWorkSchedule>>();
@@ -48,10 +41,9 @@ namespace WorkTimeTracker.Controllers
                     .ToListAsync();
             }
 
-            //var schedule = await _context.DailyWorkSchedules
-            //    .Include(dws => dws.Employee)
-            //    .Where(s => s.Date.Year == year && s.Date.Month == month)
-            //    .ToListAsync();
+            TempData["DateYear"] = year.ToString();
+            TempData["DateMonth"] = month.ToString();
+
             return View(schedules);
         }
 
@@ -101,7 +93,7 @@ namespace WorkTimeTracker.Controllers
                 {
                     Id = Guid.NewGuid().ToString(),
                     EmployeeId = dailyWorkSchedule.EmployeeId,
-                    Date = dailyWorkSchedule.Date,
+                    Date = dailyWorkSchedule.PlannedWorkStart.Date,
                     PlannedWorkStart = dailyWorkSchedule.PlannedWorkStart,
                     PlannedWorkEnd = dailyWorkSchedule.PlannedWorkEnd
                 };

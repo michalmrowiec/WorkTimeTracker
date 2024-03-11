@@ -1,11 +1,15 @@
-﻿@model IDictionary<WorkTimeTracker.Models.Entities.Employee, List<WorkTimeTracker.Models.Entities.DailyWorkSchedule>>
+﻿@using WorkTimeTracker.Models.Dtos
+@using WorkTimeTracker.Models.Entities
+@model IDictionary<WorkTimeTracker.Models.Entities.Employee, List<WorkTimeTracker.Models.Entities.DailyWorkSchedule>>
 
 @{
     ViewData["Title"] = "Index";
+    int year = TempData["DateYear"] != null ? int.Parse(TempData["DateYear"]!.ToString()!) : DateTime.Now.Date.Year;
+    int month = TempData["DateMonth"] != null ? int.Parse(TempData["DateMonth"]!.ToString()!) : DateTime.Now.Date.Month;
 }
 
 <body class="no-margin">
-    <h1>Index</h1>
+    <h1>Index @year @month</h1>
 
     @using (Html.BeginForm("Index", "DailyWorkSchedules", FormMethod.Get))
     {
@@ -21,10 +25,9 @@
         <thead>
             <tr>
                 <th>Employee</th>
-                @for (int i = 1; i < DateTime.DaysInMonth(2024, 03) + 1; i++)
+                @for (int i = 1; i < DateTime.DaysInMonth(year, month) + 1; i++)
                 {
-                    var a = new DateTime(2024, 03, i);
-
+                    var a = new DateTime(year, month, i);
 
                     <th>@string.Concat(i, '\n', a.ToString("ddd"))</th>
                 }
@@ -35,25 +38,10 @@
             {
                 <tr>
                     <td>@string.Concat(item.Key.FirstName, ' ', item.Key.LastName)</td>
-                    @for (int i = 1; i < DateTime.DaysInMonth(2024, 03) + 1; i++)
+                    @for (int i = 1; i < DateTime.DaysInMonth(year, month) + 1; i++)
                     {
                         <td>
-                            @if (item.Value.ElementAtOrDefault(i) == null)
-                            {
-                                <a href="@Url.Action("Create", "DailyWorkSchedules", new { EmployeeId = item.Key.Id, Date = new DateTime(2024, 03, i) } )">
-                                    Add
-                                </a>
-
-                            }
-                            else
-                            {
-                                <a asp-action="Edit" asp-route-id="@item.Value.ElementAtOrDefault(i)?.Id">
-                                    @string.Concat(
-                                             item.Value.ElementAtOrDefault(i)?.PlannedWorkStart.ToString("t") ?? "-",
-                                             '\n',
-                                             item.Value.ElementAtOrDefault(i)?.PlannedWorkEnd.ToString("t") ?? "-")
-                                </a>
-                            }
+                            <partial name="_ModalDialogDetails" model="new DailyWorkSchedule() { EmployeeId = item.Key.Id, Employee = item.Key, PlannedWorkStart = item.Value.FirstOrDefault(x => x.PlannedWorkEnd.Day == i)?.PlannedWorkStart ?? default,  PlannedWorkEnd = item.Value.FirstOrDefault(x => x.PlannedWorkEnd.Day == i)?.PlannedWorkEnd ?? default, Date = new DateTime(year, month, i) }" />
                         </td>
                     }
                 </tr>
