@@ -13,7 +13,15 @@ namespace WorkTimeTracker.Models.Dtos
         public DateTime PlannedWorkStart { get; set; }
         [Required]
         public DateTime PlannedWorkEnd { get; set; }
-
+        public TimeSpan WorkTimeNorm { get; set; }
+        public TimeSpan BreakTimeNorm { get; set; }
+        public DateTime RealWorkStart { get; set; }
+        public DateTime RealWorkEnd { get; set; }
+        public TimeSpan WorkHours { get; set; }
+        public TimeSpan NightWorkHours { get; set; }
+        public TimeSpan Overrime { get; set; }
+        public TimeSpan NightOvertime { get; set; }
+        public TimeSpan OvertimeCollected { get; set; }
         public Employee? Employee { get; set; }
     }
 }

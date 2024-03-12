@@ -26,13 +26,18 @@
 
                     <div class="form-group">
                         <label asp-for="PlannedWorkStart" class="control-label"></label>
-                        <input asp-for="PlannedWorkStart" class="form-control" />
+                        <input asp-for="PlannedWorkStart" id="PlannedWorkStart" class="form-control" />
                         <span asp-validation-for="PlannedWorkStart" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="PlannedWorkEnd" class="control-label"></label>
-                        <input asp-for="PlannedWorkEnd" class="form-control" />
+                        <input asp-for="PlannedWorkEnd" id="PlannedWorkEnd" class="form-control" />
                         <span asp-validation-for="PlannedWorkEnd" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="WorkTimeNorm" class="control-label"></label>
+                        <input asp-for="WorkTimeNorm" id="WorkTimeNorm" class="form-control" />
+                        <span asp-validation-for="WorkTimeNorm" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="modal-footer">

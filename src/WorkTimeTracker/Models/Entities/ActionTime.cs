@@ -1,0 +1,13 @@
+﻿namespace WorkTimeTracker.Models.Entities
+{
+    public abstract class ActionTime
+    {
+        public string Id { get; set; }
+        public string EmployeeId { get; set; }
+        public DateTime Start { get; set; }
+        public DateTime End { get; set; }
+        public TimeSpan TimeOfAction { get; set; }
+        public string DailyWorkScheduleId { get; set; }
+        public DailyWorkSchedule? DailyWorkSchedule { get; set; }
+    }
+}
