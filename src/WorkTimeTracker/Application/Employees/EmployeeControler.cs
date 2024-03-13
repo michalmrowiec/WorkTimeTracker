@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WorkTimeTracker.Models.Entities;
+using WorkTimeTracker.Domain.Entities;
 
 namespace WorkTimeTracker.Application.Employees
 {

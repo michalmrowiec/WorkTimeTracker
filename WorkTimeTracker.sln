@@ -5,7 +5,13 @@ VisualStudioVersion = 17.9.34607.119
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "src\docker-compose.dcproj", "{3E102DEC-8F76-421D-BCE8-4634CC6B7B50}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkTimeTracker", "src\WorkTimeTracker\WorkTimeTracker.csproj", "{94B14A6F-F420-47A6-AAA7-212361A8D4E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkTimeTracker.MVC", "src\WorkTimeTracker\WorkTimeTracker.MVC.csproj", "{94B14A6F-F420-47A6-AAA7-212361A8D4E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkTimeTracker.Domain", "WorkTimeTracker.Domain\WorkTimeTracker.Domain.csproj", "{62B996AB-CB8E-4688-ABCA-0A1D5A43934E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkTimeTracker.Infrastructure", "WorkTimeTracker.Infrastructure\WorkTimeTracker.Infrastructure.csproj", "{0D98DCB0-D5AD-4771-8239-6B9AEF3DF296}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkTimeTracker.Application", "WorkTimeTracker.Application\WorkTimeTracker.Application.csproj", "{933D4E59-16C9-471D-9CD9-6A626A7564F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +27,18 @@ Global
 		{94B14A6F-F420-47A6-AAA7-212361A8D4E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94B14A6F-F420-47A6-AAA7-212361A8D4E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94B14A6F-F420-47A6-AAA7-212361A8D4E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62B996AB-CB8E-4688-ABCA-0A1D5A43934E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62B996AB-CB8E-4688-ABCA-0A1D5A43934E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62B996AB-CB8E-4688-ABCA-0A1D5A43934E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62B996AB-CB8E-4688-ABCA-0A1D5A43934E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D98DCB0-D5AD-4771-8239-6B9AEF3DF296}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D98DCB0-D5AD-4771-8239-6B9AEF3DF296}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D98DCB0-D5AD-4771-8239-6B9AEF3DF296}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D98DCB0-D5AD-4771-8239-6B9AEF3DF296}.Release|Any CPU.Build.0 = Release|Any CPU
+		{933D4E59-16C9-471D-9CD9-6A626A7564F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{933D4E59-16C9-471D-9CD9-6A626A7564F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{933D4E59-16C9-471D-9CD9-6A626A7564F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{933D4E59-16C9-471D-9CD9-6A626A7564F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

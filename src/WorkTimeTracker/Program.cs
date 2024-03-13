@@ -1,31 +1,34 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using WorkTimeTracker.Application.Employees;
-using WorkTimeTracker.Data;
-using WorkTimeTracker.Models.Entities;
+using WorkTimeTracker.Application;
+using WorkTimeTracker.Domain.Entities;
+using WorkTimeTracker.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("ContainerDb") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+//var connectionString = builder.Configuration.GetConnectionString("ContainerDb") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+//builder.Services.AddDbContext<ApplicationDbContext>(options =>
+//    options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options =>
-    {
-        options.Password.RequireDigit = true;
-        options.Password.RequiredLength = 8;
-        options.Password.RequireNonAlphanumeric = true;
-        options.Password.RequireUppercase = true;
-        options.Password.RequireLowercase = true;
-        options.Password.RequiredUniqueChars = 6;
+//builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+//    {
+//        options.Password.RequireDigit = true;
+//        options.Password.RequiredLength = 8;
+//        options.Password.RequireNonAlphanumeric = true;
+//        options.Password.RequireUppercase = true;
+//        options.Password.RequireLowercase = true;
+//        options.Password.RequiredUniqueChars = 6;
 
-        options.SignIn.RequireConfirmedAccount = false;
-    })
-    .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
+//        options.SignIn.RequireConfirmedAccount = false;
+//    })
+//    .AddRoles<IdentityRole>()
+//    .AddEntityFrameworkStores<ApplicationDbContext>()
+//    .AddDefaultTokenProviders();
+
+builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddApplication();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {

@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using WorkTimeTracker.Models.Entities;
+using WorkTimeTracker.Domain.Entities;
 
 namespace WorkTimeTracker.Models.Dtos
 {

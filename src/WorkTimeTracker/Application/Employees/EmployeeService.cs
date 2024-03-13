@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using WorkTimeTracker.Models.Entities;
+using WorkTimeTracker.Domain.Entities;
 
 namespace WorkTimeTracker.Application.Employees
 {

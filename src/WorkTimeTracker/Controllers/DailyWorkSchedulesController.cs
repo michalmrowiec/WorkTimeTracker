@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
-using WorkTimeTracker.Data;
+using WorkTimeTracker.Domain.Entities;
+using WorkTimeTracker.Infrastructure;
 using WorkTimeTracker.Models.Dtos;
-using WorkTimeTracker.Models.Entities;
 
 namespace WorkTimeTracker.Controllers
 {
