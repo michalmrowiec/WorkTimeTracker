@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34607.119
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "src\docker-compose.dcproj", "{3E102DEC-8F76-421D-BCE8-4634CC6B7B50}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkTimeTracker.MVC", "src\WorkTimeTracker.MVC\WorkTimeTracker.MVC.csproj", "{6421EBA1-5D74-46A9-9FE7-F2D03AC28944}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkTimeTracker.MVC", "src\WorkTimeTracker\WorkTimeTracker.MVC.csproj", "{94B14A6F-F420-47A6-AAA7-212361A8D4E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkTimeTracker.Application", "src\WorkTimeTracker.Application\WorkTimeTracker.Application.csproj", "{B1CB45DD-694D-4B93-BEA8-4B805CF4D9CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkTimeTracker.Domain", "WorkTimeTracker.Domain\WorkTimeTracker.Domain.csproj", "{62B996AB-CB8E-4688-ABCA-0A1D5A43934E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkTimeTracker.Infrastructure", "src\WorkTimeTracker.Infrastructure\WorkTimeTracker.Infrastructure.csproj", "{DA816221-9B8F-44BE-9AEB-FFE5CE2BABAF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkTimeTracker.Infrastructure", "WorkTimeTracker.Infrastructure\WorkTimeTracker.Infrastructure.csproj", "{0D98DCB0-D5AD-4771-8239-6B9AEF3DF296}"
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{F0E01B1C-3878-4E52-AFC1-2F053038805B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkTimeTracker.Application", "WorkTimeTracker.Application\WorkTimeTracker.Application.csproj", "{933D4E59-16C9-471D-9CD9-6A626A7564F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkTimeTracker.Domain", "src\WorkTimeTracker.Domain\WorkTimeTracker.Domain.csproj", "{BEE4237E-A393-40AD-B3ED-4323B0F66581}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,26 +19,26 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3E102DEC-8F76-421D-BCE8-4634CC6B7B50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3E102DEC-8F76-421D-BCE8-4634CC6B7B50}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3E102DEC-8F76-421D-BCE8-4634CC6B7B50}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3E102DEC-8F76-421D-BCE8-4634CC6B7B50}.Release|Any CPU.Build.0 = Release|Any CPU
-		{94B14A6F-F420-47A6-AAA7-212361A8D4E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{94B14A6F-F420-47A6-AAA7-212361A8D4E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{94B14A6F-F420-47A6-AAA7-212361A8D4E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{94B14A6F-F420-47A6-AAA7-212361A8D4E0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{62B996AB-CB8E-4688-ABCA-0A1D5A43934E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{62B996AB-CB8E-4688-ABCA-0A1D5A43934E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{62B996AB-CB8E-4688-ABCA-0A1D5A43934E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{62B996AB-CB8E-4688-ABCA-0A1D5A43934E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0D98DCB0-D5AD-4771-8239-6B9AEF3DF296}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0D98DCB0-D5AD-4771-8239-6B9AEF3DF296}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0D98DCB0-D5AD-4771-8239-6B9AEF3DF296}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0D98DCB0-D5AD-4771-8239-6B9AEF3DF296}.Release|Any CPU.Build.0 = Release|Any CPU
-		{933D4E59-16C9-471D-9CD9-6A626A7564F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{933D4E59-16C9-471D-9CD9-6A626A7564F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{933D4E59-16C9-471D-9CD9-6A626A7564F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{933D4E59-16C9-471D-9CD9-6A626A7564F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6421EBA1-5D74-46A9-9FE7-F2D03AC28944}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6421EBA1-5D74-46A9-9FE7-F2D03AC28944}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6421EBA1-5D74-46A9-9FE7-F2D03AC28944}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6421EBA1-5D74-46A9-9FE7-F2D03AC28944}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1CB45DD-694D-4B93-BEA8-4B805CF4D9CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1CB45DD-694D-4B93-BEA8-4B805CF4D9CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1CB45DD-694D-4B93-BEA8-4B805CF4D9CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1CB45DD-694D-4B93-BEA8-4B805CF4D9CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA816221-9B8F-44BE-9AEB-FFE5CE2BABAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA816221-9B8F-44BE-9AEB-FFE5CE2BABAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA816221-9B8F-44BE-9AEB-FFE5CE2BABAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA816221-9B8F-44BE-9AEB-FFE5CE2BABAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0E01B1C-3878-4E52-AFC1-2F053038805B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0E01B1C-3878-4E52-AFC1-2F053038805B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0E01B1C-3878-4E52-AFC1-2F053038805B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0E01B1C-3878-4E52-AFC1-2F053038805B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEE4237E-A393-40AD-B3ED-4323B0F66581}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEE4237E-A393-40AD-B3ED-4323B0F66581}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEE4237E-A393-40AD-B3ED-4323B0F66581}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEE4237E-A393-40AD-B3ED-4323B0F66581}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

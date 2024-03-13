@@ -1,0 +1,103 @@
+﻿@using WorkTimeTracker.Models.Dtos
+@model WorkTimeTracker.Domain.Entities.DailyWorkSchedule
+
+@{
+    string modalId = string.Concat("dayModal-", Model.Date.ToString("dd-MM-yyyy"), '-', Model.EmployeeId);
+    string cl = Model.PlannedWorkStart == default ? "btn-outline-light" : "btn-outline-success";
+}
+
+<!-- Button trigger modal -->
+<button type="button" class="btn @cl" data-bs-toggle="modal" data-bs-target="#@modalId">
+    @string.Concat(
+            Model.PlannedWorkStart.ToString("t") ?? "-",
+            '\n',
+            Model.PlannedWorkEnd.ToString("t") ?? "-")
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="@modalId" tabindex="-1" aria-labelledby="createCarWorkshopServiceModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createCarWorkshopServiceModalLabel">
+                    Day details @string.Concat(Model?.Employee?.FirstName ?? "", ' ', Model?.Employee?.LastName ?? "", " - ", Model?.Date.ToString("dd.MM.yyyy"))
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-body">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td></td>
+                                    <td class="text-center">
+                                        Planned
+                                    </td>
+                                    <td class="text-center">
+                                        Real
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-end pe-1">
+                                        Work start:
+                                    </td>
+                                    <td class="text-center">
+                                        @Model?.PlannedWorkStart.ToString("t")
+                                    </td>
+                                    <td class="text-center">
+                                        @Model?.RealWorkStart.ToString("t")
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-end pe-1">
+                                        Work end:
+                                    </td>
+                                    <td class="text-center">
+                                        @Model?.PlannedWorkEnd.ToString("t")
+                                    </td>
+                                    <td class="text-center">
+                                        @Model?.RealWorkEnd.ToString("t")
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-end pe-1">
+                                        Work time:
+                                    </td>
+                                    <td class="text-center">
+                                        @Model?.WorkTimeNorm.ToString(@"hh\:mm")
+                                    </td>
+                                    <td class="text-center">
+                                        @Model?.WorkHours.ToString(@"hh\:mm")
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-end pe-1">
+                                        Break time:
+                                    </td>
+                                    <td class="text-center">
+                                        @Model?.BreakTimeNorm.Minutes
+                                    </td>
+                                    <td class="text-center">
+                                        @string.Concat(Model?.BreakActions?.Select(x => x.TimeOfAction).Sum(x => x.Minutes) ?? 0)
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

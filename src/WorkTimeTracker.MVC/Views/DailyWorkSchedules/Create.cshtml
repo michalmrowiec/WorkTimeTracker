@@ -1,0 +1,107 @@
+﻿@model WorkTimeTracker.Models.Dtos.DailyWorkScheduleDto
+
+@{
+    ViewData["Title"] = "Create";
+    Model.PlannedWorkStart = Model.Date;
+    Model.PlannedWorkEnd = Model.Date;
+}
+
+<h1>Create</h1>
+
+<h4>DailyWorkSchedule</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <p>@string.Concat(Model?.Employee?.FirstName ?? "", ' ', Model?.Employee?.LastName ?? "")</p>
+            <p>@Model!.Date.ToString("dd-MM-yyyy")</p>
+
+            <input asp-for="EmployeeId" class="form-control" type="hidden" />
+            <input asp-for="Date" class="form-control" type="hidden" />
+
+            <div class="form-group">
+                <label asp-for="PlannedWorkStart" class="control-label"></label>
+                <input asp-for="PlannedWorkStart" id="PlannedWorkStart" class="form-control" />
+                <span asp-validation-for="PlannedWorkStart" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PlannedWorkEnd" class="control-label"></label>
+                <input asp-for="PlannedWorkEnd" id="PlannedWorkEnd" class="form-control" />
+                <span asp-validation-for="PlannedWorkEnd" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkTimeNorm" class="control-label"></label>
+                <input asp-for="WorkTimeNorm" id="WorkTimeNorm" class="form-control" />
+                <span asp-validation-for="WorkTimeNorm" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        function calculateWorkTimeNorm() {
+            var start = new Date($('#PlannedWorkStart').val());
+            var end = new Date($('#PlannedWorkEnd').val());
+
+            if (start && end) {
+                if (end < start) {
+                    end.setDate(end.getDate() + 1); // handle crossing midnight
+                }
+
+                var diff = end - start;
+                var hours = Math.floor(diff / 1000 / 60 / 60);
+                diff -= hours * 1000 * 60 * 60;
+                var minutes = Math.floor(diff / 1000 / 60);
+
+                // Pad hours and minutes to two digits
+                hours = ("0" + hours).slice(-2);
+                minutes = ("0" + minutes).slice(-2);
+
+                // Update WorkTimeNorm
+                $('#WorkTimeNorm').val(hours + ":" + minutes);
+            }
+        }
+
+        $('#PlannedWorkEnd').on('change', calculateWorkTimeNorm);
+
+
+        function setPlannedWorkEnd() {
+            var start = $('#PlannedWorkStart').val();
+            var end = $('#PlannedWorkEnd').val();
+
+            // Add 8 hour to start date
+            var startHour = parseInt(start.slice(11, 13));
+            var newEndHour = startHour + 8;
+            var newEndDay = parseInt(start.slice(8, 10));
+
+            // If houre crossing 24, reset hours and add day
+            if (newEndHour >= 24) {
+                newEndHour -= 24;
+                newEndDay += 1;
+            }
+
+            // Set end datetime
+            var newEnd = start.slice(0, 8) + ("0" + newEndDay).slice(-2) + "T" + ("0" + newEndHour).slice(-2) + start.slice(13);
+            $('#PlannedWorkEnd').val(newEnd);
+            calculateWorkTimeNorm();
+        }
+
+        $('#PlannedWorkStart').on('change', setPlannedWorkEnd);
+
+    </script>
+
+}
