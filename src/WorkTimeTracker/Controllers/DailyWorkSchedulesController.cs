@@ -85,7 +85,7 @@ namespace WorkTimeTracker.Controllers
         [HttpPost]
         ///[ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
-            [Bind("EmployeeId,Date,PlannedWorkStart,PlannedWorkEnd")] DailyWorkScheduleDto dailyWorkSchedule)
+            [Bind("EmployeeId,Date,PlannedWorkStart,PlannedWorkEnd,WorkTimeNorm")] DailyWorkScheduleDto dailyWorkSchedule)
         {
             if (ModelState.IsValid)
             {
@@ -95,7 +95,8 @@ namespace WorkTimeTracker.Controllers
                     EmployeeId = dailyWorkSchedule.EmployeeId,
                     Date = dailyWorkSchedule.PlannedWorkStart.Date,
                     PlannedWorkStart = dailyWorkSchedule.PlannedWorkStart,
-                    PlannedWorkEnd = dailyWorkSchedule.PlannedWorkEnd
+                    PlannedWorkEnd = dailyWorkSchedule.PlannedWorkEnd,
+                    WorkTimeNorm = dailyWorkSchedule.WorkTimeNorm
                 };
                 _context.Add(schedule);
                 await _context.SaveChangesAsync();
