@@ -31,5 +31,9 @@ namespace WorkTimeTracker.Application.Employees
         [Required]
         [Display(Name = "Roles")]
         public List<string> Roles { get; set; }
+
+        [Display(Name = "Reports to")]
+        public string? ReportsToId { get; set; }
+
     }
 }

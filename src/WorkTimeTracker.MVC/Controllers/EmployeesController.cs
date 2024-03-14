@@ -1,8 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WorkTimeTracker.Application.Employees.Commands.RegisterEmployee;
 using WorkTimeTracker.Application.Employees.Queries.GetEmployees;
+using WorkTimeTracker.Domain.Entities;
 using WorkTimeTracker.Infrastructure;
 
 namespace WorkTimeTracker.Controllers
@@ -47,14 +49,17 @@ namespace WorkTimeTracker.Controllers
             return View(result);
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var managers = await _userManager.GetUsersInRoleAsync("Manager");
+            List<Employee> managersNames = await _context.Employees.Where(e => managers.Select(e => e.Id).Contains(e.Id)).ToListAsync();
+            ViewBag.Managers = managersNames;
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FirstName,LastName,Email,Password,ConfirmPassword,Roles")] RegisterEmployeeCommand employeeModel)
+        public async Task<IActionResult> Create([Bind("FirstName,LastName,Email,Password,ConfirmPassword,Roles,ReportsToId")] RegisterEmployeeCommand employeeModel)
         {
             if (ModelState.IsValid)
             {

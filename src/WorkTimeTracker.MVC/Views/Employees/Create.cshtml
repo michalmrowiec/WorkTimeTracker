@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using WorkTimeTracker.Application.Employees.Commands.RegisterEmployee
+@using WorkTimeTracker.Domain.Entities
 @inject RoleManager<IdentityRole> RoleManager
 @model RegisterEmployeeCommand
 @{
@@ -40,7 +41,7 @@
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <select asp-for="Roles" class="form-control" multiple>
+                <select asp-for="Roles" class="form-control" multiple size="3">
                     @foreach (var role in RoleManager.Roles.Select(r => r.Name))
                     {
                         <option value="@role">@role</option>
@@ -48,6 +49,16 @@
                 </select>
                 <label asp-for="Roles">Roles</label>
                 <span asp-validation-for="Roles" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <select asp-for="ReportsToId" class="form-control" size="3">
+                    @foreach (Employee manager in ViewBag.Managers)
+                    {
+                        <option value="@manager.Id">@string.Concat(manager.FirstName, ' ', manager.LastName)</option>
+                    }
+                </select>
+                <label asp-for="ReportsToId">Reports to</label>
+                <span asp-validation-for="ReportsToId" class="text-danger"></span>
             </div>
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
