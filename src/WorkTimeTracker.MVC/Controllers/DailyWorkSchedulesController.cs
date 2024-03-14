@@ -1,18 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using WorkTimeTracker.Application.DailyWorkSchedules.Queries.GetDailyWorkSchedule;
+using WorkTimeTracker.Application.DailyWorkSchedules;
 using WorkTimeTracker.Domain.Entities;
 using WorkTimeTracker.Infrastructure;
-using WorkTimeTracker.Models.Dtos;
+using WorkTimeTracker.Application.Employees;
 
 namespace WorkTimeTracker.Controllers
 {
     public class DailyWorkSchedulesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMediator _mediator;
 
-        public DailyWorkSchedulesController(ApplicationDbContext context)
+        public DailyWorkSchedulesController(ApplicationDbContext context, IMediator mediator)
         {
             _context = context;
+            _mediator = mediator;
         }
 
         // GET: DailyWorkSchedules
@@ -29,21 +35,22 @@ namespace WorkTimeTracker.Controllers
                 month = DateTime.Now.Month;
             }
 
-            var employees = await _context.Employees.ToListAsync();
-            var schedules = new Dictionary<Employee, List<DailyWorkSchedule>>();
+            var schedules = await _mediator.Send(new GetDailyWorkScheduleQuery(User.FindFirstValue(ClaimTypes.NameIdentifier), (int)year, (int)month));
+            //var employees = await _context.Employees.ToListAsync();
+            //var schedules = new Dictionary<Employee, List<DailyWorkSchedule>>();
 
-            foreach (var employee in employees)
-            {
-                schedules[employee] = await _context.DailyWorkSchedules
-                    .Where(schedule => schedule.EmployeeId == employee.Id && schedule.Date.Month == month && schedule.Date.Year == year)
-                    .OrderBy(schedule => schedule.Date)
-                    .ToListAsync();
-            }
-
+            //foreach (var employee in employees)
+            //{
+            //    schedules[employee] = await _context.DailyWorkSchedules
+            //        .Where(schedule => schedule.EmployeeId == employee.Id && schedule.Date.Month == month && schedule.Date.Year == year)
+            //        .OrderBy(schedule => schedule.Date)
+            //        .ToListAsync();
+            //}
+            Dictionary<EmployeeDto, List<DailyWorkScheduleDto>> res = schedules.ToDictionary(k => k.Key, k => k.Value as List<DailyWorkScheduleDto>);
             TempData["DateYear"] = year.ToString();
             TempData["DateMonth"] = month.ToString();
 
-            return View(schedules);
+            return View(res);
         }
 
         // GET: DailyWorkSchedules/Details/5
@@ -74,7 +81,8 @@ namespace WorkTimeTracker.Controllers
         public async Task<IActionResult> Create(string employeeId, string date)
         {
             var dailyWorkSchedule = new DailyWorkScheduleDto { EmployeeId = employeeId, Date = DateTime.Parse(date) };
-            dailyWorkSchedule.Employee = await _context.Employees.FindAsync(employeeId);
+            var empl = await _context.Employees.FindAsync(employeeId);
+            dailyWorkSchedule.Employee = new EmployeeDto { Id = empl.Id, FirstName = empl.FirstName, LastName = empl.LastName };
             return View(dailyWorkSchedule);
         }
 

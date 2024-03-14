@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WorkTimeTracker.Domain.Interfaces;
+using WorkTimeTracker.Infrastructure.Repositories;
 
 namespace WorkTimeTracker.Infrastructure
 {
@@ -24,9 +26,12 @@ namespace WorkTimeTracker.Infrastructure
 
                 options.SignIn.RequireConfirmedAccount = false;
             })
-    .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
+            .AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
+
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IDailyWorkScheduleRepository, DailyWorkScheduleRepository>();
         }
     }
 }

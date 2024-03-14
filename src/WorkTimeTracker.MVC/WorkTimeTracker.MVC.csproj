@@ -24,8 +24,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WorkTimeTracker.Application\WorkTimeTracker.Application.csproj" />
     <ProjectReference Include="..\WorkTimeTracker.Domain\WorkTimeTracker.Domain.csproj" />
     <ProjectReference Include="..\WorkTimeTracker.Infrastructure\WorkTimeTracker.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\Dtos\" />
   </ItemGroup>
 
 </Project>

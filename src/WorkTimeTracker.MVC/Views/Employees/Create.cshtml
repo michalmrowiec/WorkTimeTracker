@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using WorkTimeTracker.Application.Employees.Commands.RegisterEmployee
 @inject RoleManager<IdentityRole> RoleManager
-@model WorkTimeTracker.Models.CreateEmployeeModel
+@model RegisterEmployeeCommand
 @{
     ViewData["Title"] = "Register";
 }

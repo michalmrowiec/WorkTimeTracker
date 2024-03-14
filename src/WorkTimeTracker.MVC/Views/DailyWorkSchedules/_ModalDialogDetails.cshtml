@@ -1,5 +1,5 @@
-﻿@using WorkTimeTracker.Models.Dtos
-@model WorkTimeTracker.Domain.Entities.DailyWorkSchedule
+﻿@using WorkTimeTracker.Application.DailyWorkSchedules
+@model DailyWorkScheduleDto
 
 @{
     string modalId = string.Concat("dayModal-", Model.Date.ToString("dd-MM-yyyy"), '-', Model.EmployeeId);
@@ -81,8 +81,8 @@
                                         @Model?.BreakTimeNorm.Minutes
                                     </td>
                                     <td class="text-center">
-                                        @string.Concat(Model?.BreakActions?.Select(x => x.TimeOfAction).Sum(x => x.Minutes) ?? 0)
-                                    </td>
+@*                                         @string.Concat(Model?.BreakActions?.Select(x => x.TimeOfAction).Sum(x => x.Minutes) ?? 0)
+ *@                                    </td>
                                 </tr>
                             </tbody>
                         </table>

@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using WorkTimeTracker.Domain.Entities;
+using WorkTimeTracker.Application.Employees.Commands.RegisterEmployee;
+using WorkTimeTracker.Application.Employees.Queries.GetEmployees;
 using WorkTimeTracker.Infrastructure;
-using WorkTimeTracker.Models;
-using WorkTimeTracker.Models.Dtos;
 
 namespace WorkTimeTracker.Controllers
 {
@@ -13,33 +12,37 @@ namespace WorkTimeTracker.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IMediator _mediator;
 
-        public EmployeesController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        public EmployeesController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IMediator mediator)
         {
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
+            _mediator = mediator;
         }
 
         public async Task<IActionResult> Index()
         {
-            var employees = await _context.Employees.ToListAsync();
-            List<EmployeeDto> result = new List<EmployeeDto>();
+            //var employees = await _context.Employees.ToListAsync();
+            //List<EmployeeDto> result = new List<EmployeeDto>();
 
-            foreach (var employee in employees)
-            {
-                var roles = await _userManager.GetRolesAsync(employee);
+            //foreach (var employee in employees)
+            //{
+            //    var roles = await _userManager.GetRolesAsync(employee);
 
-                var emplDto = new EmployeeDto
-                {
-                    Id = employee.Id,
-                    FirstName = employee.FirstName,
-                    LastName = employee.LastName,
-                    Roles = roles.ToList()
-                };
+            //    var emplDto = new EmployeeDto
+            //    {
+            //        Id = employee.Id,
+            //        FirstName = employee.FirstName,
+            //        LastName = employee.LastName,
+            //        Roles = roles.ToList()
+            //    };
 
-                result.Add(emplDto);
-            }
+            //    result.Add(emplDto);
+            //}
+
+            var result = await _mediator.Send(new GetEmployeesQuery());
             
             return View(result);
         }
@@ -51,16 +54,11 @@ namespace WorkTimeTracker.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FirstName,LastName,Email,Password,ConfirmPassword,Roles")] CreateEmployeeModel employeeModel)
+        public async Task<IActionResult> Create([Bind("FirstName,LastName,Email,Password,ConfirmPassword,Roles")] RegisterEmployeeCommand employeeModel)
         {
             if (ModelState.IsValid)
             {
-                var employee = new Employee(employeeModel.FirstName, employeeModel.LastName, "", null, 0, DateTime.Now, null, null);
-                await _userManager.SetEmailAsync(employee, employeeModel.Email);
-                await _userManager.SetUserNameAsync(employee, employeeModel.Email);
-                var res1 = await _userManager.CreateAsync(employee, employeeModel.Password);
-                var res2 = await _userManager.AddToRolesAsync(employee, employeeModel.Roles);
-
+                await _mediator.Send(employeeModel);
                 return RedirectToAction(nameof(Index));
             }
             return View(employeeModel);
