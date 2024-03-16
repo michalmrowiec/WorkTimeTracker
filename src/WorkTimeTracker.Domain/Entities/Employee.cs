@@ -7,12 +7,14 @@ namespace WorkTimeTracker.Domain.Entities
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Pesel { get; set; }
-        public string? ReportsToId { get; set; }
         public double Workload { get; set; }
         public DateTime DateOfEmployment { get; set; }
         public DateTime? ContractEndDate { get; set; }
         public string? BadgeId { get; set; }
 
+        public string? DepartmentId { get; set; }
+        public Department? Department { get; set; }
+        public List<DepartmentManager>? ManagedDepartments { get; set; }
         public List<DailyWorkSchedule>? DailyWorkSchedules { get; set; }
 
         public Employee()
@@ -23,7 +25,7 @@ namespace WorkTimeTracker.Domain.Entities
         public Employee(string firstName,
             string lastName,
             string pesel,
-            string? reportsToId,
+            string? departmentId,
             double workload,
             DateTime dateOfEmployment,
             DateTime? contractEndDate,
@@ -32,7 +34,7 @@ namespace WorkTimeTracker.Domain.Entities
             FirstName = firstName;
             LastName = lastName;
             Pesel = pesel;
-            ReportsToId = reportsToId;
+            DepartmentId = departmentId;
             Workload = workload;
             DateOfEmployment = dateOfEmployment;
             ContractEndDate = contractEndDate;

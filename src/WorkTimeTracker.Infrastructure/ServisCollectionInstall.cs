@@ -32,6 +32,7 @@ namespace WorkTimeTracker.Infrastructure
 
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IDailyWorkScheduleRepository, DailyWorkScheduleRepository>();
+            services.AddScoped<IDepartmentRepository, DepartmentRepository>();
         }
     }
 }

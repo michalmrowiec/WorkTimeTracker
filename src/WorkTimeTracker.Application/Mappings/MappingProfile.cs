@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using WorkTimeTracker.Application.DailyWorkSchedules;
+using WorkTimeTracker.Application.Departments;
 using WorkTimeTracker.Application.Employees;
 using WorkTimeTracker.Domain.Entities;
 
@@ -12,6 +13,9 @@ namespace WorkTimeTracker.Application.Mappings
             CreateMap<Employee, EmployeeDto>();
 
             CreateMap<DailyWorkSchedule , DailyWorkScheduleDto>()
+                .ReverseMap();
+
+            CreateMap<Department, DepartmentDto>()
                 .ReverseMap();
 
         }

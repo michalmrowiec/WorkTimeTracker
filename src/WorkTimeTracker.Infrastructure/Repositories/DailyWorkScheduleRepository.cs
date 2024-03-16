@@ -20,7 +20,7 @@ namespace WorkTimeTracker.Infrastructure.Repositories
         public async Task<IDictionary<Employee, IEnumerable<DailyWorkSchedule>>> Get(string reportsToEmployeeId, int year, int month)
         {
             var employees = await _context.Employees
-                .Where(e => e.ReportsToId!.Equals(reportsToEmployeeId) || e.Id.Equals(reportsToEmployeeId))
+                .Where(e => e.DepartmentId!.Equals(reportsToEmployeeId) || e.Id.Equals(reportsToEmployeeId))
                 .ToListAsync();
 
             var schedules = new Dictionary<Employee, List<DailyWorkSchedule>>();

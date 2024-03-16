@@ -47,7 +47,7 @@ if (!dbContext.Users.Any())
     await userManager.SetEmailAsync(startAdmin, "admin@admin.pl");
     await userManager.SetUserNameAsync(startAdmin, "admin@admin.pl");
     var res1 = await userManager.CreateAsync(startAdmin, "Admin123!");
-    var res2 = await userManager.AddToRoleAsync(startAdmin, "Administrator");
+    var res2 = await userManager.AddToRoleAsync(startAdmin, Roles.Admin.ToString());
 }
 
 // Configure the HTTP request pipeline.

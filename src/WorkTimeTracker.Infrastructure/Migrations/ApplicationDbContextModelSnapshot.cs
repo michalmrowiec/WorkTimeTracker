@@ -17,7 +17,7 @@ namespace WorkTimeTracker.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.2")
+                .HasAnnotation("ProductVersion", "8.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -233,7 +233,7 @@ namespace WorkTimeTracker.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("WorkTimeTracker.Models.Entities.ActionTime", b =>
+            modelBuilder.Entity("WorkTimeTracker.Domain.Entities.ActionTime", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -269,7 +269,7 @@ namespace WorkTimeTracker.Infrastructure.Migrations
                     b.UseTphMappingStrategy();
                 });
 
-            modelBuilder.Entity("WorkTimeTracker.Models.Entities.DailyWorkSchedule", b =>
+            modelBuilder.Entity("WorkTimeTracker.Domain.Entities.DailyWorkSchedule", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -321,12 +321,45 @@ namespace WorkTimeTracker.Infrastructure.Migrations
                     b.ToTable("DailyWorkSchedules");
                 });
 
-            modelBuilder.Entity("WorkTimeTracker.Models.Entities.Employee", b =>
+            modelBuilder.Entity("WorkTimeTracker.Domain.Entities.Department", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ParentDepartmentId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentDepartmentId");
+
+                    b.ToTable("Departments");
+                });
+
+            modelBuilder.Entity("WorkTimeTracker.Domain.Entities.DepartmentManager", b =>
+                {
+                    b.Property<string>("DepartmentId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ManagerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("DepartmentId", "ManagerId");
+
+                    b.HasIndex("ManagerId");
+
+                    b.ToTable("DepartmentManagers");
+                });
+
+            modelBuilder.Entity("WorkTimeTracker.Domain.Entities.Employee", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
                     b.Property<string>("BadgeId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("ContractEndDate")
@@ -334,6 +367,9 @@ namespace WorkTimeTracker.Infrastructure.Migrations
 
                     b.Property<DateTime>("DateOfEmployment")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("DepartmentId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -347,28 +383,26 @@ namespace WorkTimeTracker.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ReportsToId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<double>("Workload")
                         .HasColumnType("float");
+
+                    b.HasIndex("DepartmentId");
 
                     b.HasDiscriminator().HasValue("Employee");
                 });
 
-            modelBuilder.Entity("WorkTimeTracker.Models.Entities.BreakActionTime", b =>
+            modelBuilder.Entity("WorkTimeTracker.Domain.Entities.BreakActionTime", b =>
                 {
-                    b.HasBaseType("WorkTimeTracker.Models.Entities.ActionTime");
+                    b.HasBaseType("WorkTimeTracker.Domain.Entities.ActionTime");
 
                     b.HasIndex("DailyWorkScheduleId");
 
                     b.HasDiscriminator().HasValue("BreakActionTime");
                 });
 
-            modelBuilder.Entity("WorkTimeTracker.Models.Entities.WorkActionTime", b =>
+            modelBuilder.Entity("WorkTimeTracker.Domain.Entities.WorkActionTime", b =>
                 {
-                    b.HasBaseType("WorkTimeTracker.Models.Entities.ActionTime");
+                    b.HasBaseType("WorkTimeTracker.Domain.Entities.ActionTime");
 
                     b.HasIndex("DailyWorkScheduleId");
 
@@ -426,18 +460,57 @@ namespace WorkTimeTracker.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("WorkTimeTracker.Models.Entities.DailyWorkSchedule", b =>
+            modelBuilder.Entity("WorkTimeTracker.Domain.Entities.DailyWorkSchedule", b =>
                 {
-                    b.HasOne("WorkTimeTracker.Models.Entities.Employee", null)
+                    b.HasOne("WorkTimeTracker.Domain.Entities.Employee", "Employee")
                         .WithMany("DailyWorkSchedules")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("WorkTimeTracker.Models.Entities.BreakActionTime", b =>
+            modelBuilder.Entity("WorkTimeTracker.Domain.Entities.Department", b =>
                 {
-                    b.HasOne("WorkTimeTracker.Models.Entities.DailyWorkSchedule", "DailyWorkSchedule")
+                    b.HasOne("WorkTimeTracker.Domain.Entities.Department", "ParentDepartment")
+                        .WithMany()
+                        .HasForeignKey("ParentDepartmentId");
+
+                    b.Navigation("ParentDepartment");
+                });
+
+            modelBuilder.Entity("WorkTimeTracker.Domain.Entities.DepartmentManager", b =>
+                {
+                    b.HasOne("WorkTimeTracker.Domain.Entities.Department", "Department")
+                        .WithMany("Managers")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WorkTimeTracker.Domain.Entities.Employee", "Manager")
+                        .WithMany("ManagedDepartments")
+                        .HasForeignKey("ManagerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+
+                    b.Navigation("Manager");
+                });
+
+            modelBuilder.Entity("WorkTimeTracker.Domain.Entities.Employee", b =>
+                {
+                    b.HasOne("WorkTimeTracker.Domain.Entities.Department", "Department")
+                        .WithMany("Employees")
+                        .HasForeignKey("DepartmentId");
+
+                    b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("WorkTimeTracker.Domain.Entities.BreakActionTime", b =>
+                {
+                    b.HasOne("WorkTimeTracker.Domain.Entities.DailyWorkSchedule", "DailyWorkSchedule")
                         .WithMany("BreakActions")
                         .HasForeignKey("DailyWorkScheduleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -446,9 +519,9 @@ namespace WorkTimeTracker.Infrastructure.Migrations
                     b.Navigation("DailyWorkSchedule");
                 });
 
-            modelBuilder.Entity("WorkTimeTracker.Models.Entities.WorkActionTime", b =>
+            modelBuilder.Entity("WorkTimeTracker.Domain.Entities.WorkActionTime", b =>
                 {
-                    b.HasOne("WorkTimeTracker.Models.Entities.DailyWorkSchedule", "DailyWorkSchedule")
+                    b.HasOne("WorkTimeTracker.Domain.Entities.DailyWorkSchedule", "DailyWorkSchedule")
                         .WithMany("WorkActions")
                         .HasForeignKey("DailyWorkScheduleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -457,16 +530,25 @@ namespace WorkTimeTracker.Infrastructure.Migrations
                     b.Navigation("DailyWorkSchedule");
                 });
 
-            modelBuilder.Entity("WorkTimeTracker.Models.Entities.DailyWorkSchedule", b =>
+            modelBuilder.Entity("WorkTimeTracker.Domain.Entities.DailyWorkSchedule", b =>
                 {
                     b.Navigation("BreakActions");
 
                     b.Navigation("WorkActions");
                 });
 
-            modelBuilder.Entity("WorkTimeTracker.Models.Entities.Employee", b =>
+            modelBuilder.Entity("WorkTimeTracker.Domain.Entities.Department", b =>
+                {
+                    b.Navigation("Employees");
+
+                    b.Navigation("Managers");
+                });
+
+            modelBuilder.Entity("WorkTimeTracker.Domain.Entities.Employee", b =>
                 {
                     b.Navigation("DailyWorkSchedules");
+
+                    b.Navigation("ManagedDepartments");
                 });
 #pragma warning restore 612, 618
         }
