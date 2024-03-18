@@ -1,7 +1,5 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using WorkTimeTracker.Application.Departments;
 using WorkTimeTracker.Application.Departments.Commands;
 using WorkTimeTracker.Application.Departments.Queries.GetAllDepartment;
 
@@ -30,8 +28,10 @@ namespace WorkTimeTracker.MVC.Controllers
         }
 
         // GET: DepartmentsController/Create
-        public ActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var departments = await _mediator.Send(new GetAllDepartmentQuery());
+            ViewBag.ParentDepartments = departments;
             return View();
         }
 

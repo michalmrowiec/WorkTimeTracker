@@ -4,7 +4,7 @@ using WorkTimeTracker.Domain.Interfaces;
 
 namespace WorkTimeTracker.Application.Departments.Queries.GetAllDepartment
 {
-    internal class GetAllDepartmentQueryHandler : IRequestHandler<GetAllDepartmentQuery, IEnumerable<DepartmentDto>>
+    internal class GetAllDepartmentQueryHandler : IRequestHandler<GetAllDepartmentQuery, IEnumerable<DepartmentDetailsDto>>
     {
         private readonly IDepartmentRepository _repository;
         private readonly IMapper _mapper;
@@ -15,11 +15,11 @@ namespace WorkTimeTracker.Application.Departments.Queries.GetAllDepartment
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<DepartmentDto>> Handle(GetAllDepartmentQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<DepartmentDetailsDto>> Handle(GetAllDepartmentQuery request, CancellationToken cancellationToken)
         {
             var departments = await _repository.GetDepartmentsAsync();
 
-            var mapped = _mapper.Map<List<DepartmentDto>>(departments);
+            var mapped = _mapper.Map<List<DepartmentDetailsDto>>(departments);
 
             return mapped;
         }

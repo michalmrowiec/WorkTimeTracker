@@ -1,4 +1,5 @@
-﻿@model IEnumerable<WorkTimeTracker.Application.Departments.DepartmentDto>
+﻿@using WorkTimeTracker.Application.Departments.Queries
+@model IEnumerable<DepartmentDetailsDto>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,13 +14,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ParentDepartmentId)
+                @Html.DisplayNameFor(model => model.ParentDepartmentName)
             </th>
             <th></th>
         </tr>
@@ -28,13 +26,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ParentDepartmentId)
+                    @Html.DisplayFor(modelItem => item.ParentDepartmentName)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |

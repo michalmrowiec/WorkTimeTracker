@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WorkTimeTracker.Application.Departments.Queries;
+using WorkTimeTracker.Application.Departments.Queries.GetAllDepartment;
 using WorkTimeTracker.Application.Employees.Commands.RegisterEmployee;
 using WorkTimeTracker.Application.Employees.Queries.GetEmployees;
 using WorkTimeTracker.Domain.Entities;
@@ -26,40 +28,22 @@ namespace WorkTimeTracker.Controllers
 
         public async Task<IActionResult> Index()
         {
-            //var employees = await _context.Employees.ToListAsync();
-            //List<EmployeeDto> result = new List<EmployeeDto>();
-
-            //foreach (var employee in employees)
-            //{
-            //    var roles = await _userManager.GetRolesAsync(employee);
-
-            //    var emplDto = new EmployeeDto
-            //    {
-            //        Id = employee.Id,
-            //        FirstName = employee.FirstName,
-            //        LastName = employee.LastName,
-            //        Roles = roles.ToList()
-            //    };
-
-            //    result.Add(emplDto);
-            //}
-
             var result = await _mediator.Send(new GetEmployeesQuery());
-            
+
             return View(result);
         }
 
         public async Task<IActionResult> Create()
         {
-            var managers = await _userManager.GetUsersInRoleAsync("Manager");
-            List<Employee> managersNames = await _context.Employees.Where(e => managers.Select(e => e.Id).Contains(e.Id)).ToListAsync();
-            ViewBag.Managers = managersNames;
+            var departments = await _mediator.Send(new GetAllDepartmentQuery());
+            ViewBag.Departments = departments;
+
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FirstName,LastName,Email,Password,ConfirmPassword,Roles,ReportsToId")] RegisterEmployeeCommand employeeModel)
+        public async Task<IActionResult> Create([Bind("FirstName,LastName,Email,Password,ConfirmPassword,Roles,DepartmentId")] RegisterEmployeeCommand employeeModel)
         {
             if (ModelState.IsValid)
             {

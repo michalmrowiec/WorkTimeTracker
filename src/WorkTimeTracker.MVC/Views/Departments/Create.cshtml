@@ -1,4 +1,5 @@
-﻿@model WorkTimeTracker.Application.Departments.Commands.CreateDepartmentCommand
+﻿@using WorkTimeTracker.Application.Departments.Queries
+@model WorkTimeTracker.Application.Departments.Commands.CreateDepartmentCommand
 
 @{
     ViewData["Title"] = "Create";
@@ -12,14 +13,20 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ParentDepartmentId" class="control-label"></label>
-                <input asp-for="ParentDepartmentId" class="form-control" />
+            <div class="form-floating mb-3">
+                <select asp-for="ParentDepartmentId" class="form-control form-select" id="parnet-department-select" size="4">
+                    <option value="@null">@string.Concat("No parent department")</option>
+                    @foreach (DepartmentDetailsDto department in ViewBag.ParentDepartments)
+                    {
+                        <option value="@department.Id">@string.Concat(department.Name)</option>
+                    }
+                </select>
+                <label asp-for="ParentDepartmentId">Parent department</label>
                 <span asp-validation-for="ParentDepartmentId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -34,5 +41,13 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
+
+<style>
+    #parnet-department-select {
+        height: auto;
+    }
+</style>

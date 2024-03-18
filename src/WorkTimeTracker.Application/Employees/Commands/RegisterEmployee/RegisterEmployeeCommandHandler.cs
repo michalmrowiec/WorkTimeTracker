@@ -15,13 +15,24 @@ namespace WorkTimeTracker.Application.Employees.Commands.RegisterEmployee
 
         public async Task Handle(RegisterEmployeeCommand request, CancellationToken cancellationToken)
         {
-            var employee = new Employee(request.FirstName, request.LastName, "", request.ReportsToId, 0, DateTime.Now, null, null);
+            var employee = new Employee
+                (firstName: request.FirstName,
+                lastName: request.LastName,
+                pesel: "",
+                departmentId: request.DepartmentId,
+                workload: 0,
+                dateOfEmployment: DateTime.Now,
+                contractEndDate: null,
+                badgeId: null);
+
             await _userManager.SetEmailAsync(employee, request.Email);
             await _userManager.SetUserNameAsync(employee, request.Email);
-            var res1 = await _userManager.CreateAsync(employee, request.Password);
-            if (res1.Succeeded)
+
+            var createUserResult = await _userManager.CreateAsync(employee, request.Password);
+
+            if (createUserResult.Succeeded)
             {
-                var res2 = await _userManager.AddToRolesAsync(employee, request.Roles);
+                var addRolesResult = await _userManager.AddToRolesAsync(employee, request.Roles);
             }
         }
     }
