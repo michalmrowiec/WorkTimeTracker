@@ -47,5 +47,18 @@ namespace WorkTimeTracker.Infrastructure.Repositories
                 .AsNoTracking()
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<Department>> GetDepartmentWithChilds(string departmentId)
+        {
+            var passDepartment = await _context.Departments.FindAsync(departmentId);
+            if (passDepartment == null)
+            {
+                return new List<Department>();
+            }
+
+            var childDepartments = await GetAllChildDepartments(departmentId);
+
+            return childDepartments.Append(passDepartment);
+        }
     }
 }

@@ -7,9 +7,14 @@ using WorkTimeTracker.Application.DailyWorkSchedules;
 using WorkTimeTracker.Domain.Entities;
 using WorkTimeTracker.Infrastructure;
 using WorkTimeTracker.Application.Employees;
+using WorkTimeTracker.Application.Departments.Queries.GetDepartmentWithChilds;
+using WorkTimeTracker.Application.Employees.Queries.GetEmployeeDetails;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace WorkTimeTracker.Controllers
 {
+    [Authorize]
     public class DailyWorkSchedulesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -21,39 +26,48 @@ namespace WorkTimeTracker.Controllers
             _mediator = mediator;
         }
 
-        // GET: DailyWorkSchedules
-        //public async Task<IActionResult> Index()
-        //{
-        //    return View(await _context.DailyWorkSchedules.ToListAsync());
-        //}
-
-        public async Task<IActionResult> Index(int? year, int? month)
+        public async Task<IActionResult> Index(int? year, int? month, string? departmentId)
         {
-            if (year.HasValue == false || month.HasValue == false)
+            if (year.HasValue == false || month.HasValue == false || departmentId == null)
             {
-                year = DateTime.Now.Year;
-                month = DateTime.Now.Month;
+                if (HttpContext.Session.GetInt32("Year") != null
+                && HttpContext.Session.GetInt32("Month") != null
+                && HttpContext.Session.GetString("DepartmentId") != string.Empty)
+                {
+                    year = HttpContext.Session.GetInt32("Year");
+                    month = HttpContext.Session.GetInt32("Month");
+                    departmentId = HttpContext.Session.GetString("DepartmentId");
+                }
+                else
+                {
+                    year = DateTime.Now.Year;
+                    month = DateTime.Now.Month;
+                }
             }
 
-            var schedules = await _mediator.Send(new GetDailyWorkScheduleQuery(User.FindFirstValue(ClaimTypes.NameIdentifier), (int)year, (int)month));
-            //var employees = await _context.Employees.ToListAsync();
-            //var schedules = new Dictionary<Employee, List<DailyWorkSchedule>>();
+            HttpContext.Session.SetInt32("Year", year ?? 0);
+            HttpContext.Session.SetInt32("Month", month ?? 0);
+            HttpContext.Session.SetString("DepartmentId", departmentId ?? string.Empty);
 
-            //foreach (var employee in employees)
-            //{
-            //    schedules[employee] = await _context.DailyWorkSchedules
-            //        .Where(schedule => schedule.Id == employee.Id && schedule.Date.Month == month && schedule.Date.Year == year)
-            //        .OrderBy(schedule => schedule.Date)
-            //        .ToListAsync();
-            //}
+            var schedules = await _mediator.Send(new GetDailyWorkScheduleQuery(User.FindFirstValue(ClaimTypes.NameIdentifier), (int)year, (int)month));
+
             Dictionary<EmployeeDto, List<DailyWorkScheduleDto>> res = schedules.ToDictionary(k => k.Key, k => k.Value as List<DailyWorkScheduleDto>);
+
             TempData["DateYear"] = year.ToString();
             TempData["DateMonth"] = month.ToString();
+
+            var employeeDepartment = (await _mediator.Send(
+                new GetEmployeeDetailsQuery(User.FindFirstValue(ClaimTypes.NameIdentifier)))).Department;
+
+
+            var employeeDepartments = await _mediator.Send(new GetDepartmentWithChildsQuery(employeeDepartment.Id));
+
+            ViewBag.Departments = employeeDepartments;
+            TempData["EmployeeDepartment"] = employeeDepartment.Name;
 
             return View(res);
         }
 
-        // GET: DailyWorkSchedules/Details/5
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -71,7 +85,6 @@ namespace WorkTimeTracker.Controllers
             return View(dailyWorkSchedule);
         }
 
-        // GET: DailyWorkSchedules/Create
         public IActionResult Create()
         {
             return View();
@@ -86,13 +99,10 @@ namespace WorkTimeTracker.Controllers
             return View(dailyWorkSchedule);
         }
 
-        // POST: DailyWorkSchedules/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        ///[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
-            [Bind("Id,Date,PlannedWorkStart,PlannedWorkEnd,WorkTimeNorm")] DailyWorkScheduleDto dailyWorkSchedule)
+            [Bind("EmployeeId,Date,PlannedWorkStart,PlannedWorkEnd,WorkTimeNorm")] DailyWorkScheduleDto dailyWorkSchedule)
         {
             if (ModelState.IsValid)
             {
@@ -112,7 +122,6 @@ namespace WorkTimeTracker.Controllers
             return View(dailyWorkSchedule);
         }
 
-        // GET: DailyWorkSchedules/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -128,9 +137,6 @@ namespace WorkTimeTracker.Controllers
             return View(dailyWorkSchedule);
         }
 
-        // POST: DailyWorkSchedules/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("Id,Id,Date,PlannedWorkStart,PlannedWorkEnd,WorkTimeNorm,BreakTimeNorm,RealWorkStart,RealWorkEnd,WorkHours,NightWorkHours,Overrime,NightOvertime,OvertimeCollected")] DailyWorkSchedule dailyWorkSchedule)
@@ -163,7 +169,6 @@ namespace WorkTimeTracker.Controllers
             return View(dailyWorkSchedule);
         }
 
-        // GET: DailyWorkSchedules/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -181,7 +186,6 @@ namespace WorkTimeTracker.Controllers
             return View(dailyWorkSchedule);
         }
 
-        // POST: DailyWorkSchedules/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)

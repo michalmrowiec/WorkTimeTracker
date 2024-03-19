@@ -42,7 +42,7 @@
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <select asp-for="Roles" class="form-control form-select" id="item-select" multiple size="3">
+                <select asp-for="Roles" class="form-control form-select" id="item-select" multiple size="5">
                     @foreach (var role in RoleManager.Roles.Select(r => r.Name))
                     {
                         <option value="@role">@role</option>
@@ -52,7 +52,7 @@
                 <span asp-validation-for="Roles" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <select asp-for="DepartmentId" class="form-control form-select" id="item-select" size="4">
+                <select asp-for="DepartmentId" class="form-control form-select" id="item-select">
                     @foreach (DepartmentDetailsDto department in ViewBag.Departments)
                     {
                         <option value="@department.Id">@string.Concat(department.Name)</option>
@@ -68,6 +68,24 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#item-select').on('mousedown', function (e) {
+                e.preventDefault();
+                var select = this;
+                var scroll = select.scrollTop;
+
+                e.target.selected = !e.target.selected;
+
+                setTimeout(function () { select.scrollTop = scroll; }, 0);
+
+                $(select).focus();
+            }).mousemove(function (e) { e.preventDefault() });
+        });
+    </script>
 }
 
 <style>

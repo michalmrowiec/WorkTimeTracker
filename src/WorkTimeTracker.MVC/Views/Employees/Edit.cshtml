@@ -25,13 +25,13 @@
                 <input asp-for="FirstName" class="form-control" />
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label asp-for="LastName" class="control-label"></label>
                 <input asp-for="LastName" class="form-control" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <select asp-for="Roles" class="form-control form-select" id="item-select" multiple size="3">
+                <select asp-for="Roles" class="form-control form-select" id="item-select" multiple size="5">
                     @foreach (var role in RoleManager.Roles.Select(r => r.Name))
                     {
                         @if (Model.Roles.Contains(role ?? string.Empty))

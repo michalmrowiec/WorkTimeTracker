@@ -51,12 +51,13 @@
                     @Html.DisplayFor(modelItem => item.LastName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Department)
+
+                    <span class="badge text-white bg-success">@Html.DisplayFor(modelItem => item.Department)</span>
                 </td>
                 <td>
                     @foreach (var role in item.Roles)
                     {
-                        <span class="badge text-white bg-info">@role</span>
+                        <span class="badge text-white bg-secondary">@role</span>
                     }
                 </td>
                 <td>

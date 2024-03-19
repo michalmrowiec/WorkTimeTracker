@@ -1,6 +1,6 @@
 ﻿@using WorkTimeTracker.Application.DailyWorkSchedules
+@using WorkTimeTracker.Application.Departments.Queries
 @using WorkTimeTracker.Application.Employees
-@using WorkTimeTracker.Domain.Entities
 @model IDictionary<EmployeeDto, List<DailyWorkScheduleDto>>
 
 @{
@@ -14,14 +14,44 @@
 
     @using (Html.BeginForm("Index", "DailyWorkSchedules", FormMethod.Get))
     {
-        @Html.DropDownList("Year", new SelectList(Enumerable.Range(DateTime.Now.Year - 10, 20)))
-        @Html.DropDownList("Month", new SelectList(Enumerable.Range(1, 12)))
-        <input type="submit" value="Submit" />
+        <div class="row">
+            <div class="col-2">
+                <select class="form-control form-select" asp-for="@year" name="Year">
+                    @for (int i = 2020; i < 2030; i++)
+                    {
+                        <option value="@i">@i</option>
+                    }
+                </select>
+            </div>
+            <div class="col-2">
+                <select class="form-control form-select" asp-for="@month" name="Month">
+                    @for (int i = 1; i < 13; i++)
+                    {
+                        <option value="@i">@i</option>
+                    }
+                </select>
+            </div>
+            <div class="col-3">
+                <select class="form-control form-select" name="DepartmentId">
+                    @foreach (DepartmentDetailsDto department in ViewBag.Departments)
+                    {
+                        @if (department.Name == ViewData["EmployeeDepartment"]?.ToString())
+                        {
+                            <option selected value="@department.Id">@department.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@department.Id">@department.Name</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-2">
+                <input class="btn" type="submit" value="Submit" />
+            </div>
+        </div>
     }
 
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
     <table class="table no-margin" style="margin-right: 0">
         <thead>
             <tr>

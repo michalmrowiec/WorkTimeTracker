@@ -29,8 +29,11 @@ namespace WorkTimeTracker.Infrastructure.Repositories
                     .ToDictionary(k => k.Key, v => v.Value as IEnumerable<DailyWorkSchedule>);
             }
 
-            var childDepartments = await _departmentRepository.GetAllChildDepartments(departmentId);
-            var entireDepartments = childDepartments.Select(d => d.Id).Append(departmentId).ToList();
+            //var childDepartments = await _departmentRepository.GetAllChildDepartments(departmentId);
+            //var entireDepartments = childDepartments.Select(d => d.Id).Append(departmentId).ToList();
+            var entireDepartments = (await _departmentRepository.GetDepartmentWithChilds(departmentId))
+                .ToList()
+                .Select(d => d.Id);
 
             var employees = await _context.Employees
                 .Where(e => entireDepartments.Contains(e.DepartmentId ?? string.Empty))
