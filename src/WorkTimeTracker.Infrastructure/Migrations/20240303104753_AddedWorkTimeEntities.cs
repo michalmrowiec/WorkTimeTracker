@@ -128,7 +128,7 @@ namespace WorkTimeTracker.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_DailyWorkSchedules_EmployeeId",
                 table: "DailyWorkSchedules",
-                column: "EmployeeId");
+                column: "Id");
         }
 
         /// <inheritdoc />

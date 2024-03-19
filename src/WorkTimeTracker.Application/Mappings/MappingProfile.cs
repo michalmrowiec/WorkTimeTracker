@@ -3,7 +3,6 @@ using WorkTimeTracker.Application.DailyWorkSchedules;
 using WorkTimeTracker.Application.Departments;
 using WorkTimeTracker.Application.Departments.Queries;
 using WorkTimeTracker.Application.Employees;
-using WorkTimeTracker.Application.Employees.Queries.GetEmployeeDetails;
 using WorkTimeTracker.Domain.Entities;
 
 namespace WorkTimeTracker.Application.Mappings

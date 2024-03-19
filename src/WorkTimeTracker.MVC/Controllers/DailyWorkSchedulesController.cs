@@ -42,7 +42,7 @@ namespace WorkTimeTracker.Controllers
             //foreach (var employee in employees)
             //{
             //    schedules[employee] = await _context.DailyWorkSchedules
-            //        .Where(schedule => schedule.EmployeeId == employee.Id && schedule.Date.Month == month && schedule.Date.Year == year)
+            //        .Where(schedule => schedule.Id == employee.Id && schedule.Date.Month == month && schedule.Date.Year == year)
             //        .OrderBy(schedule => schedule.Date)
             //        .ToListAsync();
             //}
@@ -92,7 +92,7 @@ namespace WorkTimeTracker.Controllers
         [HttpPost]
         ///[ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
-            [Bind("EmployeeId,Date,PlannedWorkStart,PlannedWorkEnd,WorkTimeNorm")] DailyWorkScheduleDto dailyWorkSchedule)
+            [Bind("Id,Date,PlannedWorkStart,PlannedWorkEnd,WorkTimeNorm")] DailyWorkScheduleDto dailyWorkSchedule)
         {
             if (ModelState.IsValid)
             {
@@ -133,7 +133,7 @@ namespace WorkTimeTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,EmployeeId,Date,PlannedWorkStart,PlannedWorkEnd,WorkTimeNorm,BreakTimeNorm,RealWorkStart,RealWorkEnd,WorkHours,NightWorkHours,Overrime,NightOvertime,OvertimeCollected")] DailyWorkSchedule dailyWorkSchedule)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,Id,Date,PlannedWorkStart,PlannedWorkEnd,WorkTimeNorm,BreakTimeNorm,RealWorkStart,RealWorkEnd,WorkHours,NightWorkHours,Overrime,NightOvertime,OvertimeCollected")] DailyWorkSchedule dailyWorkSchedule)
         {
             if (id != dailyWorkSchedule.Id)
             {

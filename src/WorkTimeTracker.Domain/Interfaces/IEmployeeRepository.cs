@@ -4,7 +4,7 @@ namespace WorkTimeTracker.Domain.Interfaces
 {
     public interface IEmployeeRepository
     {
-        Task<IEnumerable<Employee>> GetEmployees();
-        Task<Employee?> GetEmployeeDetails(string employeeId);
+        Task<IEnumerable<Employee>> GetEmployeesAsync();
+        Task<Employee?> GetEmployeeDetailsAsync(string employeeId);
     }
 }

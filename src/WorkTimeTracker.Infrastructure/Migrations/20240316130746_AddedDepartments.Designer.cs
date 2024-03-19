@@ -250,7 +250,7 @@ namespace WorkTimeTracker.Infrastructure.Migrations
                         .HasMaxLength(21)
                         .HasColumnType("nvarchar(21)");
 
-                    b.Property<string>("EmployeeId")
+                    b.Property<string>("Id")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -283,7 +283,7 @@ namespace WorkTimeTracker.Infrastructure.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("EmployeeId")
+                    b.Property<string>("Id")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
@@ -319,7 +319,7 @@ namespace WorkTimeTracker.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasIndex("Id");
 
                     b.ToTable("DailyWorkSchedules");
                 });
@@ -467,7 +467,7 @@ namespace WorkTimeTracker.Infrastructure.Migrations
                 {
                     b.HasOne("WorkTimeTracker.Domain.Entities.Employee", "Employee")
                         .WithMany("DailyWorkSchedules")
-                        .HasForeignKey("EmployeeId")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

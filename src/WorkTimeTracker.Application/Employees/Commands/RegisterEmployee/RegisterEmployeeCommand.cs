@@ -3,16 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WorkTimeTracker.Application.Employees.Commands.RegisterEmployee
 {
-    public class RegisterEmployeeCommand : IRequest
+    public class RegisterEmployeeCommand : CreateEditEmployeeDto, IRequest
     {
-        [Required]
-        [Display(Name = "First name")]
-        public string FirstName { get; set; } = default!;
-
-        [Required]
-        [Display(Name = "Last name")]
-        public string LastName { get; set; } = default!;
-
         [Required]
         [EmailAddress]
         [Display(Name = "Adres email")]
@@ -28,13 +20,5 @@ namespace WorkTimeTracker.Application.Employees.Commands.RegisterEmployee
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; } = default!;
-
-        [Required]
-        [Display(Name = "Roles")]
-        public List<string> Roles { get; set; } = default!;
-
-        [Required]
-        [Display(Name = "Department")]
-        public string DepartmentId { get; set; } = default!;
     }
 }

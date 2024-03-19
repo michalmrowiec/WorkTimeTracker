@@ -20,7 +20,7 @@ namespace WorkTimeTracker.Application.Employees.Queries.GetEmployees
 
         public async Task<IEnumerable<EmployeeDto>> Handle(GetEmployeesQuery request, CancellationToken cancellationToken)
         {
-            var employees = await _repository.GetEmployees();
+            var employees = await _repository.GetEmployeesAsync();
             var dtos = _mapper.Map<IEnumerable<EmployeeDto>>(employees);
 
             foreach (var d in dtos)
