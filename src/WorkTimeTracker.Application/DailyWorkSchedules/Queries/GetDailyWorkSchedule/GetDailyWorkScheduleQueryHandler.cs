@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
 using WorkTimeTracker.Application.Employees;
-using WorkTimeTracker.Application.Employees.Queries.GetEmployeeDetails;
 using WorkTimeTracker.Domain.Interfaces;
 
 namespace WorkTimeTracker.Application.DailyWorkSchedules.Queries.GetDailyWorkSchedule
@@ -24,9 +23,7 @@ namespace WorkTimeTracker.Application.DailyWorkSchedules.Queries.GetDailyWorkSch
         public async Task<IDictionary<EmployeeDto, IEnumerable<DailyWorkScheduleDto>>> Handle(
             GetDailyWorkScheduleQuery request, CancellationToken cancellationToken)
         {
-            var employee = await _mediator.Send(new GetEmployeeDetailsQuery(request.EmployeeId));
-
-            var workSchedules = await _repository.Get(employee.Department?.Id ?? string.Empty, request.Year, request.Month);
+            var workSchedules = await _repository.Get(request.DepartmentId, request.Year, request.Month);
             var dtos = new Dictionary<EmployeeDto, List<DailyWorkScheduleDto>>();
 
             foreach (var workSchedule in workSchedules)

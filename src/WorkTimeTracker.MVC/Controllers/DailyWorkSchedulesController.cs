@@ -1,16 +1,15 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using WorkTimeTracker.Application.DailyWorkSchedules.Queries.GetDailyWorkSchedule;
 using WorkTimeTracker.Application.DailyWorkSchedules;
+using WorkTimeTracker.Application.DailyWorkSchedules.Queries.GetDailyWorkSchedule;
+using WorkTimeTracker.Application.Departments.Queries.GetDepartmentWithChilds;
+using WorkTimeTracker.Application.Employees;
+using WorkTimeTracker.Application.Employees.Queries.GetEmployeeDetails;
 using WorkTimeTracker.Domain.Entities;
 using WorkTimeTracker.Infrastructure;
-using WorkTimeTracker.Application.Employees;
-using WorkTimeTracker.Application.Departments.Queries.GetDepartmentWithChilds;
-using WorkTimeTracker.Application.Employees.Queries.GetEmployeeDetails;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 
 namespace WorkTimeTracker.Controllers
 {
@@ -28,6 +27,9 @@ namespace WorkTimeTracker.Controllers
 
         public async Task<IActionResult> Index(int? year, int? month, string? departmentId)
         {
+            var employeeDepartment = (await _mediator.Send(
+                new GetEmployeeDetailsQuery(User.FindFirstValue(ClaimTypes.NameIdentifier)))).Department;
+
             if (year.HasValue == false || month.HasValue == false || departmentId == null)
             {
                 if (HttpContext.Session.GetInt32("Year") != null
@@ -42,6 +44,7 @@ namespace WorkTimeTracker.Controllers
                 {
                     year = DateTime.Now.Year;
                     month = DateTime.Now.Month;
+                    departmentId = employeeDepartment.Id;
                 }
             }
 
@@ -49,21 +52,17 @@ namespace WorkTimeTracker.Controllers
             HttpContext.Session.SetInt32("Month", month ?? 0);
             HttpContext.Session.SetString("DepartmentId", departmentId ?? string.Empty);
 
-            var schedules = await _mediator.Send(new GetDailyWorkScheduleQuery(User.FindFirstValue(ClaimTypes.NameIdentifier), (int)year, (int)month));
+            var schedules = await _mediator.Send(new GetDailyWorkScheduleQuery(departmentId, (int)year, (int)month));
 
             Dictionary<EmployeeDto, List<DailyWorkScheduleDto>> res = schedules.ToDictionary(k => k.Key, k => k.Value as List<DailyWorkScheduleDto>);
 
             TempData["DateYear"] = year.ToString();
             TempData["DateMonth"] = month.ToString();
 
-            var employeeDepartment = (await _mediator.Send(
-                new GetEmployeeDetailsQuery(User.FindFirstValue(ClaimTypes.NameIdentifier)))).Department;
-
-
             var employeeDepartments = await _mediator.Send(new GetDepartmentWithChildsQuery(employeeDepartment.Id));
 
             ViewBag.Departments = employeeDepartments;
-            TempData["EmployeeDepartment"] = employeeDepartment.Name;
+            TempData["EmployeeDepartmentId"] = departmentId.ToString();
 
             return View(res);
         }

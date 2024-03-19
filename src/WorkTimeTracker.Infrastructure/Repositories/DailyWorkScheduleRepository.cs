@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using WorkTimeTracker.Application.ApplicationUser;
+﻿using Microsoft.EntityFrameworkCore;
 using WorkTimeTracker.Domain.Entities;
 using WorkTimeTracker.Domain.Interfaces;
 
@@ -10,14 +7,12 @@ namespace WorkTimeTracker.Infrastructure.Repositories
     internal class DailyWorkScheduleRepository : IDailyWorkScheduleRepository
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<IdentityUser> _userManager;
         private readonly IDepartmentRepository _departmentRepository;
 
         public DailyWorkScheduleRepository
-            (ApplicationDbContext context, UserManager<IdentityUser> userManager, IDepartmentRepository departmentRepository)
+            (ApplicationDbContext context, IDepartmentRepository departmentRepository)
         {
             _context = context;
-            _userManager = userManager;
             _departmentRepository = departmentRepository;
         }
 
@@ -29,8 +24,6 @@ namespace WorkTimeTracker.Infrastructure.Repositories
                     .ToDictionary(k => k.Key, v => v.Value as IEnumerable<DailyWorkSchedule>);
             }
 
-            //var childDepartments = await _departmentRepository.GetAllChildDepartments(departmentId);
-            //var entireDepartments = childDepartments.Select(d => d.Id).Append(departmentId).ToList();
             var entireDepartments = (await _departmentRepository.GetDepartmentWithChilds(departmentId))
                 .ToList()
                 .Select(d => d.Id);

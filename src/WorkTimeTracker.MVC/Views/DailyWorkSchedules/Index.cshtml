@@ -7,6 +7,7 @@
     ViewData["Title"] = "Index";
     int year = TempData["DateYear"] != null ? int.Parse(TempData["DateYear"]!.ToString()!) : DateTime.Now.Date.Year;
     int month = TempData["DateMonth"] != null ? int.Parse(TempData["DateMonth"]!.ToString()!) : DateTime.Now.Date.Month;
+    string employeeDepartmentId = TempData["EmployeeDepartmentId"]?.ToString() ?? string.Empty;
 }
 
 <body class="no-margin">
@@ -32,22 +33,15 @@
                 </select>
             </div>
             <div class="col-3">
-                <select class="form-control form-select" name="DepartmentId">
+                <select class="form-control form-select" asp-for="@employeeDepartmentId" name="DepartmentId">
                     @foreach (DepartmentDetailsDto department in ViewBag.Departments)
                     {
-                        @if (department.Name == ViewData["EmployeeDepartment"]?.ToString())
-                        {
-                            <option selected value="@department.Id">@department.Name</option>
-                        }
-                        else
-                        {
-                            <option value="@department.Id">@department.Name</option>
-                        }
+                        <option value="@department.Id">@department.Name</option>
                     }
                 </select>
             </div>
             <div class="col-2">
-                <input class="btn" type="submit" value="Submit" />
+                <input class="btn btn-primary" type="submit" value="Submit" />
             </div>
         </div>
     }
