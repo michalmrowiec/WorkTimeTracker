@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using WorkTimeTracker.Application.DailyWorkSchedules;
-using WorkTimeTracker.Application.DailyWorkSchedules.Queries.GetDailyWorkSchedule;
+using WorkTimeTracker.Application.DailyWorkSchedules.Queries.GetByDepartmentDailyWorkSchedules;
 using WorkTimeTracker.Application.Departments.Queries.GetDepartmentWithChilds;
 using WorkTimeTracker.Application.Employees;
 using WorkTimeTracker.Application.Employees.Queries.GetEmployeeDetails;
@@ -52,7 +52,7 @@ namespace WorkTimeTracker.Controllers
             HttpContext.Session.SetInt32("Month", month ?? 0);
             HttpContext.Session.SetString("DepartmentId", departmentId ?? string.Empty);
 
-            var schedules = await _mediator.Send(new GetDailyWorkScheduleQuery(departmentId, (int)year, (int)month));
+            var schedules = await _mediator.Send(new GetByDepartmentDailyWorkSchedulesQuery(departmentId, (int)year, (int)month));
 
             Dictionary<EmployeeDto, List<DailyWorkScheduleDto>> res = schedules.ToDictionary(k => k.Key, k => k.Value as List<DailyWorkScheduleDto>);
 

@@ -16,7 +16,17 @@ namespace WorkTimeTracker.Infrastructure.Repositories
             _departmentRepository = departmentRepository;
         }
 
-        public async Task<IDictionary<Employee, IEnumerable<DailyWorkSchedule>>> Get(string departmentId, int year, int month)
+        public async Task<IDictionary<Employee, IEnumerable<DailyWorkSchedule>>> GetAll(int year, int month)
+        {
+            var employees = await _context.Employees
+                .ToListAsync();
+
+            var schedules = await GetDailyWorkSchedule(year, month, employees);
+
+            return schedules;
+        }
+
+        public async Task<IDictionary<Employee, IEnumerable<DailyWorkSchedule>>> GetByDepartment(string departmentId, int year, int month)
         {
             if (departmentId == null || departmentId == string.Empty)
             {
@@ -32,6 +42,14 @@ namespace WorkTimeTracker.Infrastructure.Repositories
                 .Where(e => entireDepartments.Contains(e.DepartmentId ?? string.Empty))
                 .ToListAsync();
 
+            var schedules = await GetDailyWorkSchedule(year, month, employees);
+
+            return schedules;
+        }
+
+        private async Task<IDictionary<Employee, IEnumerable<DailyWorkSchedule>>> GetDailyWorkSchedule(
+            int year, int month, IList<Employee> employees)
+        {
             var schedules = new Dictionary<Employee, List<DailyWorkSchedule>>();
 
             foreach (var employee in employees)
@@ -44,5 +62,6 @@ namespace WorkTimeTracker.Infrastructure.Repositories
 
             return schedules.ToDictionary(k => k.Key, v => v.Value as IEnumerable<DailyWorkSchedule>);
         }
+
     }
 }

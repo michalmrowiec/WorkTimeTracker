@@ -4,8 +4,15 @@ namespace WorkTimeTracker.Domain.Interfaces
 {
     public interface IDailyWorkScheduleRepository
     {
-        //Task<IEnumerable<DailyWorkSchedule>> GetViaRole(string employeeId);
-        //Task<IEnumerable<DailyWorkSchedule>> GetDailyWorkSchedulesForReportsTo(string departmentId, int year, int month);
-        Task<IDictionary<Employee, IEnumerable<DailyWorkSchedule>>> Get(string departmentId, int year, int month);
+        /// <summary>
+        /// GetByDepartment includes child departments.
+        /// </summary>
+        /// <param name="departmentId"></param>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <returns></returns>
+        Task<IDictionary<Employee, IEnumerable<DailyWorkSchedule>>> GetByDepartment(string departmentId, int year, int month);
+
+        Task<IDictionary<Employee, IEnumerable<DailyWorkSchedule>>> GetAll(int year, int month);
     }
 }
