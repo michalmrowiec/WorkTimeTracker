@@ -1,0 +1,107 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using WorkTimeTracker.Application.Departments.Queries
+@using WorkTimeTracker.Application.Employees.Commands.UpdateEmployeeData
+@using WorkTimeTracker.Domain.Entities
+@model WorkTimeTracker.Application.Employees.Commands.UpdateEmployeeData.UpdateEmployeeDataCommand
+@inject RoleManager<IdentityRole> RoleManager
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>UpdateEmployeeDataCommand</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input asp-for="Id" class="form-control" type="hidden" />
+
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <select asp-for="Roles" class="form-control form-select" id="item-select" multiple size="5">
+                    @foreach (var role in RoleManager.Roles.Select(r => r.Name))
+                    {
+                        @if (Model.Roles.Contains(role ?? string.Empty))
+                        {
+                            <option selected value="@role">@role</option>
+                        }
+                        else
+                        {
+                            <option value="@role">@role</option>
+                        }
+                    }
+                </select>
+                <label asp-for="Roles">Roles</label>
+                <span asp-validation-for="Roles" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <select asp-for="DepartmentId" class="form-control form-select" id="item-select">
+                    @foreach (DepartmentDetailsDto department in ViewBag.Departments)
+                    {
+                        @if (Model.DepartmentId == department.Id)
+                        {
+                            <option selected value="@department.Id">@string.Concat(department.Name)</option>
+                        }
+                        else
+                        {
+                            <option value="@department.Id">@string.Concat(department.Name)</option>
+                        }
+                    }
+                </select>
+                <label asp-for="DepartmentId">Department</label>
+                <span asp-validation-for="DepartmentId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#item-select').on('mousedown', function (e) {
+                e.preventDefault();
+                var select = this;
+                var scroll = select.scrollTop;
+
+                e.target.selected = !e.target.selected;
+
+                setTimeout(function () { select.scrollTop = scroll; }, 0);
+
+                $(select).focus();
+            }).mousemove(function (e) { e.preventDefault() });
+        });
+    </script>
+
+}
+
+<style>
+    #item-select {
+        height: auto;
+    }
+</style>
