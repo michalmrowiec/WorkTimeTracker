@@ -49,8 +49,8 @@ var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityU
 if (!dbContext.Users.Any())
 {
     var startAdmin = new Employee("Admin", "Admin", "", null, 0, DateTime.Now, null, null);
-    await userManager.SetEmailAsync(startAdmin, "admin@admin.pl");
-    await userManager.SetUserNameAsync(startAdmin, "admin@admin.pl");
+    await userManager.SetEmailAsync(startAdmin, "admin@admin.com");
+    await userManager.SetUserNameAsync(startAdmin, "admin@admin.com");
     var res1 = await userManager.CreateAsync(startAdmin, "Admin123!");
     var res2 = await userManager.AddToRoleAsync(startAdmin, Roles.Admin.ToString());
 }

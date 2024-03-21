@@ -2,9 +2,13 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Packaging;
 using System.Security.Claims;
+using WorkTimeTracker.Application.ApplicationUser;
 using WorkTimeTracker.Application.DailyWorkSchedules;
 using WorkTimeTracker.Application.DailyWorkSchedules.Queries.GetByDepartmentDailyWorkSchedules;
+using WorkTimeTracker.Application.Departments.Queries;
+using WorkTimeTracker.Application.Departments.Queries.GetAllDepartment;
 using WorkTimeTracker.Application.Departments.Queries.GetDepartmentWithChilds;
 using WorkTimeTracker.Application.Employees;
 using WorkTimeTracker.Application.Employees.Queries.GetEmployeeDetails;
@@ -25,46 +29,74 @@ namespace WorkTimeTracker.Controllers
             _mediator = mediator;
         }
 
-        public async Task<IActionResult> Index(int? year, int? month, string? departmentId)
+        public async Task<IActionResult> Index(int? year, int? month, string? departmentId = null)
         {
-            var employeeDepartment = (await _mediator.Send(
-                new GetEmployeeDetailsQuery(User.FindFirstValue(ClaimTypes.NameIdentifier)))).Department;
+            Dictionary<EmployeeDto, List<DailyWorkScheduleDto>> schedules = new();
+            List<DepartmentDetailsDto> availableDepartments = new();
 
-            if (year.HasValue == false || month.HasValue == false || departmentId == null)
+            if (!year.HasValue || !month.HasValue)
             {
                 if (HttpContext.Session.GetInt32("Year") != null
-                && HttpContext.Session.GetInt32("Month") != null
-                && HttpContext.Session.GetString("DepartmentId") != string.Empty)
+                && HttpContext.Session.GetInt32("Month") != null)
                 {
                     year = HttpContext.Session.GetInt32("Year");
                     month = HttpContext.Session.GetInt32("Month");
-                    departmentId = HttpContext.Session.GetString("DepartmentId");
                 }
                 else
                 {
                     year = DateTime.Now.Year;
                     month = DateTime.Now.Month;
-                    departmentId = employeeDepartment.Id;
                 }
             }
 
             HttpContext.Session.SetInt32("Year", year ?? 0);
             HttpContext.Session.SetInt32("Month", month ?? 0);
-            HttpContext.Session.SetString("DepartmentId", departmentId ?? string.Empty);
-
-            var schedules = await _mediator.Send(new GetByDepartmentDailyWorkSchedulesQuery(departmentId, (int)year, (int)month));
-
-            Dictionary<EmployeeDto, List<DailyWorkScheduleDto>> res = schedules.ToDictionary(k => k.Key, k => k.Value as List<DailyWorkScheduleDto>);
 
             TempData["DateYear"] = year.ToString();
             TempData["DateMonth"] = month.ToString();
 
-            var employeeDepartments = await _mediator.Send(new GetDepartmentWithChildsQuery(employeeDepartment.Id));
+            if (departmentId == null && HttpContext.Session.GetString("DepartmentId") != string.Empty)
+            {
+                departmentId = HttpContext.Session.GetString("DepartmentId");
+            }
 
-            ViewBag.Departments = employeeDepartments;
-            TempData["EmployeeDepartmentId"] = departmentId.ToString();
+            if (User.IsInRole(Roles.Admin.ToString())
+                || User.IsInRole(Roles.Director.ToString())
+                || User.IsInRole(Roles.HR.ToString()))
+            {
+                availableDepartments.AddRange(
+                    await _mediator.Send(new GetAllDepartmentQuery()));
 
-            return View(res);
+                ViewBag.Departments = availableDepartments;
+
+                departmentId ??= availableDepartments.FirstOrDefault()?.Id ?? "";
+
+                schedules.AddRange(
+                    (await _mediator.Send(new GetByDepartmentDailyWorkSchedulesQuery(departmentId, (int)year!, (int)month!)))
+                    .ToDictionary(k => k.Key, v => (List<DailyWorkScheduleDto>)v.Value));
+            }
+            else
+            {
+                var employeeDepartment = (await _mediator.Send(
+                        new GetEmployeeDetailsQuery(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? ""))).Department.Id ?? "";
+
+                departmentId ??= employeeDepartment;
+
+                schedules.AddRange(
+                    (await _mediator.Send(new GetByDepartmentDailyWorkSchedulesQuery(
+                        departmentId, (int)year!, (int)month!)))
+                    .ToDictionary(k => k.Key, v => (List<DailyWorkScheduleDto>)v.Value));
+
+                availableDepartments.AddRange(
+                    await _mediator.Send(new GetDepartmentWithChildsQuery(employeeDepartment)));
+
+                ViewBag.Departments = availableDepartments;
+            }
+
+            HttpContext.Session.SetString("DepartmentId", departmentId ?? string.Empty);
+            TempData["EmployeeDepartmentId"] = departmentId?.ToString();
+
+            return View(schedules);
         }
 
         public async Task<IActionResult> Details(string id)
@@ -90,6 +122,7 @@ namespace WorkTimeTracker.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Director,HR,Manager,Admin")]
         public async Task<IActionResult> Create(string employeeId, string date)
         {
             var dailyWorkSchedule = new DailyWorkScheduleDto { EmployeeId = employeeId, Date = DateTime.Parse(date) };
@@ -100,6 +133,7 @@ namespace WorkTimeTracker.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Director,HR,Manager,Admin")]
         public async Task<IActionResult> Create(
             [Bind("EmployeeId,Date,PlannedWorkStart,PlannedWorkEnd,WorkTimeNorm")] DailyWorkScheduleDto dailyWorkSchedule)
         {
@@ -121,6 +155,7 @@ namespace WorkTimeTracker.Controllers
             return View(dailyWorkSchedule);
         }
 
+        [Authorize(Roles = "Director,HR,Manager")]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -138,6 +173,7 @@ namespace WorkTimeTracker.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Director,HR,Manager,Admin")]
         public async Task<IActionResult> Edit(string id, [Bind("Id,Id,Date,PlannedWorkStart,PlannedWorkEnd,WorkTimeNorm,BreakTimeNorm,RealWorkStart,RealWorkEnd,WorkHours,NightWorkHours,Overrime,NightOvertime,OvertimeCollected")] DailyWorkSchedule dailyWorkSchedule)
         {
             if (id != dailyWorkSchedule.Id)
@@ -168,6 +204,7 @@ namespace WorkTimeTracker.Controllers
             return View(dailyWorkSchedule);
         }
 
+        [Authorize(Roles = "Director,HR,Manager,Admin")]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -187,6 +224,7 @@ namespace WorkTimeTracker.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Director,HR,Manager,Admin")]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var dailyWorkSchedule = await _context.DailyWorkSchedules.FindAsync(id);
