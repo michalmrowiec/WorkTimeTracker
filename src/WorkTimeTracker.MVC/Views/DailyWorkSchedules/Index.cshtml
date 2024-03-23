@@ -13,34 +13,37 @@
 <body class="no-margin">
     <h1>Index @year @month</h1>
 
-    @using (Html.BeginForm("Index", "DailyWorkSchedules", FormMethod.Get))
+    @using (Html.BeginForm("Index", "DailyWorkSchedules", FormMethod.Get, new { id = "myForm" }))
     {
         <div class="row">
             <div class="col-2">
-                <select class="form-control form-select" asp-for="@year" name="Year">
+                <select class="form-control form-select" asp-for="@year" name="Year" onchange="document.getElementById('myForm').submit();">
                     @for (int i = 2020; i < 2030; i++)
                     {
                         <option value="@i">@i</option>
                     }
                 </select>
             </div>
-            <div class="col-2">
-                <select class="form-control form-select" asp-for="@month" name="Month">
+            <div class="col-3 d-flex">
+                <button class="btn btn-sm btn-outline-secondary" type="button" onclick="changeMonth(-1)">@string.Concat('<')</button>
+                <select class="form-control form-select mx-2" asp-for="@month" name="Month" onchange="document.getElementById('myForm').submit();">
                     @for (int i = 1; i < 13; i++)
                     {
                         <option value="@i">@i</option>
                     }
                 </select>
+                <button class="btn btn-sm btn-outline-secondary" type="button" onclick="changeMonth(1)">@string.Concat('>')</button>
             </div>
             <div class="col-3">
-                <select class="form-control form-select" asp-for="@employeeDepartmentId" name="DepartmentId">
+                <select class="form-control form-select" asp-for="@employeeDepartmentId" name="DepartmentId" onchange="document.getElementById('myForm').submit();">
                     @foreach (DepartmentDetailsDto department in ViewBag.Departments)
                     {
                         <option value="@department.Id">@department.Name</option>
                     }
                 </select>
             </div>
-            <div class="col-2">
+            <div class="col-2 d-flex">
+                <button class="btn btn-outline-secondary me-3" type="button" onclick="goToToday()">Dzisiaj</button>
                 <input class="btn btn-primary" type="submit" value="Submit" />
             </div>
         </div>
@@ -61,7 +64,7 @@
                         @i
                         <br />
                         @a.ToString("ddd")
-                        </th>
+                    </th>
                 }
             </tr>
         </thead>
@@ -102,3 +105,29 @@
         margin-right: 0;
     }
 </style>
+
+<script>
+    function changeMonth(delta) {
+        var monthSelect = document.querySelector('select[name="Month"]');
+        var yearSelect = document.querySelector('select[name="Year"]');
+        var newMonth = parseInt(monthSelect.value) + delta;
+
+        if (newMonth < 1) {
+            newMonth = 12;
+            yearSelect.value = parseInt(yearSelect.value) - 1;
+        } else if (newMonth > 12) {
+            newMonth = 1;
+            yearSelect.value = parseInt(yearSelect.value) + 1;
+        }
+
+        monthSelect.value = newMonth;
+        document.getElementById('myForm').submit();
+    }
+
+    function goToToday() {
+        var date = new Date();
+        document.querySelector('select[name="Year"]').value = date.getFullYear();
+        document.querySelector('select[name="Month"]').value = date.getMonth() + 1;
+        document.getElementById('myForm').submit();
+    }
+</script>
