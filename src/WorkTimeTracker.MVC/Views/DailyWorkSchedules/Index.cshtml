@@ -49,12 +49,19 @@
     <table class="table no-margin" style="margin-right: 0">
         <thead>
             <tr>
-                <th>Employee</th>
+                <th style="padding:1px;font-size:small;">
+                    Employee
+
+                </th>
                 @for (int i = 1; i < DateTime.DaysInMonth(year, month) + 1; i++)
                 {
                     var a = new DateTime(year, month, i);
 
-                    <th>@string.Concat(i, '\n', a.ToString("ddd"))</th>
+                    <th style="padding:auto;font-size:small;">
+                        @i
+                        <br />
+                        @a.ToString("ddd")
+                        </th>
                 }
             </tr>
         </thead>
@@ -62,20 +69,23 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>@string.Concat(item.Key.FirstName, ' ', item.Key.LastName)</td>
+                    <td style="padding:1px;font-size:10px;">
+                        @string.Concat(item.Key.FirstName, ' ', item.Key.LastName)
+                    </td>
+
                     @for (int i = 1; i < DateTime.DaysInMonth(year, month) + 1; i++)
                     {
                         @if (item.Value.Exists(schedule => schedule.Date.Date == new DateTime(year, month, i).Date))
                         {
-                            <td>
+                            <td style="padding: 1px;">
                                 <partial name="_ModalDialogDetails" model="new DailyWorkScheduleDto() { EmployeeId = item.Key.Id, Employee = item.Key, PlannedWorkStart = item.Value.FirstOrDefault(x => x.Date.Day == i)?.PlannedWorkStart ?? default,  PlannedWorkEnd = item.Value.FirstOrDefault(x => x.Date.Day == i)?.PlannedWorkEnd ?? default, Date = new DateTime(year, month, i) }" />
                             </td>
                         }
                         else
                         {
-                            <td>
-                                <button class="btn btn-primary">
-                                    <a asp-action="create" asp-route-employeeid="@item.Key.Id" asp-route-date="@(new DateTime(year, month, i).Date)" style="color: white; text-decoration: none;">Create New</a>
+                            <td style="padding: 1px;">
+                                <button class="btn btn-outline-secondary" style="font-size:small; padding:unset; width:42px; height:42px;">
+                                    <a asp-action="create" asp-route-employeeid="@item.Key.Id" asp-route-date="@(new DateTime(year, month, i).Date)" style="color: grey; text-decoration: none;">Add</a>
                                 </button>
                             </td>
                         }

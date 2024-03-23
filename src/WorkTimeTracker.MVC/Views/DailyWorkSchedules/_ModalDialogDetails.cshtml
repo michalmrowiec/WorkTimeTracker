@@ -7,11 +7,17 @@
 }
 
 <!-- Button trigger modal -->
-<button type="button" class="btn @cl" data-bs-toggle="modal" data-bs-target="#@modalId">
-    @string.Concat(
-            Model.PlannedWorkStart.ToString("t") ?? "-",
-            '\n',
-            Model.PlannedWorkEnd.ToString("t") ?? "-")
+<button type="button" class="btn @cl" data-bs-toggle="modal" data-bs-target="#@modalId" style="font-size:small; padding:unset; width:42px; height:42px;">
+    <p style="margin:unset;">
+@*         @string.Concat(
+                 Model.PlannedWorkStart.ToString("t") ?? "-",
+                 '\n',
+                 Model.PlannedWorkEnd.ToString("t") ?? "-") *@
+                 @Model.PlannedWorkEnd.ToString("t")
+                 <br />
+                 @Model.PlannedWorkEnd.ToString("t")
+    </p>
+
 </button>
 
 <!-- Modal -->
