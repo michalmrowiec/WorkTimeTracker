@@ -135,7 +135,7 @@ namespace WorkTimeTracker.Controllers
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Director,HR,Manager,Admin")]
         public async Task<IActionResult> Create(
-            [Bind("EmployeeId,Date,PlannedWorkStart,PlannedWorkEnd,WorkTimeNorm")] DailyWorkScheduleDto dailyWorkSchedule)
+            [Bind("EmployeeId,Date,PlannedWorkStart,PlannedWorkEnd,WorkTimeNorm,BreakTimeNorm")] DailyWorkScheduleDto dailyWorkSchedule)
         {
             if (ModelState.IsValid)
             {
@@ -146,7 +146,8 @@ namespace WorkTimeTracker.Controllers
                     Date = dailyWorkSchedule.PlannedWorkStart.Date,
                     PlannedWorkStart = dailyWorkSchedule.PlannedWorkStart,
                     PlannedWorkEnd = dailyWorkSchedule.PlannedWorkEnd,
-                    WorkTimeNorm = dailyWorkSchedule.WorkTimeNorm
+                    WorkTimeNorm = dailyWorkSchedule.WorkTimeNorm,
+                    BreakTimeNorm = dailyWorkSchedule.BreakTimeNorm
                 };
                 _context.Add(schedule);
                 await _context.SaveChangesAsync();
@@ -174,7 +175,7 @@ namespace WorkTimeTracker.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Director,HR,Manager,Admin")]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,Id,Date,PlannedWorkStart,PlannedWorkEnd,WorkTimeNorm,BreakTimeNorm,RealWorkStart,RealWorkEnd,WorkHours,NightWorkHours,OverTime,NightOvertime,OvertimeCollected")] DailyWorkSchedule dailyWorkSchedule)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,Id,Date,PlannedWorkStart,PlannedWorkEnd,WorkTimeNorm,BreakTimeNorm,RealWorkStart,RealWorkEnd,WorkHours,NightWorkHours,Overtime,NightOvertime,OvertimeCollected")] DailyWorkSchedule dailyWorkSchedule)
         {
             if (id != dailyWorkSchedule.Id)
             {

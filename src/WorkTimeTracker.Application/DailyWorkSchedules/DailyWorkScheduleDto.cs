@@ -15,11 +15,11 @@ namespace WorkTimeTracker.Application.DailyWorkSchedules
         public DateTime PlannedWorkEnd { get; set; }
         public TimeSpan WorkTimeNorm { get; set; }
         public TimeSpan BreakTimeNorm { get; set; }
-        public DateTime RealWorkStart { get; set; }
-        public DateTime RealWorkEnd { get; set; }
+        public DateTime? RealWorkStart { get; set; }
+        public DateTime? RealWorkEnd { get; set; }
         public TimeSpan WorkHours { get; set; }
         public TimeSpan NightWorkHours { get; set; }
-        public TimeSpan OverTime { get; set; }
+        public TimeSpan Overtime { get; set; }
         public TimeSpan NightOvertime { get; set; }
         public TimeSpan OvertimeCollected { get; set; }
         public EmployeeDto? Employee { get; set; }

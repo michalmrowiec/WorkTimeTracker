@@ -290,7 +290,7 @@ namespace WorkTimeTracker.Infrastructure.Migrations
                     b.Property<TimeSpan>("NightWorkHours")
                         .HasColumnType("time");
 
-                    b.Property<TimeSpan>("OverTime")
+                    b.Property<TimeSpan>("Overtime")
                         .HasColumnType("time");
 
                     b.Property<TimeSpan>("OvertimeCollected")
@@ -302,10 +302,10 @@ namespace WorkTimeTracker.Infrastructure.Migrations
                     b.Property<DateTime>("PlannedWorkStart")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("RealWorkEnd")
+                    b.Property<DateTime?>("RealWorkEnd")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("RealWorkStart")
+                    b.Property<DateTime?>("RealWorkStart")
                         .HasColumnType("datetime2");
 
                     b.Property<TimeSpan>("WorkHours")

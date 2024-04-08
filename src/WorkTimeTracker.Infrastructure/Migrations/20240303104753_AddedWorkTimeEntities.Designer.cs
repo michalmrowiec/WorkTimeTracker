@@ -289,7 +289,7 @@ namespace WorkTimeTracker.Infrastructure.Migrations
                     b.Property<TimeSpan>("NightWorkHours")
                         .HasColumnType("time");
 
-                    b.Property<TimeSpan>("OverTime")
+                    b.Property<TimeSpan>("Overtime")
                         .HasColumnType("time");
 
                     b.Property<TimeSpan>("OvertimeCollected")

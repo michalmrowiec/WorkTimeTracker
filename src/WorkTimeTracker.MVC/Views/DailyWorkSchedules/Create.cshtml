@@ -38,6 +38,11 @@
                 <span asp-validation-for="WorkTimeNorm" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="BreakTimeNorm" class="control-label"></label>
+                <input asp-for="BreakTimeNorm" id="BreakTimeNorm" class="form-control" />
+                <span asp-validation-for="BreakTimeNorm" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
@@ -72,13 +77,24 @@
                 hours = ("0" + hours).slice(-2);
                 minutes = ("0" + minutes).slice(-2);
 
+                var breakMinutes = 0;
+
+                if (hours >= 6) {
+                    breakMinutes = 15;
+                }
+                if (hours >= 9) {
+                    breakMinutes = 30;
+                }
+                if (hours >= 16) {
+                    breakMinutes = 45;
+                }
+
                 // Update WorkTimeNorm
                 $('#WorkTimeNorm').val(hours + ":" + minutes);
+                $('#BreakTimeNorm').val(0 + ":" + breakMinutes);
             }
         }
-
         $('#PlannedWorkEnd').on('change', calculateWorkTimeNorm);
-
 
         function setPlannedWorkEnd() {
             var start = $('#PlannedWorkStart').val();
@@ -100,7 +116,6 @@
             $('#PlannedWorkEnd').val(newEnd);
             calculateWorkTimeNorm();
         }
-
         $('#PlannedWorkStart').on('change', setPlannedWorkEnd);
 
     </script>
