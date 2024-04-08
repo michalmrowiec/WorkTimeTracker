@@ -19,7 +19,7 @@ namespace WorkTimeTracker.Application.DailyWorkSchedules
         public DateTime RealWorkEnd { get; set; }
         public TimeSpan WorkHours { get; set; }
         public TimeSpan NightWorkHours { get; set; }
-        public TimeSpan Overrime { get; set; }
+        public TimeSpan OverTime { get; set; }
         public TimeSpan NightOvertime { get; set; }
         public TimeSpan OvertimeCollected { get; set; }
         public EmployeeDto? Employee { get; set; }

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using WorkTimeTracker.Application.Employees;
-using WorkTimeTracker.Domain.Interfaces;
+using WorkTimeTracker.Domain.Interfaces.Repositories;
 
 namespace WorkTimeTracker.Application.DailyWorkSchedules.Queries.GetByDepartmentDailyWorkSchedules
 {

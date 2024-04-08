@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using WorkTimeTracker.Domain.Interfaces;
+using WorkTimeTracker.Domain.Interfaces.Repositories;
 
 namespace WorkTimeTracker.Application.Employees.Queries.GetEmployeeDetails
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WorkTimeTracker.Domain.Entities;
-using WorkTimeTracker.Domain.Interfaces;
+using WorkTimeTracker.Domain.Interfaces.Repositories;
 
 namespace WorkTimeTracker.Infrastructure.Repositories
 {

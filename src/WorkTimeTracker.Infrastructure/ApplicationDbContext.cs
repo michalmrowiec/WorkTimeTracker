@@ -14,6 +14,7 @@ namespace WorkTimeTracker.Infrastructure
         public DbSet<BreakActionTime> BreakActionTimes { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<DepartmentManager> DepartmentManagers { get; set; }
+        public DbSet<Holiday> Holidays { get; set; }
 
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -26,6 +27,11 @@ namespace WorkTimeTracker.Infrastructure
 
             builder.Entity<DepartmentManager>()
                 .HasKey(dm => new { dm.DepartmentId, dm.ManagerId });
+
+            builder.Entity<DailyWorkSchedule>()
+                .HasOne(d => d.Employee)
+                .WithMany(e => e.DailyWorkSchedules)
+                .HasForeignKey(d => d.EmployeeId);
         }
     }
 }

@@ -247,7 +247,7 @@ namespace WorkTimeTracker.Infrastructure.Migrations
                         .HasMaxLength(21)
                         .HasColumnType("nvarchar(21)");
 
-                    b.Property<string>("Id")
+                    b.Property<string>("EmployeeId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -280,7 +280,7 @@ namespace WorkTimeTracker.Infrastructure.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Id")
+                    b.Property<string>("EmployeeId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
@@ -290,7 +290,7 @@ namespace WorkTimeTracker.Infrastructure.Migrations
                     b.Property<TimeSpan>("NightWorkHours")
                         .HasColumnType("time");
 
-                    b.Property<TimeSpan>("Overrime")
+                    b.Property<TimeSpan>("OverTime")
                         .HasColumnType("time");
 
                     b.Property<TimeSpan>("OvertimeCollected")
@@ -316,7 +316,7 @@ namespace WorkTimeTracker.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Id");
+                    b.HasIndex("EmployeeId");
 
                     b.ToTable("DailyWorkSchedules");
                 });
@@ -353,6 +353,23 @@ namespace WorkTimeTracker.Infrastructure.Migrations
                     b.HasIndex("ManagerId");
 
                     b.ToTable("DepartmentManagers");
+                });
+
+            modelBuilder.Entity("WorkTimeTracker.Domain.Entities.Holiday", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Holidays");
                 });
 
             modelBuilder.Entity("WorkTimeTracker.Domain.Entities.Employee", b =>
@@ -464,7 +481,7 @@ namespace WorkTimeTracker.Infrastructure.Migrations
                 {
                     b.HasOne("WorkTimeTracker.Domain.Entities.Employee", "Employee")
                         .WithMany("DailyWorkSchedules")
-                        .HasForeignKey("Id")
+                        .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
