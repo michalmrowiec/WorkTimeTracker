@@ -16,32 +16,32 @@
             <h2>Create a new account.</h2>
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
+            <div class="form-floating mb-1">
                 <input asp-for="FirstName" class="form-control" autocomplete="" aria-required="true" placeholder="First name" />
                 <label asp-for="FirstName">First name</label>
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
-            <div class="form-floating mb-3">
+            <div class="form-floating mb-1">
                 <input asp-for="LastName" class="form-control" autocomplete="" aria-required="true" placeholder="Last name" />
                 <label asp-for="LastName">Last name</label>
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
-            <div class="form-floating mb-3">
+            <div class="form-floating mb-1">
                 <input asp-for="Email" class="form-control" autocomplete="" aria-required="true" placeholder="Email" />
                 <label asp-for="Email">Email</label>
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <div class="form-floating mb-3">
+            <div class="form-floating mb-1">
                 <input asp-for="Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
                 <label asp-for="Password">Password</label>
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-            <div class="form-floating mb-3">
+            <div class="form-floating mb-1">
                 <input asp-for="ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
                 <label asp-for="ConfirmPassword">Confirm Password</label>
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
-            <div class="form-floating mb-3">
+            <div class="form-floating mb-1">
                 <select asp-for="Roles" class="form-control form-select" id="item-select" multiple size="5">
                     @foreach (var role in RoleManager.Roles.Select(r => r.Name))
                     {
@@ -51,7 +51,7 @@
                 <label asp-for="Roles">Roles</label>
                 <span asp-validation-for="Roles" class="text-danger"></span>
             </div>
-            <div class="form-floating mb-3">
+            <div class="form-floating mb-1">
                 <select asp-for="DepartmentId" class="form-control form-select" id="item-select">
                     @foreach (DepartmentDetailsDto department in ViewBag.Departments)
                     {
@@ -61,9 +61,18 @@
                 <label asp-for="DepartmentId">Department</label>
                 <span asp-validation-for="DepartmentId" class="text-danger"></span>
             </div>
+            <div class="form-floating mb-1">
+                <input asp-for="Workload" class="form-control" aria-required="true" value="0" />
+                <label asp-for="Workload">Workload</label>
+                <span asp-validation-for="Workload" class="text-danger"></span>
+            </div>
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
     </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

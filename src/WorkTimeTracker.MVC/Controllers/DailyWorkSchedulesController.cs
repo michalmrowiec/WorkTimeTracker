@@ -72,7 +72,7 @@ namespace WorkTimeTracker.Controllers
                 departmentId ??= availableDepartments.FirstOrDefault()?.Id ?? "";
 
                 schedules.AddRange(
-                    (await _mediator.Send(new GetByDepartmentDailyWorkSchedulesQuery(departmentId, (int)year!, (int)month!)))
+                    (await _mediator.Send(new GetMonthDailyWorkSchedulesByDepartmentQuery(departmentId, (int)year!, (int)month!)))
                     .ToDictionary(k => k.Key, v => (List<DailyWorkScheduleDto>)v.Value));
             }
             else
@@ -83,7 +83,7 @@ namespace WorkTimeTracker.Controllers
                 departmentId ??= employeeDepartment;
 
                 schedules.AddRange(
-                    (await _mediator.Send(new GetByDepartmentDailyWorkSchedulesQuery(
+                    (await _mediator.Send(new GetMonthDailyWorkSchedulesByDepartmentQuery(
                         departmentId, (int)year!, (int)month!)))
                     .ToDictionary(k => k.Key, v => (List<DailyWorkScheduleDto>)v.Value));
 

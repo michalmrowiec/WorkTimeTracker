@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using WorkTimeTracker.Application.Departments;
-using WorkTimeTracker.Domain.Entities;
 
 namespace WorkTimeTracker.Application.Employees
 {
@@ -15,5 +13,7 @@ namespace WorkTimeTracker.Application.Employees
         public List<string> Roles { get; set; } = new();
         [Display(Name = "Department")]
         public string Department { get; set; }
+        [Display(Name = "Workload")]
+        public double Workload { get; set; }
     }
 }

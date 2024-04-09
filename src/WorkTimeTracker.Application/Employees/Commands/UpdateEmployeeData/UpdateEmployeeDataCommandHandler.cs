@@ -30,6 +30,7 @@ namespace WorkTimeTracker.Application.Employees.Commands.UpdateEmployeeData
             employee.FirstName = request.FirstName;
             employee.LastName = request.LastName;
             employee.DepartmentId = request.DepartmentId;
+            employee.Workload = request.Workload;
 
             var currentRoles = await _userManager.GetRolesAsync(employee);
 
