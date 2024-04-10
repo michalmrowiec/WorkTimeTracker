@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Emit;
 using WorkTimeTracker.Domain.Entities;
 
 namespace WorkTimeTracker.Infrastructure
@@ -32,6 +31,10 @@ namespace WorkTimeTracker.Infrastructure
                 .HasOne(d => d.Employee)
                 .WithMany(e => e.DailyWorkSchedules)
                 .HasForeignKey(d => d.EmployeeId);
+
+            builder.Entity<DailyWorkSchedule>()
+                .Property(d => d.TypeOfDay)
+                .HasConversion<string>();
         }
     }
 }

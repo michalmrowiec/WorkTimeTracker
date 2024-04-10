@@ -308,6 +308,11 @@ namespace WorkTimeTracker.Infrastructure.Migrations
                     b.Property<DateTime?>("RealWorkStart")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("TypeOfDay")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<TimeSpan>("WorkHours")
                         .HasColumnType("time");
 
@@ -399,6 +404,9 @@ namespace WorkTimeTracker.Infrastructure.Migrations
                     b.Property<string>("Pesel")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("VacationDays")
+                        .HasColumnType("int");
 
                     b.Property<double>("Workload")
                         .HasColumnType("float");

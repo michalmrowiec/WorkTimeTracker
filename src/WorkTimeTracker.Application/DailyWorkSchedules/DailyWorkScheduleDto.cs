@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using WorkTimeTracker.Application.Employees;
+using WorkTimeTracker.Domain.Entities;
 
 namespace WorkTimeTracker.Application.DailyWorkSchedules
 {
@@ -9,6 +10,9 @@ namespace WorkTimeTracker.Application.DailyWorkSchedules
         public string EmployeeId { get; set; }
         [Required]
         public DateTime Date { get; set; }
+        [Required]
+        public TypeOfDay TypeOfDay { get; set; }
+
         [Required]
         public DateTime PlannedWorkStart { get; set; }
         [Required]
