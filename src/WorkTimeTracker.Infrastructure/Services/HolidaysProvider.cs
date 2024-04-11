@@ -22,14 +22,19 @@ namespace WorkTimeTracker.Infrastructure.Services
             var content = await response.Content.ReadAsStringAsync();
             var holidays = JsonConvert.DeserializeObject<IEnumerable<Holiday>>(content) ?? [];
 
+            foreach (var holiday in holidays)
+            {
+                holiday.Id = Guid.NewGuid().ToString();
+            }
+
             await _repository.CreateHolidaysAsync(holidays);
         }
 
         public async Task<IEnumerable<Holiday>> GetHolidaysAsync(int year)
         {
             var holidays = await _repository.GetHolidaysAsync(year);
-            
-            if(!holidays.Any())
+
+            if (!holidays.Any())
             {
                 await FetchHolidaysAsync(year);
                 holidays = await _repository.GetHolidaysAsync(year);

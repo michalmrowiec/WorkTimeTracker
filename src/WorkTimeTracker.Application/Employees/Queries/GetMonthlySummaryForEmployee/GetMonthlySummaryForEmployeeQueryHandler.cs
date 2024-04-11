@@ -33,7 +33,7 @@ namespace WorkTimeTracker.Application.Employees.Queries.GetMonthlySummaryForEmpl
             var holidays = await _holidaysProvider.GetHolidaysAsync(request.Year);
             var holidaysDates = holidays.Select(h => h.Date).ToList();
 
-            var monthlyHourNorm = WorkTimeCalculator.CalculateWorkingTimeDimension(request.Year, request.Month, holidaysDates);
+            var monthlyHourNorm = TimeSpan.FromHours(WorkTimeCalculator.CalculateWorkingTimeDimension(request.Year, request.Month, holidaysDates).hours);
             var sumOfPlannedWorkHours = await _dailyWorkScheduleRepository.GetByEmployeeId(request.EmployeeId, request.Year, request.Month);
 
             var monthlyScheduleEmployeeDto = new MonthlyScheduleEmployeeDto()
@@ -47,9 +47,9 @@ namespace WorkTimeTracker.Application.Employees.Queries.GetMonthlySummaryForEmpl
                 Workload = employeeDetails.Workload,
                 Year = request.Year,
                 Month = request.Month,
-                MonthlyHourNorm = new TimeSpan(monthlyHourNorm, 0, 0),
-                SumOfPlannedWorkHours = new TimeSpan(0, sumOfPlannedWorkHours.Sum(d => d.WorkTimeNorm.Minutes), 0),
-                SumOfNightWorkHours = new TimeSpan(0, sumOfPlannedWorkHours.Sum(d => d.NightWorkHours.Minutes), 0),
+                MonthlyHourNorm = TimeSpan.FromTicks((long)(monthlyHourNorm.Ticks * employeeDetails.Workload)),
+                SumOfPlannedWorkHours = TimeSpan.FromMinutes(sumOfPlannedWorkHours.Sum(d => d.WorkTimeNorm.TotalMinutes)),
+                SumOfNightWorkHours = TimeSpan.FromMinutes(sumOfPlannedWorkHours.Sum(d => d.NightWorkHours.TotalMinutes)),
                 SumOfOvertime = new TimeSpan(),
                 SumOfNightOvertime = new TimeSpan(),
                 SumOfOvertimeCollected = new TimeSpan(),

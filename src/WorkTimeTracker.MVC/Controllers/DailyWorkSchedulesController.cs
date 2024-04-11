@@ -12,6 +12,7 @@ using WorkTimeTracker.Application.Departments.Queries.GetAllDepartment;
 using WorkTimeTracker.Application.Departments.Queries.GetDepartmentWithChilds;
 using WorkTimeTracker.Application.Employees;
 using WorkTimeTracker.Application.Employees.Queries.GetEmployeeDetails;
+using WorkTimeTracker.Application.Employees.Queries.GetMonthlySummaryForEmployee;
 using WorkTimeTracker.Domain.Entities;
 using WorkTimeTracker.Infrastructure;
 
@@ -31,7 +32,7 @@ namespace WorkTimeTracker.Controllers
 
         public async Task<IActionResult> Index(int? year, int? month, string? departmentId = null)
         {
-            Dictionary<EmployeeDto, List<DailyWorkScheduleDto>> schedules = new();
+            Dictionary<MonthlyScheduleEmployeeDto, List<DailyWorkScheduleDto>> schedules = new();
             List<DepartmentDetailsDto> availableDepartments = new();
 
             if (!year.HasValue || !month.HasValue)

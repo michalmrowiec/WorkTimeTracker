@@ -32,7 +32,7 @@ namespace WorkTimeTracker.Application.DailyWorkSchedules.Commands.CreateDailyWor
             var norm = WorkTimeCalculator.CalculateWorkingTimeDimension(
                 request.Date.StartOfMonth(),
                 request.Date.EndOfMonth(),
-                holidaysDates);
+                holidaysDates).hours;
 
             var dailyWorkShedule = await _mediator
                 .Send(new GetMonthDailyWorkSchedulesByEmployeeIdQuery(request.EmployeeId, request.Date.Year, request.Date.Month), cancellationToken);

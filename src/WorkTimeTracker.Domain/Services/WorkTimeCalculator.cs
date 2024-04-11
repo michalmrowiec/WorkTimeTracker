@@ -4,19 +4,36 @@ namespace WorkTimeTracker.Domain.Services
 {
     public static class WorkTimeCalculator
     {
-        public static int CalculateWorkingTimeDimension(DateTime periodStart, DateTime periodEnd, List<DateTime> holidays)
+        public static (int hours, int freeDays) CalculateWorkingTimeDimension(DateTime periodStart, DateTime periodEnd, List<DateTime> holidays)
         {
-            int numberOfWeeks = (periodEnd - periodStart).Days / 7;
-            int daysToEndOfPeriod = (periodEnd - periodStart).Days % 7;
-            int daysFromMondayToFriday = daysToEndOfPeriod > 5 ? 5 : daysToEndOfPeriod;
-            int numberOfHolidays = holidays.Count(d => d.DayOfWeek != DayOfWeek.Sunday && d >= periodStart && d <= periodEnd);
+            int tot = 0;
+            int freeDays = 0;
 
-            int workingTimeDimension = 40 * numberOfWeeks + 8 * daysFromMondayToFriday - 8 * numberOfHolidays;
+            for (DateTime dt = periodStart; dt <= periodEnd; dt = dt.AddDays(1))
+            {
+                Console.WriteLine($"{dt.ToShortDateString()} | {dt.DayOfWeek}");
+                if (dt.DayOfWeek == DayOfWeek.Saturday && holidays.Contains(dt))
+                {
+                    tot -= 8;
+                    freeDays += 2;
 
-            return workingTimeDimension;
+                }
+                else if (dt.DayOfWeek == DayOfWeek.Saturday || dt.DayOfWeek == DayOfWeek.Sunday || holidays.Contains(dt))
+                {
+
+                    freeDays++;
+                    continue;
+                }
+                else
+                {
+                    tot += 8;
+                }
+            }
+
+            return new(tot, freeDays);
         }
 
-        public static int CalculateWorkingTimeDimension(int year, int month, List<DateTime> holidays)
+        public static (int hours, int freeDays) CalculateWorkingTimeDimension(int year, int month, List<DateTime> holidays)
         {
             var date = new DateTime(year, month, 1);
 

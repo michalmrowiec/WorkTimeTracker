@@ -1,7 +1,8 @@
 ﻿@using WorkTimeTracker.Application.DailyWorkSchedules
 @using WorkTimeTracker.Application.Departments.Queries
 @using WorkTimeTracker.Application.Employees
-@model IDictionary<EmployeeDto, List<DailyWorkScheduleDto>>
+@using WorkTimeTracker.Application.Employees.Queries.GetMonthlySummaryForEmployee
+@model IDictionary<MonthlyScheduleEmployeeDto, List<DailyWorkScheduleDto>>
 
 @{
     ViewData["Title"] = "Index";
@@ -54,7 +55,6 @@
             <tr>
                 <th style="padding:1px;font-size:small;">
                     Employee
-
                 </th>
                 @for (int i = 1; i < DateTime.DaysInMonth(year, month) + 1; i++)
                 {
@@ -66,7 +66,8 @@
                         @a.ToString("ddd")
                     </th>
                 }
-                <th>Sum</th>
+                <th>WorkHoursNorm</th>
+                <th>PlannedWorkHours</th>
             </tr>
         </thead>
         <tbody>
@@ -94,7 +95,8 @@
                             </td>
                         }
                     }
-                    <td>-</td>
+                    <td>@string.Format("{0}:{1:00}", (int)item.Key.MonthlyHourNorm.TotalHours, item.Key.MonthlyHourNorm.Minutes)</td>
+                    <td>@string.Format("{0}:{1:00}", (int)item.Key.SumOfPlannedWorkHours.TotalHours, item.Key.SumOfPlannedWorkHours.Minutes)</td>
                 </tr>
             }
         </tbody>
