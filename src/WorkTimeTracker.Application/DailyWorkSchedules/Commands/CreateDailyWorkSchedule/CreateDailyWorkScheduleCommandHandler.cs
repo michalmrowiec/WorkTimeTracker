@@ -4,6 +4,7 @@ using WorkTimeTracker.Application.DailyWorkSchedules.Queries.GetByEmployeeIdMont
 using WorkTimeTracker.Domain.Interfaces.Repositories;
 using WorkTimeTracker.Domain.Interfaces.Services;
 using WorkTimeTracker.Domain.Utils;
+using WorkTimeTracker.Domain.Services;
 
 namespace WorkTimeTracker.Application.DailyWorkSchedules.Commands.CreateDailyWorkSchedule
 {
@@ -28,7 +29,7 @@ namespace WorkTimeTracker.Application.DailyWorkSchedules.Commands.CreateDailyWor
             var holidays = await _holidaysProvider.GetHolidaysAsync(request.Date.Year);
             var holidaysDates = holidays.Select(h => h.Date).ToList();
 
-            var norm = CalculateWorkingTimeDimension(
+            var norm = WorkTimeCalculator.CalculateWorkingTimeDimension(
                 request.Date.StartOfMonth(),
                 request.Date.EndOfMonth(),
                 holidaysDates);
@@ -42,17 +43,7 @@ namespace WorkTimeTracker.Application.DailyWorkSchedules.Commands.CreateDailyWor
 
         }
 
-        public int CalculateWorkingTimeDimension(DateTime periodStart, DateTime periodEnd, List<DateTime> holidays)
-        {
-            int numberOfWeeks = (periodEnd - periodStart).Days / 7;
-            int daysToEndOfPeriod = (periodEnd - periodStart).Days % 7;
-            int daysFromMondayToFriday = daysToEndOfPeriod > 5 ? 5 : daysToEndOfPeriod;
-            int numberOfHolidays = holidays.Count(d => d.DayOfWeek != DayOfWeek.Sunday && d >= periodStart && d <= periodEnd);
 
-            int workingTimeDimension = 40 * numberOfWeeks + 8 * daysFromMondayToFriday - 8 * numberOfHolidays;
-
-            return workingTimeDimension;
-        }
 
     }
 }
