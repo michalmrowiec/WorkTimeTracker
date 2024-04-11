@@ -45,7 +45,7 @@ namespace WorkTimeTracker.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FirstName,LastName,Email,Password,ConfirmPassword,Roles,DepartmentId")] RegisterEmployeeCommand employeeModel)
+        public async Task<IActionResult> Create([Bind("FirstName,LastName,Email,Password,ConfirmPassword,Roles,DepartmentId,Workload")] RegisterEmployeeCommand employeeModel)
         {
             if (ModelState.IsValid)
             {
@@ -80,7 +80,8 @@ namespace WorkTimeTracker.Controllers
                 FirstName = employeedetails.FirstName,
                 LastName = employeedetails.LastName,
                 Roles = employeedetails.Roles,
-                DepartmentId = employeedetails.Department?.Id
+                DepartmentId = employeedetails.Department?.Id,
+                Workload = employeedetails.Workload
             };
 
             return View(updateCommand);
@@ -88,7 +89,7 @@ namespace WorkTimeTracker.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Bind("Id,FirstName,LastName,ConfirmPassword,Roles,DepartmentId")] UpdateEmployeeDataCommand updateEmployeeCommand)
+        public async Task<IActionResult> Edit([Bind("Id,FirstName,LastName,ConfirmPassword,Roles,DepartmentId,Workload")] UpdateEmployeeDataCommand updateEmployeeCommand)
         {
             if (ModelState.IsValid)
             {

@@ -2,8 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using WorkTimeTracker.Domain.Interfaces;
+using WorkTimeTracker.Domain.Interfaces.Repositories;
+using WorkTimeTracker.Domain.Interfaces.Services;
 using WorkTimeTracker.Infrastructure.Repositories;
+using WorkTimeTracker.Infrastructure.Services;
 
 namespace WorkTimeTracker.Infrastructure
 {
@@ -30,6 +32,8 @@ namespace WorkTimeTracker.Infrastructure
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
+            services.AddScoped<IHolidaysProvider, HolidaysProvider>();
+            services.AddScoped<IHolidaysRepository, HolidaysRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IDailyWorkScheduleRepository, DailyWorkScheduleRepository>();
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();

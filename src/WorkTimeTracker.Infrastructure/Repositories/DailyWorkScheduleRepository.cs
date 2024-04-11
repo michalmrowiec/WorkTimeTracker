@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WorkTimeTracker.Domain.Entities;
-using WorkTimeTracker.Domain.Interfaces;
+using WorkTimeTracker.Domain.Interfaces.Repositories;
 
 namespace WorkTimeTracker.Infrastructure.Repositories
 {
@@ -19,6 +19,7 @@ namespace WorkTimeTracker.Infrastructure.Repositories
         public async Task<IDictionary<Employee, IEnumerable<DailyWorkSchedule>>> GetAll(int year, int month)
         {
             var employees = await _context.Employees
+                .AsNoTracking()
                 .ToListAsync();
 
             var schedules = await GetDailyWorkSchedule(year, month, employees);
@@ -43,6 +44,18 @@ namespace WorkTimeTracker.Infrastructure.Repositories
                 .ToListAsync();
 
             var schedules = await GetDailyWorkSchedule(year, month, employees);
+
+            return schedules;
+        }
+
+        public async Task<IEnumerable<DailyWorkSchedule>> GetByEmployeeId(string employeeId, int year, int month)
+        {
+            var schedules = await _context.DailyWorkSchedules
+                .Where(schedule => schedule.EmployeeId == employeeId
+                       && schedule.Date.Year == year
+                       && schedule.Date.Month == month)
+                .AsNoTracking()
+                .ToListAsync();
 
             return schedules;
         }

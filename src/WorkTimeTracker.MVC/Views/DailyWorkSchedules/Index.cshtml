@@ -1,7 +1,8 @@
 ﻿@using WorkTimeTracker.Application.DailyWorkSchedules
 @using WorkTimeTracker.Application.Departments.Queries
 @using WorkTimeTracker.Application.Employees
-@model IDictionary<EmployeeDto, List<DailyWorkScheduleDto>>
+@using WorkTimeTracker.Application.Employees.Queries.GetMonthlySummaryForEmployee
+@model IDictionary<MonthlyScheduleEmployeeDto, List<DailyWorkScheduleDto>>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,34 +14,37 @@
 <body class="no-margin">
     <h1>Index @year @month</h1>
 
-    @using (Html.BeginForm("Index", "DailyWorkSchedules", FormMethod.Get))
+    @using (Html.BeginForm("Index", "DailyWorkSchedules", FormMethod.Get, new { id = "myForm" }))
     {
         <div class="row">
             <div class="col-2">
-                <select class="form-control form-select" asp-for="@year" name="Year">
+                <select class="form-control form-select" asp-for="@year" name="Year" onchange="document.getElementById('myForm').submit();">
                     @for (int i = 2020; i < 2030; i++)
                     {
                         <option value="@i">@i</option>
                     }
                 </select>
             </div>
-            <div class="col-2">
-                <select class="form-control form-select" asp-for="@month" name="Month">
+            <div class="col-3 d-flex">
+                <button class="btn btn-sm btn-outline-secondary" type="button" onclick="changeMonth(-1)">@string.Concat('<')</button>
+                <select class="form-control form-select mx-2" asp-for="@month" name="Month" onchange="document.getElementById('myForm').submit();">
                     @for (int i = 1; i < 13; i++)
                     {
                         <option value="@i">@i</option>
                     }
                 </select>
+                <button class="btn btn-sm btn-outline-secondary" type="button" onclick="changeMonth(1)">@string.Concat('>')</button>
             </div>
             <div class="col-3">
-                <select class="form-control form-select" asp-for="@employeeDepartmentId" name="DepartmentId">
+                <select class="form-control form-select" asp-for="@employeeDepartmentId" name="DepartmentId" onchange="document.getElementById('myForm').submit();">
                     @foreach (DepartmentDetailsDto department in ViewBag.Departments)
                     {
                         <option value="@department.Id">@department.Name</option>
                     }
                 </select>
             </div>
-            <div class="col-2">
+            <div class="col-2 d-flex">
+                <button class="btn btn-outline-secondary me-3" type="button" onclick="goToToday()">Dzisiaj</button>
                 <input class="btn btn-primary" type="submit" value="Submit" />
             </div>
         </div>
@@ -49,37 +53,50 @@
     <table class="table no-margin" style="margin-right: 0">
         <thead>
             <tr>
-                <th>Employee</th>
+                <th style="padding:1px;font-size:small;">
+                    Employee
+                </th>
                 @for (int i = 1; i < DateTime.DaysInMonth(year, month) + 1; i++)
                 {
                     var a = new DateTime(year, month, i);
 
-                    <th>@string.Concat(i, '\n', a.ToString("ddd"))</th>
+                    <th style="padding:auto;font-size:small;">
+                        @i
+                        <br />
+                        @a.ToString("ddd")
+                    </th>
                 }
+                <th>WorkHoursNorm</th>
+                <th>PlannedWorkHours</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>@string.Concat(item.Key.FirstName, ' ', item.Key.LastName)</td>
+                    <td style="padding:1px;font-size:10px;">
+                        @string.Concat(item.Key.FirstName, ' ', item.Key.LastName)
+                    </td>
+
                     @for (int i = 1; i < DateTime.DaysInMonth(year, month) + 1; i++)
                     {
                         @if (item.Value.Exists(schedule => schedule.Date.Date == new DateTime(year, month, i).Date))
                         {
-                            <td>
-                                <partial name="_ModalDialogDetails" model="new DailyWorkScheduleDto() { EmployeeId = item.Key.Id, Employee = item.Key, PlannedWorkStart = item.Value.FirstOrDefault(x => x.Date.Day == i)?.PlannedWorkStart ?? default,  PlannedWorkEnd = item.Value.FirstOrDefault(x => x.Date.Day == i)?.PlannedWorkEnd ?? default, Date = new DateTime(year, month, i) }" />
+                            <td style="padding: 1px;">
+                                <partial name="_ModalDialogDetails" model="new DailyWorkScheduleDto() { EmployeeId = item.Key.Id, Employee = item.Key, PlannedWorkStart = item.Value.FirstOrDefault(x => x.Date.Day == i)?.PlannedWorkStart ?? default,  PlannedWorkEnd = item.Value.FirstOrDefault(x => x.Date.Day == i)?.PlannedWorkEnd ?? default, Date = new DateTime(year, month, i), WorkTimeNorm = item.Value.FirstOrDefault(x => x.Date.Day == i)?.WorkTimeNorm ?? new(), BreakTimeNorm = item.Value.FirstOrDefault(x => x.Date.Day == i)?.BreakTimeNorm ?? new() }" />
                             </td>
                         }
                         else
                         {
-                            <td>
-                                <button class="btn btn-primary">
-                                    <a asp-action="create" asp-route-employeeid="@item.Key.Id" asp-route-date="@(new DateTime(year, month, i).Date)" style="color: white; text-decoration: none;">Create New</a>
+                            <td style="padding: 1px;">
+                                <button class="btn btn-outline-secondary" style="font-size:small; padding:unset; width:42px; height:42px;">
+                                    <a asp-action="create" asp-route-employeeid="@item.Key.Id" asp-route-date="@(new DateTime(year, month, i).Date)" style="color: grey; text-decoration: none;">Add</a>
                                 </button>
                             </td>
                         }
                     }
+                    <td>@string.Format("{0}:{1:00}", (int)item.Key.MonthlyHourNorm.TotalHours, item.Key.MonthlyHourNorm.Minutes)</td>
+                    <td>@string.Format("{0}:{1:00}", (int)item.Key.SumOfPlannedWorkHours.TotalHours, item.Key.SumOfPlannedWorkHours.Minutes)</td>
                 </tr>
             }
         </tbody>
@@ -92,3 +109,29 @@
         margin-right: 0;
     }
 </style>
+
+<script>
+    function changeMonth(delta) {
+        var monthSelect = document.querySelector('select[name="Month"]');
+        var yearSelect = document.querySelector('select[name="Year"]');
+        var newMonth = parseInt(monthSelect.value) + delta;
+
+        if (newMonth < 1) {
+            newMonth = 12;
+            yearSelect.value = parseInt(yearSelect.value) - 1;
+        } else if (newMonth > 12) {
+            newMonth = 1;
+            yearSelect.value = parseInt(yearSelect.value) + 1;
+        }
+
+        monthSelect.value = newMonth;
+        document.getElementById('myForm').submit();
+    }
+
+    function goToToday() {
+        var date = new Date();
+        document.querySelector('select[name="Year"]').value = date.getFullYear();
+        document.querySelector('select[name="Month"]').value = date.getMonth() + 1;
+        document.getElementById('myForm').submit();
+    }
+</script>

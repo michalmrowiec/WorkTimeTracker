@@ -19,5 +19,9 @@ namespace WorkTimeTracker.Application.Employees
         [Required]
         [Display(Name = "Department")]
         public string? DepartmentId { get; set; }
+
+        [Display(Name = "Workload")]
+        [Range(0, 1)]
+        public double Workload { get; set; }
     }
 }

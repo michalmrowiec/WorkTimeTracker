@@ -1,6 +1,6 @@
 ﻿using WorkTimeTracker.Domain.Entities;
 
-namespace WorkTimeTracker.Domain.Interfaces
+namespace WorkTimeTracker.Domain.Interfaces.Repositories
 {
     public interface IEmployeeRepository
     {

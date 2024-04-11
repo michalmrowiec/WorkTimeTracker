@@ -7,11 +7,17 @@
 }
 
 <!-- Button trigger modal -->
-<button type="button" class="btn @cl" data-bs-toggle="modal" data-bs-target="#@modalId">
-    @string.Concat(
-            Model.PlannedWorkStart.ToString("t") ?? "-",
-            '\n',
-            Model.PlannedWorkEnd.ToString("t") ?? "-")
+<button type="button" class="btn @cl" data-bs-toggle="modal" data-bs-target="#@modalId" style="font-size:small; padding:unset; width:42px; height:42px;">
+    <p style="margin:unset;">
+@*         @string.Concat(
+                 Model.PlannedWorkStart.ToString("t") ?? "-",
+                 '\n',
+                 Model.PlannedWorkEnd.ToString("t") ?? "-") *@
+                 @Model.PlannedWorkStart.ToString("t")
+                 <br />
+                 @Model.PlannedWorkEnd.ToString("t")
+    </p>
+
 </button>
 
 <!-- Modal -->
@@ -48,7 +54,7 @@
                                         @Model?.PlannedWorkStart.ToString("t")
                                     </td>
                                     <td class="text-center">
-                                        @Model?.RealWorkStart.ToString("t")
+                                        @Model?.RealWorkStart?.ToString("t")
                                     </td>
                                 </tr>
                                 <tr>
@@ -59,7 +65,7 @@
                                         @Model?.PlannedWorkEnd.ToString("t")
                                     </td>
                                     <td class="text-center">
-                                        @Model?.RealWorkEnd.ToString("t")
+                                        @Model?.RealWorkEnd?.ToString("t")
                                     </td>
                                 </tr>
                                 <tr>
@@ -78,7 +84,7 @@
                                         Break time:
                                     </td>
                                     <td class="text-center">
-                                        @Model?.BreakTimeNorm.Minutes
+                                        @Model?.BreakTimeNorm.ToString(@"hh\:mm")
                                     </td>
                                     <td class="text-center">
 @*                                         @string.Concat(Model?.BreakActions?.Select(x => x.TimeOfAction).Sum(x => x.Minutes) ?? 0)

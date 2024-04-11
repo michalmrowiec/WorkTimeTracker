@@ -20,7 +20,7 @@ namespace WorkTimeTracker.Application.Employees.Commands.RegisterEmployee
                 lastName: request.LastName,
                 pesel: "",
                 departmentId: request.DepartmentId,
-                workload: 0,
+                workload: request.Workload,
                 dateOfEmployment: DateTime.Now,
                 contractEndDate: null,
                 badgeId: null);

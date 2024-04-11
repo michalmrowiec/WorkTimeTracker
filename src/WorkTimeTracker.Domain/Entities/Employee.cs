@@ -8,6 +8,7 @@ namespace WorkTimeTracker.Domain.Entities
         public string LastName { get; set; }
         public string Pesel { get; set; }
         public double Workload { get; set; }
+        public int VacationDays { get; set; }
         public DateTime DateOfEmployment { get; set; }
         public DateTime? ContractEndDate { get; set; }
         public string? BadgeId { get; set; }

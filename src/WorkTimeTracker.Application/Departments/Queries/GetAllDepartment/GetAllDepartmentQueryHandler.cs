@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
-using WorkTimeTracker.Domain.Interfaces;
+using WorkTimeTracker.Domain.Interfaces.Repositories;
 
 namespace WorkTimeTracker.Application.Departments.Queries.GetAllDepartment
 {

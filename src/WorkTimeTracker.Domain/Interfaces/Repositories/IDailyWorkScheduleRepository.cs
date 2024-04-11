@@ -1,6 +1,6 @@
 ﻿using WorkTimeTracker.Domain.Entities;
 
-namespace WorkTimeTracker.Domain.Interfaces
+namespace WorkTimeTracker.Domain.Interfaces.Repositories
 {
     public interface IDailyWorkScheduleRepository
     {
@@ -14,5 +14,8 @@ namespace WorkTimeTracker.Domain.Interfaces
         Task<IDictionary<Employee, IEnumerable<DailyWorkSchedule>>> GetByDepartment(string departmentId, int year, int month);
 
         Task<IDictionary<Employee, IEnumerable<DailyWorkSchedule>>> GetAll(int year, int month);
+
+        Task<IEnumerable<DailyWorkSchedule>> GetByEmployeeId(string employeeId, int year, int month);
+
     }
 }

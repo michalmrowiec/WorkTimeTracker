@@ -1,10 +1,13 @@
 ﻿@using WorkTimeTracker.Application.DailyWorkSchedules
+@using WorkTimeTracker.Domain.Entities
+@using WorkTimeTracker.Domain.Utils
 @model DailyWorkScheduleDto
 
 @{
     ViewData["Title"] = "Create";
     Model.PlannedWorkStart = Model.Date;
     Model.PlannedWorkEnd = Model.Date;
+    Model.TypeOfDay = TypeOfDay.WorkDay;
 }
 
 <h1>Create</h1>
@@ -22,20 +25,35 @@
             <input asp-for="EmployeeId" class="form-control" type="hidden" />
             <input asp-for="Date" class="form-control" type="hidden" />
 
-            <div class="form-group">
-                <label asp-for="PlannedWorkStart" class="control-label"></label>
+            <div class="form-floating mb-1">
                 <input asp-for="PlannedWorkStart" id="PlannedWorkStart" class="form-control" />
+                <label asp-for="PlannedWorkStart" class="control-label"></label>
                 <span asp-validation-for="PlannedWorkStart" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="PlannedWorkEnd" class="control-label"></label>
+            <div class="form-floating mb-1">
                 <input asp-for="PlannedWorkEnd" id="PlannedWorkEnd" class="form-control" />
+                <label asp-for="PlannedWorkEnd" class="control-label"></label>
                 <span asp-validation-for="PlannedWorkEnd" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="WorkTimeNorm" class="control-label"></label>
+            <div class="form-floating mb-1">
                 <input asp-for="WorkTimeNorm" id="WorkTimeNorm" class="form-control" />
+                <label asp-for="WorkTimeNorm" class="control-label"></label>
                 <span asp-validation-for="WorkTimeNorm" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-1">
+                <input asp-for="BreakTimeNorm" id="BreakTimeNorm" class="form-control" />
+                <label asp-for="BreakTimeNorm" class="control-label"></label>
+                <span asp-validation-for="BreakTimeNorm" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-1">
+                <select asp-for="TypeOfDay" class="form-control form-select" id="item-select">
+                    @foreach (var typeOfDay in EnumToListDisplay.GetEnumValuesAndDisplayNames<TypeOfDay>())
+                    {
+                        <option value="@typeOfDay.value">@typeOfDay.displayName</option>
+                    }
+                </select>
+                <label asp-for="TypeOfDay">Type Of Day</label>
+                <span asp-validation-for="TypeOfDay" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -72,13 +90,24 @@
                 hours = ("0" + hours).slice(-2);
                 minutes = ("0" + minutes).slice(-2);
 
+                var breakMinutes = 0;
+
+                if (hours >= 6) {
+                    breakMinutes = 15;
+                }
+                if (hours >= 9) {
+                    breakMinutes = 30;
+                }
+                if (hours >= 16) {
+                    breakMinutes = 45;
+                }
+
                 // Update WorkTimeNorm
                 $('#WorkTimeNorm').val(hours + ":" + minutes);
+                $('#BreakTimeNorm').val(0 + ":" + breakMinutes);
             }
         }
-
         $('#PlannedWorkEnd').on('change', calculateWorkTimeNorm);
-
 
         function setPlannedWorkEnd() {
             var start = $('#PlannedWorkStart').val();
@@ -100,7 +129,6 @@
             $('#PlannedWorkEnd').val(newEnd);
             calculateWorkTimeNorm();
         }
-
         $('#PlannedWorkStart').on('change', setPlannedWorkEnd);
 
     </script>
