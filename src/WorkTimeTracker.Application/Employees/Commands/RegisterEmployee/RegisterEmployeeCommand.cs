@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WorkTimeTracker.Application.Employees.Commands.RegisterEmployee
 {
-    public class RegisterEmployeeCommand : CreateEditEmployeeDto, IRequest
+    public class RegisterEmployeeCommand : CreateEditEmployeeDto, IRequest<AppResponse>
     {
         [Required]
         [EmailAddress]

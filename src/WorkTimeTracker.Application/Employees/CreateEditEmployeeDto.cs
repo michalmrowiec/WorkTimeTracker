@@ -16,7 +16,6 @@ namespace WorkTimeTracker.Application.Employees
         [Display(Name = "Roles")]
         public List<string> Roles { get; set; } = default!;
 
-        [Required]
         [Display(Name = "Department")]
         public string? DepartmentId { get; set; }
 

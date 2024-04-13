@@ -49,6 +49,15 @@
             </div>
             <div class="form-floating mb-1">
                 <select asp-for="DepartmentId" class="form-control form-select" id="item-select">
+                    @if (Model.DepartmentId == null || Model.DepartmentId == string.Empty)
+                    {
+                        <option selected value="@null">@string.Concat("No department")</option>
+                    }
+                    else
+                    {
+                        <option value="@null">@string.Concat("No department")</option>
+
+                    }
                     @foreach (DepartmentDetailsDto department in ViewBag.Departments)
                     {
                         @if (Model.DepartmentId == department.Id)

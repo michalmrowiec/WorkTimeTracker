@@ -4,17 +4,27 @@ using WorkTimeTracker.Domain.Entities;
 
 namespace WorkTimeTracker.Application.Employees.Commands.RegisterEmployee
 {
-    internal class RegisterEmployeeCommandHandler : IRequestHandler<RegisterEmployeeCommand>
+    internal class RegisterEmployeeCommandHandler : IRequestHandler<RegisterEmployeeCommand, AppResponse>
     {
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly IMediator _mediator;
 
-        public RegisterEmployeeCommandHandler(UserManager<IdentityUser> userManager)
+        public RegisterEmployeeCommandHandler(UserManager<IdentityUser> userManager, IMediator mediator)
         {
             _userManager = userManager;
+            _mediator = mediator;
         }
 
-        public async Task Handle(RegisterEmployeeCommand request, CancellationToken cancellationToken)
+        public async Task<AppResponse> Handle(RegisterEmployeeCommand request, CancellationToken cancellationToken)
         {
+            var validator = new RegisterEmployeeValidator(_mediator);
+            var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+            if(!validationResult.IsValid)
+            {
+                return new AppResponse(validationResult);
+            }
+
             var employee = new Employee
                 (firstName: request.FirstName,
                 lastName: request.LastName,
@@ -34,6 +44,8 @@ namespace WorkTimeTracker.Application.Employees.Commands.RegisterEmployee
             {
                 var addRolesResult = await _userManager.AddToRolesAsync(employee, request.Roles);
             }
+
+            return new AppResponse();
         }
     }
 }
