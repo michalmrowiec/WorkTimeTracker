@@ -2,6 +2,8 @@
 @using WorkTimeTracker.Application.Departments.Queries
 @using WorkTimeTracker.Application.Employees
 @using WorkTimeTracker.Application.Employees.Queries.GetMonthlySummaryForEmployee
+@using WorkTimeTracker.MVC
+@inject IDisplayService _displayService;
 @model IDictionary<MonthlyScheduleEmployeeDto, List<DailyWorkScheduleDto>>
 
 @{
@@ -12,7 +14,7 @@
 }
 
 <body class="no-margin">
-    <h1>Index @year @month</h1>
+    <h1>Plan on @_displayService.DisplayNameOfMonth(month) @year</h1>
 
     @using (Html.BeginForm("Index", "DailyWorkSchedules", FormMethod.Get, new { id = "myForm" }))
     {
@@ -30,7 +32,7 @@
                 <select class="form-control form-select mx-2" asp-for="@month" name="Month" onchange="document.getElementById('myForm').submit();">
                     @for (int i = 1; i < 13; i++)
                     {
-                        <option value="@i">@i</option>
+                        <option value="@i">@_displayService.DisplayNameOfMonth(i)</option>
                     }
                 </select>
                 <button class="btn btn-sm btn-outline-secondary" type="button" onclick="changeMonth(1)">@string.Concat('>')</button>
@@ -44,7 +46,7 @@
                 </select>
             </div>
             <div class="col-2 d-flex">
-                <button class="btn btn-outline-secondary me-3" type="button" onclick="goToToday()">Dzisiaj</button>
+                <button class="btn btn-outline-secondary me-3" type="button" onclick="goToToday()">Today</button>
                 <input class="btn btn-primary" type="submit" value="Submit" />
             </div>
         </div>
