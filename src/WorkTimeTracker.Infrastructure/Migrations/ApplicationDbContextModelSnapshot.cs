@@ -239,7 +239,6 @@ namespace WorkTimeTracker.Infrastructure.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("DailyWorkScheduleId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Discriminator")
@@ -251,13 +250,13 @@ namespace WorkTimeTracker.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("End")
+                    b.Property<DateTime?>("End")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("Start")
                         .HasColumnType("datetime2");
 
-                    b.Property<TimeSpan>("TimeOfAction")
+                    b.Property<TimeSpan?>("TimeOfAction")
                         .HasColumnType("time");
 
                     b.HasKey("Id");
@@ -537,9 +536,7 @@ namespace WorkTimeTracker.Infrastructure.Migrations
                 {
                     b.HasOne("WorkTimeTracker.Domain.Entities.DailyWorkSchedule", "DailyWorkSchedule")
                         .WithMany("BreakActions")
-                        .HasForeignKey("DailyWorkScheduleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DailyWorkScheduleId");
 
                     b.Navigation("DailyWorkSchedule");
                 });
@@ -548,9 +545,7 @@ namespace WorkTimeTracker.Infrastructure.Migrations
                 {
                     b.HasOne("WorkTimeTracker.Domain.Entities.DailyWorkSchedule", "DailyWorkSchedule")
                         .WithMany("WorkActions")
-                        .HasForeignKey("DailyWorkScheduleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DailyWorkScheduleId");
 
                     b.Navigation("DailyWorkSchedule");
                 });

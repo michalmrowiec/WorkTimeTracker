@@ -1,0 +1,81 @@
+﻿@using WorkTimeTracker.Domain.Entities
+@model WorkTimeTracker.Application.ActionTimes.Commands.CreateActionTimeCommand
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>ActionTime</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @*             <div class="form-group">
+            <label asp-for="Id" class="control-label"></label>
+            <input asp-for="Id" class="form-control" />
+            <span asp-validation-for="Id" class="text-danger"></span>
+            </div> *@
+            @*             <div class="form-group">
+            <label asp-for="EmployeeId" class="control-label"></label>
+            <input asp-for="EmployeeId" class="form-control" />
+            <span asp-validation-for="EmployeeId" class="text-danger"></span>
+            </div> *@
+
+            <div class="form-floating mb-1">
+                <select asp-for="EmployeeId" class="form-control form-select" id="item-select">
+                    @foreach (Employee employee in ViewBag.Employees)
+                    {
+                        <option value="@employee.Id">@string.Concat(employee.FirstName, ' ', employee.LastName, " [ ", employee.Department?.Name, " ]")</option>
+                    }
+                </select>
+                <label asp-for="EmployeeId">EmployeeId</label>
+                <span asp-validation-for="EmployeeId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Start" class="control-label"></label>
+                <input asp-for="Start" class="form-control" />
+                <span asp-validation-for="Start" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="End" class="control-label"></label>
+                <input asp-for="End" class="form-control" />
+                <span asp-validation-for="End" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TimeOfAction" class="control-label"></label>
+                <input asp-for="TimeOfAction" class="form-control" />
+                <span asp-validation-for="TimeOfAction" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-1">
+                <select asp-for="IsWork" class="form-control form-select" id="item-select">
+                    <option value="@true">@string.Concat("Work time")</option>
+                    <option value="@false">@string.Concat("Break time")</option>
+                </select>
+                <label asp-for="IsWork">Type</label>
+                <span asp-validation-for="IsWork" class="text-danger"></span>
+            </div>
+            @*             <div class="form-group">
+            <label asp-for="DailyWorkScheduleId" class="control-label"></label>
+            <input asp-for="DailyWorkScheduleId" class="form-control" />
+            <span asp-validation-for="DailyWorkScheduleId" class="text-danger"></span>
+            </div> *@
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
