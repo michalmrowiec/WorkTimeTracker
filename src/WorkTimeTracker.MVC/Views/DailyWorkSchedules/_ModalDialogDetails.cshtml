@@ -1,21 +1,46 @@
 ﻿@using WorkTimeTracker.Application.DailyWorkSchedules
+@using WorkTimeTracker.Domain.Entities
 @model DailyWorkScheduleDto
 
 @{
     string modalId = string.Concat("dayModal-", Model.Date.ToString("dd-MM-yyyy"), '-', Model.EmployeeId);
-    string cl = Model.PlannedWorkStart == default ? "btn-outline-light" : "btn-outline-success";
+
+    var workDays = new List<TypeOfDay> { TypeOfDay.WorkDay, TypeOfDay.NightShift, TypeOfDay.BusinessTrip, TypeOfDay.RemoteWork };
+    string cl = "btn";
+    if (workDays.Contains(Model.TypeOfDay) && Model.Date >= DateTime.Now.Date)
+    {
+        cl = "btn btn-outline-success";
+    }
+    else if (workDays.Contains(Model.TypeOfDay) && (Model.WorkTimeNorm.TotalMinutes - Model.RealWorkTime.TotalMinutes) <= 2)
+    {
+        cl = "btn btn-success";
+    }
+    //else if (workDays.Contains(Model.TypeOfDay) && Model.WorkTimeNorm.TotalMinutes == 0 && Model.Date <= DateTime.Now.Date)
+    else if (Model.TypeOfDay == TypeOfDay.Unplanned)
+    {
+        cl = "btn btn-warning";
+    }
+    else if (workDays.Contains(Model.TypeOfDay))
+    {
+        cl = "btn btn-dark";
+    }
+    else
+    {
+        cl = "btn btn-light";
+    }
+
 }
 
 <!-- Button trigger modal -->
 <button type="button" class="btn @cl" data-bs-toggle="modal" data-bs-target="#@modalId" style="font-size:small; padding:unset; width:42px; height:42px;">
     <p style="margin:unset;">
-@*         @string.Concat(
-                 Model.PlannedWorkStart.ToString("t") ?? "-",
-                 '\n',
-                 Model.PlannedWorkEnd.ToString("t") ?? "-") *@
-                 @Model.PlannedWorkStart.ToString("t")
-                 <br />
-                 @Model.PlannedWorkEnd.ToString("t")
+        @*         @string.Concat(
+        Model.PlannedWorkStart.ToString("t") ?? "-",
+        '\n',
+        Model.PlannedWorkEnd.ToString("t") ?? "-") *@
+        @Model.PlannedWorkStart.ToString("t")
+        <br />
+        @Model.PlannedWorkEnd.ToString("t")
     </p>
 
 </button>
@@ -76,7 +101,7 @@
                                         @Model?.WorkTimeNorm.ToString(@"hh\:mm")
                                     </td>
                                     <td class="text-center">
-                                        @Model?.WorkHours.ToString(@"hh\:mm")
+                                        @Model?.RealWorkTime.ToString(@"hh\:mm")
                                     </td>
                                 </tr>
                                 <tr>
@@ -87,8 +112,17 @@
                                         @Model?.BreakTimeNorm.ToString(@"hh\:mm")
                                     </td>
                                     <td class="text-center">
-@*                                         @string.Concat(Model?.BreakActions?.Select(x => x.TimeOfAction).Sum(x => x.Minutes) ?? 0)
- *@                                    </td>
+                                        @Model?.RealBreakTime.ToString(@"hh\:mm")
+                                </tr>
+                                <tr>
+                                    <td class="text-end pe-1">
+                                        Overtime:
+                                    </td>
+                                    <td class="text-center">
+                                        -
+                                    </td>
+                                    <td class="text-center">
+                                        @Model?.Overtime.ToString(@"hh\:mm")
                                 </tr>
                             </tbody>
                         </table>

@@ -40,6 +40,7 @@ namespace WorkTimeTracker.Domain.Entities
         DayOff,
         MedicalLeave,
         Holiday,
-        MaternityLeave
+        MaternityLeave,
+        Unplanned
     }
 }

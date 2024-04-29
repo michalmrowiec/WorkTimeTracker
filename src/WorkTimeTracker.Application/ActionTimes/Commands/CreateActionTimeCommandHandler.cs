@@ -18,7 +18,25 @@ namespace WorkTimeTracker.Application.ActionTimes.Commands
         public async Task Handle(CreateActionTimeCommand request, CancellationToken cancellationToken)
         {
             var ws = await _repositoryWs.GetByEmployeeId(request.EmployeeId, request.Start.Year, request.Start.Month);
-            var wds = ws.FirstOrDefault(x => x.Date.Date == request.Start.Date);
+            DailyWorkSchedule wds = ws.FirstOrDefault(x => x.Date.Date == request.Start.Date);
+
+
+            if (wds == null)
+            {
+                wds = new DailyWorkSchedule
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    EmployeeId = request.EmployeeId,
+                    Date = request.Start.Date,
+                    PlannedWorkStart = request.Start,
+                    PlannedWorkEnd = request.End ?? request.Start,
+                    WorkTimeNorm = TimeSpan.Zero,
+                    BreakTimeNorm = TimeSpan.Zero,
+                    TypeOfDay = TypeOfDay.Unplanned
+                };
+
+                await _repositoryWs.CreateDailyWorkSchedule(wds);
+            }
 
             if (request.IsWork)
             {
@@ -29,7 +47,7 @@ namespace WorkTimeTracker.Application.ActionTimes.Commands
                     Start = request.Start,
                     End = request.End,
                     TimeOfAction = request.End - request.Start,
-                    DailyWorkScheduleId = wds?.Id
+                    DailyWorkScheduleId = wds.Id
                 };
 
                 await _repository.CreateActionTimeAsync(workActionTime);
@@ -44,7 +62,7 @@ namespace WorkTimeTracker.Application.ActionTimes.Commands
                     Start = request.Start,
                     End = request.End,
                     TimeOfAction = request.End - request.Start,
-                    DailyWorkScheduleId = wds?.Id
+                    DailyWorkScheduleId = wds.Id
                 };
 
                 await _repository.CreateActionTimeAsync(breakActionTime);

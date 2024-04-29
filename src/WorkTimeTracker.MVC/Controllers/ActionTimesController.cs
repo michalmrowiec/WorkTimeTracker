@@ -47,7 +47,7 @@ namespace WorkTimeTracker.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(CreateActionTimeCommand actionTime)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid || actionTime.Start > actionTime.End)
             {
                 await _mediator.Send(actionTime);
                 return RedirectToAction(nameof(Index));

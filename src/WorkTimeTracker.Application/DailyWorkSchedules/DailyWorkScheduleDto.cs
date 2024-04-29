@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using WorkTimeTracker.Application.ActionTimes;
 using WorkTimeTracker.Application.Employees;
 using WorkTimeTracker.Domain.Entities;
 
@@ -26,6 +27,14 @@ namespace WorkTimeTracker.Application.DailyWorkSchedules
         public TimeSpan Overtime { get; set; }
         public TimeSpan NightOvertime { get; set; }
         public TimeSpan OvertimeCollected { get; set; }
+
+        public TimeSpan RealWorkTime { get; set; }
+        public TimeSpan RealBreakTime { get; set; }
+
+
         public EmployeeDto? Employee { get; set; }
+
+        public List<WorkActionTimeDto>? WorkActions { get; set; }
+        public List<BreakActionTimeDto>? BreakActions { get; set; }
     }
 }

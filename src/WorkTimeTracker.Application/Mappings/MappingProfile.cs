@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using WorkTimeTracker.Application.ActionTimes;
 using WorkTimeTracker.Application.DailyWorkSchedules;
 using WorkTimeTracker.Application.Departments;
 using WorkTimeTracker.Application.Departments.Queries;
@@ -29,7 +30,14 @@ namespace WorkTimeTracker.Application.Mappings
                 .ForMember(dto => dto.ParentDepartmentName,
                 opt => opt.MapFrom(src => src.ParentDepartment != null ? src.ParentDepartment.Name : string.Empty));
 
+            CreateMap<ActionTime, ActionTimeDto>()
+                .ReverseMap();
 
+            CreateMap<WorkActionTime, WorkActionTimeDto>()
+                .ReverseMap();
+
+            CreateMap<BreakActionTime, BreakActionTimeDto>()
+                .ReverseMap();
         }
     }
 }

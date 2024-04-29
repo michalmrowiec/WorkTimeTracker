@@ -16,6 +16,14 @@ namespace WorkTimeTracker.Infrastructure.Repositories
             _departmentRepository = departmentRepository;
         }
 
+        public async Task CreateDailyWorkSchedule(DailyWorkSchedule dailyWorkSchedule)
+        {
+            await _context.DailyWorkSchedules
+                .AddAsync(dailyWorkSchedule);
+
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<IDictionary<Employee, IEnumerable<DailyWorkSchedule>>> GetAll(int year, int month)
         {
             var employees = await _context.Employees
@@ -41,6 +49,7 @@ namespace WorkTimeTracker.Infrastructure.Repositories
 
             var employees = await _context.Employees
                 .Where(e => entireDepartments.Contains(e.DepartmentId ?? string.Empty))
+                .AsNoTracking()
                 .ToListAsync();
 
             var schedules = await GetDailyWorkSchedule(year, month, employees);
@@ -68,8 +77,11 @@ namespace WorkTimeTracker.Infrastructure.Repositories
             foreach (var employee in employees)
             {
                 schedules[employee] = await _context.DailyWorkSchedules
+                    .Include(schedule => schedule.WorkActions)
+                    .Include(schedule => schedule.BreakActions)
                     .Where(schedule => schedule.EmployeeId == employee.Id && schedule.Date.Month == month && schedule.Date.Year == year)
                     .OrderBy(schedule => schedule.Date)
+                    .AsNoTracking()
                     .ToListAsync();
             }
 

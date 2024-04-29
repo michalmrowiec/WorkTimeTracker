@@ -29,9 +29,33 @@ namespace WorkTimeTracker.Application.DailyWorkSchedules.Queries.GetByDepartment
 
             foreach (var workSchedule in workSchedules)
             {
-                dtos.Add(/*(MonthlyScheduleEmployeeDto)_mapper.Map<EmployeeDto>(workSchedule.Key),*/
+                dtos.Add(
                     await _mediator.Send(new GetMonthlySummaryForEmployeeQuery(workSchedule.Key.Id, request.Year, request.Month), cancellationToken),
                     _mapper.Map<List<DailyWorkScheduleDto>>(workSchedule.Value));
+            }
+
+            foreach (var workSchedule in dtos.Values)
+            {
+                foreach (var item in workSchedule)
+                {
+                    item.RealWorkTime = TimeSpan.FromMinutes(
+                        item.WorkActions?.Where(x => x.TimeOfAction.HasValue).Sum(x => x.TimeOfAction!.Value.TotalMinutes) ?? 0);
+
+                    item.RealBreakTime = TimeSpan.FromMinutes(
+                        item.BreakActions?.Where(x => x.TimeOfAction.HasValue).Sum(x => x.TimeOfAction!.Value.TotalMinutes) ?? 0);
+
+                    if(item.WorkActions?.Any() ?? false)
+                    {
+                        item.RealWorkStart = item.WorkActions?.Min(x => x.Start);
+                    }
+
+                    if (item.WorkActions?.Any(x => x.End.HasValue) ?? false)
+                    {
+                        item.RealWorkEnd = item.WorkActions?.Min(x => x.End);
+                    }
+
+                    item.Overtime = item.WorkTimeNorm - item.RealWorkTime; // to change
+                }
             }
 
             return dtos.ToDictionary(k => k.Key, v => v.Value as IEnumerable<DailyWorkScheduleDto>);
