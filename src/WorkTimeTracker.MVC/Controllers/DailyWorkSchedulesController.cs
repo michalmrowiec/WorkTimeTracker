@@ -139,14 +139,14 @@ namespace WorkTimeTracker.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Director,HR,Manager,Admin")]
-        public async Task<IActionResult> Create(
-            [Bind("EmployeeId,Date,PlannedWorkStart,PlannedWorkEnd,WorkTimeNorm,BreakTimeNorm,TypeOfDay")] DailyWorkScheduleDto dailyWorkSchedule)
+        public async Task<IActionResult> Create(DailyWorkScheduleDto dailyWorkSchedule)
         {
+            dailyWorkSchedule.Id = Guid.NewGuid().ToString();
             if (ModelState.IsValid)
             {
                 var schedule = new DailyWorkSchedule
                 {
-                    Id = Guid.NewGuid().ToString(),
+                    Id = dailyWorkSchedule.Id,
                     EmployeeId = dailyWorkSchedule.EmployeeId,
                     Date = dailyWorkSchedule.PlannedWorkStart.Date,
                     PlannedWorkStart = dailyWorkSchedule.PlannedWorkStart,

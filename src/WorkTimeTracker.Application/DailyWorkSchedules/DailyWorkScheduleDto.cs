@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices;
 using WorkTimeTracker.Application.ActionTimes;
 using WorkTimeTracker.Application.Employees;
 using WorkTimeTracker.Domain.Entities;
@@ -7,7 +8,7 @@ namespace WorkTimeTracker.Application.DailyWorkSchedules
 {
     public class DailyWorkScheduleDto
     {
-        public string Id { get; set; }
+        public string? Id { get; set; }
         [Required]
         public string EmployeeId { get; set; }
         [Required]

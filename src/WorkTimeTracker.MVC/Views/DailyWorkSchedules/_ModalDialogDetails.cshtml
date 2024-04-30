@@ -15,7 +15,6 @@
     {
         cl = "btn btn-success";
     }
-    //else if (workDays.Contains(Model.TypeOfDay) && Model.WorkTimeNorm.TotalMinutes == 0 && Model.Date <= DateTime.Now.Date)
     else if (Model.TypeOfDay == TypeOfDay.Unplanned)
     {
         cl = "btn btn-warning";
@@ -34,10 +33,6 @@
 <!-- Button trigger modal -->
 <button type="button" class="btn @cl" data-bs-toggle="modal" data-bs-target="#@modalId" style="font-size:small; padding:unset; width:42px; height:63px;">
     <p style="margin:unset;">
-        @*         @string.Concat(
-        Model.PlannedWorkStart.ToString("t") ?? "-",
-        '\n',
-        Model.PlannedWorkEnd.ToString("t") ?? "-") *@
         @Model.PlannedWorkStart.ToString("t")
         <br />
         @Model.PlannedWorkEnd.ToString("t")
