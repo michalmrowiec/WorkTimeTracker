@@ -16,6 +16,7 @@ namespace WorkTimeTracker.Domain.Interfaces.Repositories
         Task<IDictionary<Employee, IEnumerable<DailyWorkSchedule>>> GetAll(int year, int month);
 
         Task<IEnumerable<DailyWorkSchedule>> GetByEmployeeId(string employeeId, int year, int month);
+        Task<DailyWorkSchedule?> GetById(string id);
 
         Task CreateDailyWorkSchedule(DailyWorkSchedule dailyWorkSchedule);
         Task UpdateDailyWorkSchedule(DailyWorkSchedule dailyWorkSchedule);

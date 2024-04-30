@@ -271,9 +271,6 @@ namespace WorkTimeTracker.Infrastructure.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<TimeSpan>("BreakTimeNorm")
-                        .HasColumnType("time");
-
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
@@ -281,16 +278,7 @@ namespace WorkTimeTracker.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<TimeSpan>("NightOvertime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan>("NightWorkHours")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan>("Overtime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan>("OvertimeCollected")
+                    b.Property<TimeSpan>("PlannedBreakTime")
                         .HasColumnType("time");
 
                     b.Property<DateTime>("PlannedWorkEnd")
@@ -299,22 +287,28 @@ namespace WorkTimeTracker.Infrastructure.Migrations
                     b.Property<DateTime>("PlannedWorkStart")
                         .HasColumnType("datetime2");
 
+                    b.Property<TimeSpan>("PlannedWorkTime")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan>("RealBreakTime")
+                        .HasColumnType("time");
+
+                    b.Property<double>("RealOvertimeMinutes")
+                        .HasColumnType("float");
+
                     b.Property<DateTime?>("RealWorkEnd")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("RealWorkStart")
                         .HasColumnType("datetime2");
 
+                    b.Property<TimeSpan>("RealWorkTime")
+                        .HasColumnType("time");
+
                     b.Property<string>("TypeOfDay")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<TimeSpan>("WorkHours")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan>("WorkTimeNorm")
-                        .HasColumnType("time");
 
                     b.HasKey("Id");
 

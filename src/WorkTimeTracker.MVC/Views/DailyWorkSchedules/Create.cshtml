@@ -1,7 +1,8 @@
 ﻿@using WorkTimeTracker.Application.DailyWorkSchedules
+@using WorkTimeTracker.Application.DailyWorkSchedules.Commands.CreateDailyWorkSchedule
 @using WorkTimeTracker.Domain.Entities
 @using WorkTimeTracker.Domain.Utils
-@model DailyWorkScheduleDto
+@model CreateDailyWorkScheduleCommand
 
 @{
     ViewData["Title"] = "Create";
@@ -36,14 +37,12 @@
                 <span asp-validation-for="PlannedWorkEnd" class="text-danger"></span>
             </div>
             <div class="form-floating mb-1">
-                <input asp-for="WorkTimeNorm" id="WorkTimeNorm" class="form-control" />
-                <label asp-for="WorkTimeNorm" class="control-label"></label>
-                <span asp-validation-for="WorkTimeNorm" class="text-danger"></span>
+                <input id="WorkTimeNorm" class="form-control" />
+                <label class="control-label"></label>
             </div>
             <div class="form-floating mb-1">
-                <input asp-for="BreakTimeNorm" id="BreakTimeNorm" class="form-control" />
-                <label asp-for="BreakTimeNorm" class="control-label"></label>
-                <span asp-validation-for="BreakTimeNorm" class="text-danger"></span>
+                <input id="BreakTimeNorm" class="form-control" />
+                <label class="control-label"></label>
             </div>
             <div class="form-floating mb-1">
                 <select asp-for="TypeOfDay" class="form-control form-select" id="item-select">

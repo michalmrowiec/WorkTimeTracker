@@ -10,7 +10,7 @@ namespace WorkTimeTracker.Application.ActionTimes
         public DateTime? End { get; set; }
         public TimeSpan? TimeOfAction { get; set; }
         public string? DailyWorkScheduleId { get; set; }
-        public DailyWorkSchedule? DailyWorkSchedule { get; set; }
+        //public DailyWorkSchedule? DailyWorkSchedule { get; set; }
         public bool IsWork {  get; set; }
     }
 }

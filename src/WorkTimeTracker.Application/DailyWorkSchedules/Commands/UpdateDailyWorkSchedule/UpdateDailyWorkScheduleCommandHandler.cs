@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
-using WorkTimeTracker.Domain.Entities;
+﻿using MediatR;
 using WorkTimeTracker.Domain.Interfaces.Repositories;
 
 namespace WorkTimeTracker.Application.DailyWorkSchedules.Commands.UpdateDailyWorkSchedule
@@ -8,20 +6,44 @@ namespace WorkTimeTracker.Application.DailyWorkSchedules.Commands.UpdateDailyWor
     internal class UpdateDailyWorkScheduleCommandHandler : IRequestHandler<UpdateDailyWorkScheduleCommand>
     {
         private readonly IDailyWorkScheduleRepository _repository;
-        private readonly IMapper _mapper;
-        private readonly IMediator _mediator;
 
-        public UpdateDailyWorkScheduleCommandHandler
-            (IDailyWorkScheduleRepository repository, IMapper mapper, IMediator mediator)
+        public UpdateDailyWorkScheduleCommandHandler(IDailyWorkScheduleRepository repository)
         {
             _repository = repository;
-            _mapper = mapper;
-            _mediator = mediator;
         }
+
         public async Task Handle(UpdateDailyWorkScheduleCommand request, CancellationToken cancellationToken)
         {
-            var mapped = _mapper.Map<DailyWorkSchedule>(request);
-            await _repository.UpdateDailyWorkSchedule(mapped);
+            if (request.PlannedWorkStart >= request.PlannedWorkEnd)
+            {
+                return;
+            }
+
+            var dws = await _repository.GetById(request.Id);
+            if (dws == null)
+            {
+                return;
+            }
+
+            dws.TypeOfDay = request.TypeOfDay;
+            dws.PlannedWorkStart = request.PlannedWorkStart;
+            dws.PlannedWorkEnd = request.PlannedWorkEnd;
+            dws.PlannedWorkTime = request.PlannedWorkEnd - request.PlannedWorkStart;
+
+            if (dws.PlannedWorkTime > TimeSpan.FromHours(16))
+            {
+                dws.PlannedBreakTime = TimeSpan.FromMinutes(45);
+            }
+            else if (dws.PlannedWorkTime > TimeSpan.FromHours(9))
+            {
+                dws.PlannedBreakTime = TimeSpan.FromMinutes(30);
+            }
+            else if (dws.PlannedWorkTime > TimeSpan.FromHours(6))
+            {
+                dws.PlannedBreakTime = TimeSpan.FromMinutes(15);
+            }
+
+            await _repository.UpdateDailyWorkSchedule(dws);
         }
     }
 }

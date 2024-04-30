@@ -69,6 +69,14 @@ namespace WorkTimeTracker.Infrastructure.Repositories
             return schedules;
         }
 
+        public Task<DailyWorkSchedule?> GetById(string id)
+        {
+            return _context.DailyWorkSchedules
+                .Include(x => x.Employee)
+                .Include(x => x.ActionTimes)
+                .FirstOrDefaultAsync(schedule => schedule.Id == id);
+        }
+
         public async Task UpdateDailyWorkSchedule(DailyWorkSchedule dailyWorkSchedule)
         {
             _context.DailyWorkSchedules.Entry(dailyWorkSchedule).State = EntityState.Modified;

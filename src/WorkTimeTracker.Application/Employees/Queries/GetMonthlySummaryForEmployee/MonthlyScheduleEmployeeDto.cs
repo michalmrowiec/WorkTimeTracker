@@ -7,9 +7,6 @@
         public TimeSpan MonthlyHourNorm { get; set; }
         public TimeSpan SumOfPlannedWorkHours { get; set; }
         public TimeSpan SumOfRealWorkHours { get; set; }
-        public TimeSpan SumOfNightWorkHours { get; set; }
-        public TimeSpan SumOfOvertime { get; set; }
-        public TimeSpan SumOfNightOvertime { get; set; }
-        public TimeSpan SumOfOvertimeCollected { get; set; }
+        public double SumOfRealOvertimeMinutes { get; set; }
     }
 }

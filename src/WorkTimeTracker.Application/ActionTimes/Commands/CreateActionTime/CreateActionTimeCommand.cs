@@ -9,5 +9,6 @@ namespace WorkTimeTracker.Application.ActionTimes.Commands.CreateActionTime
         public DateTime? End { get; set; }
         public TimeSpan? TimeOfAction { get; set; }
         public bool IsWork { get; set; }
+        public string? BackLink { get; set; }
     }
 }

@@ -48,12 +48,9 @@ namespace WorkTimeTracker.Application.Employees.Queries.GetMonthlySummaryForEmpl
                 Year = request.Year,
                 Month = request.Month,
                 MonthlyHourNorm = TimeSpan.FromTicks((long)(monthlyHourNorm.Ticks * employeeDetails.Workload)),
-                SumOfPlannedWorkHours = TimeSpan.FromMinutes(sumOfPlannedWorkHours.Sum(d => d.WorkTimeNorm.TotalMinutes)),
-                SumOfNightWorkHours = TimeSpan.FromMinutes(sumOfPlannedWorkHours.Sum(d => d.NightWorkHours.TotalMinutes)),
-                SumOfOvertime = new TimeSpan(),
-                SumOfNightOvertime = new TimeSpan(),
-                SumOfOvertimeCollected = new TimeSpan(),
-                SumOfRealWorkHours = new TimeSpan()
+                SumOfPlannedWorkHours = TimeSpan.FromMinutes(sumOfPlannedWorkHours.Sum(d => d.PlannedWorkTime.TotalMinutes)),
+                SumOfRealOvertimeMinutes = sumOfPlannedWorkHours.Sum(d => d.RealOvertimeMinutes),
+                SumOfRealWorkHours = TimeSpan.FromMinutes(sumOfPlannedWorkHours.Sum(d => d.RealWorkTime.TotalMinutes))
             };
 
             return monthlyScheduleEmployeeDto;

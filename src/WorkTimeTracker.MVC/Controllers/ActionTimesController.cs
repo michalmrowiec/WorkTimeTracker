@@ -43,6 +43,7 @@ namespace WorkTimeTracker.MVC.Controllers
                 Include(e => e.Department)
                 .AsNoTracking()
                 .ToListAsync();
+
             return View();
         }
 
@@ -55,6 +56,23 @@ namespace WorkTimeTracker.MVC.Controllers
             {
                 await _mediator.Send(actionTime);
                 return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return View(actionTime);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreatePartial(CreateActionTimeCommand actionTime)
+        {
+            if (ModelState.IsValid || actionTime.Start > actionTime.End)
+            {
+                await _mediator.Send(actionTime);
+                return actionTime.BackLink == null ?
+                    RedirectToAction(nameof(Index))
+                    : Redirect(actionTime.BackLink);
             }
             else
             {

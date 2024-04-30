@@ -11,7 +11,7 @@
     {
         cl = "btn btn-outline-success";
     }
-    else if (workDays.Contains(Model.TypeOfDay) && (Model.WorkTimeNorm.TotalMinutes - Model.RealWorkTime.TotalMinutes) <= 2)
+    else if (workDays.Contains(Model.TypeOfDay) && (Model.PlannedWorkTime.TotalMinutes - Model.RealWorkTime.TotalMinutes) <= 2)
     {
         cl = "btn btn-success";
     }
@@ -96,7 +96,7 @@
                                         Work time:
                                     </td>
                                     <td class="text-center">
-                                        @Model?.WorkTimeNorm.ToString(@"hh\:mm")
+                                        @Model?.PlannedWorkTime.ToString(@"hh\:mm")
                                     </td>
                                     <td class="text-center">
                                         @Model?.RealWorkTime.ToString(@"hh\:mm")
@@ -107,7 +107,7 @@
                                         Break time:
                                     </td>
                                     <td class="text-center">
-                                        @Model?.BreakTimeNorm.ToString(@"hh\:mm")
+                                        @Model?.PlannedBreakTime.ToString(@"hh\:mm")
                                     </td>
                                     <td class="text-center">
                                         @Model?.RealBreakTime.ToString(@"hh\:mm")
@@ -120,7 +120,7 @@
                                         -
                                     </td>
                                     <td class="text-center">
-                                        @Model?.Overtime.ToString(@"hh\:mm")
+                                        @Model?.RealOvertime.ToString(@"hh\:mm")
                                 </tr>
                             </tbody>
                         </table>

@@ -1,4 +1,5 @@
-﻿@using WorkTimeTracker.Domain.Entities
+﻿@using WorkTimeTracker.Application.ActionTimes.Commands.CreateActionTime
+@using WorkTimeTracker.Domain.Entities
 @using WorkTimeTracker.Domain.Utils
 @model WorkTimeTracker.Application.DailyWorkSchedules.DailyWorkScheduleDto
 
@@ -21,7 +22,10 @@
 
             <input asp-for="Date" class="form-control" type="hidden" />
 
-            @string.Concat(Model.Employee?.FirstName, ' ', Model.Employee?.LastName)
+            <div class="form-floating mb-1">
+                <input class="form-control" disabled value="@string.Concat(Model.Employee?.FirstName, ' ', Model.Employee?.LastName)" />
+                <label class="control-label">Employee</label>
+            </div>
 
             <div class="form-floating mb-1">
                 <select asp-for="TypeOfDay" class="form-control form-select" id="item-select">
@@ -41,75 +45,29 @@
                 <span asp-validation-for="TypeOfDay" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="PlannedWorkStart" class="control-label"></label>
+            <div class="form-floating mb-1">
                 <input asp-for="PlannedWorkStart" class="form-control" />
+                <label asp-for="PlannedWorkStart" class="control-label"></label>
                 <span asp-validation-for="PlannedWorkStart" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="PlannedWorkEnd" class="control-label"></label>
+            <div class="form-floating mb-1">
                 <input asp-for="PlannedWorkEnd" class="form-control" />
+                <label asp-for="PlannedWorkEnd" class="control-label"></label>
                 <span asp-validation-for="PlannedWorkEnd" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="WorkTimeNorm" class="control-label"></label>
-                <input asp-for="WorkTimeNorm" class="form-control" />
-                <span asp-validation-for="WorkTimeNorm" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BreakTimeNorm" class="control-label"></label>
-                <input asp-for="BreakTimeNorm" class="form-control" />
-                <span asp-validation-for="BreakTimeNorm" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RealWorkStart" class="control-label"></label>
-                <input asp-for="RealWorkStart" class="form-control" />
-                <span asp-validation-for="RealWorkStart" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RealWorkEnd" class="control-label"></label>
-                <input asp-for="RealWorkEnd" class="form-control" />
-                <span asp-validation-for="RealWorkEnd" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="WorkHours" class="control-label"></label>
-                <input asp-for="WorkHours" class="form-control" />
-                <span asp-validation-for="WorkHours" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NightWorkHours" class="control-label"></label>
-                <input asp-for="NightWorkHours" class="form-control" />
-                <span asp-validation-for="NightWorkHours" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Overtime" class="control-label"></label>
-                <input asp-for="Overtime" class="form-control" />
-                <span asp-validation-for="Overtime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NightOvertime" class="control-label"></label>
-                <input asp-for="NightOvertime" class="form-control" />
-                <span asp-validation-for="NightOvertime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="OvertimeCollected" class="control-label"></label>
-                <input asp-for="OvertimeCollected" class="form-control" />
-                <span asp-validation-for="OvertimeCollected" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RealWorkTime" class="control-label"></label>
-                <input asp-for="RealWorkTime" class="form-control" />
-                <span asp-validation-for="RealWorkTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RealBreakTime" class="control-label"></label>
-                <input asp-for="RealBreakTime" class="form-control" />
-                <span asp-validation-for="RealBreakTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+            <div class="form-group mt-2">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
+    </div>
+
+    <div class="col-md-8">
+
+        <partial name="../ActionTimes/_CreateForm"
+                 model="new CreateActionTimeCommand() { EmployeeId = Model.EmployeeId, Start = Model.PlannedWorkStart, End = Model.PlannedWorkEnd, IsWork = true }" />
+
+        <partial name="../ActionTimes/_ListOfActionTimes"
+                 model="Model.ActionTimes" />
     </div>
 </div>
 

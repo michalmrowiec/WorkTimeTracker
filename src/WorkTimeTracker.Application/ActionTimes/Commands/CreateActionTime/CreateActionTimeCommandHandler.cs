@@ -30,8 +30,6 @@ namespace WorkTimeTracker.Application.ActionTimes.Commands.CreateActionTime
                     Date = request.Start.Date,
                     PlannedWorkStart = request.Start,
                     PlannedWorkEnd = request.End ?? request.Start,
-                    WorkTimeNorm = TimeSpan.Zero,
-                    BreakTimeNorm = TimeSpan.Zero,
                     TypeOfDay = TypeOfDay.Unplanned
                 };
 

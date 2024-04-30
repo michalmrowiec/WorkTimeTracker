@@ -12,15 +12,13 @@ namespace WorkTimeTracker.Domain.Entities
         public TypeOfDay TypeOfDay { get; set; }
         public DateTime PlannedWorkStart { get; set; }
         public DateTime PlannedWorkEnd { get; set; }
-        public TimeSpan WorkTimeNorm { get; set; }
-        public TimeSpan BreakTimeNorm { get; set; }
+        public TimeSpan PlannedWorkTime { get; set; }
+        public TimeSpan PlannedBreakTime { get; set; }
         public DateTime? RealWorkStart { get; set; }
         public DateTime? RealWorkEnd { get; set; }
-        public TimeSpan WorkHours { get; set; }
-        public TimeSpan NightWorkHours { get; set; }
-        public TimeSpan Overtime { get; set; }
-        public TimeSpan NightOvertime { get; set; }
-        public TimeSpan OvertimeCollected { get; set; }
+        public TimeSpan RealWorkTime { get; set; }
+        public TimeSpan RealBreakTime { get; set; }
+        public double RealOvertimeMinutes { get; set; }
 
         public List<ActionTime>? ActionTimes { get; set; }
         public Employee? Employee { get; set; }

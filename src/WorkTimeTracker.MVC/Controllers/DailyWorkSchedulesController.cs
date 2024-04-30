@@ -7,7 +7,9 @@ using NuGet.Packaging;
 using System.Security.Claims;
 using WorkTimeTracker.Application.ApplicationUser;
 using WorkTimeTracker.Application.DailyWorkSchedules;
+using WorkTimeTracker.Application.DailyWorkSchedules.Commands.CreateDailyWorkSchedule;
 using WorkTimeTracker.Application.DailyWorkSchedules.Commands.UpdateDailyWorkSchedule;
+using WorkTimeTracker.Application.DailyWorkSchedules.Queries.DailyWorkScheduleById;
 using WorkTimeTracker.Application.DailyWorkSchedules.Queries.GetByDepartmentDailyWorkSchedules;
 using WorkTimeTracker.Application.Departments.Queries;
 using WorkTimeTracker.Application.Departments.Queries.GetAllDepartment;
@@ -130,36 +132,32 @@ namespace WorkTimeTracker.Controllers
         [Authorize(Roles = "Director,HR,Manager,Admin")]
         public async Task<IActionResult> Create(string employeeId, string date)
         {
-            var dailyWorkSchedule = new DailyWorkScheduleDto { EmployeeId = employeeId, Date = DateTime.Parse(date) };
-            var empl = await _context.Employees.FindAsync(employeeId);
-            dailyWorkSchedule.Employee = new EmployeeDto { Id = empl.Id, FirstName = empl.FirstName, LastName = empl.LastName };
-            return View(dailyWorkSchedule);
+            //var dailyWorkSchedule = new DailyWorkScheduleDto { EmployeeId = employeeId, Date = DateTime.Parse(date) };
+            //var empl = await _context.Employees.FindAsync(employeeId);
+            //dailyWorkSchedule.Employee = new EmployeeDto { Id = empl.Id, FirstName = empl.FirstName, LastName = empl.LastName };
+
+            var employee = await _mediator.Send(new GetEmployeeDetailsQuery(employeeId));
+
+            var dailySchedule = new CreateDailyWorkScheduleCommand()
+            {
+                EmployeeId = employeeId,
+                Employee = employee,
+                Date = DateTime.Parse(date)
+            };
+            return View(dailySchedule);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Director,HR,Manager,Admin")]
-        public async Task<IActionResult> Create(DailyWorkScheduleDto dailyWorkSchedule)
+        public async Task<IActionResult> Create(CreateDailyWorkScheduleCommand createDailyWorkSchedule)
         {
-            dailyWorkSchedule.Id = Guid.NewGuid().ToString();
             if (ModelState.IsValid)
             {
-                var schedule = new DailyWorkSchedule
-                {
-                    Id = dailyWorkSchedule.Id,
-                    EmployeeId = dailyWorkSchedule.EmployeeId,
-                    Date = dailyWorkSchedule.PlannedWorkStart.Date,
-                    PlannedWorkStart = dailyWorkSchedule.PlannedWorkStart,
-                    PlannedWorkEnd = dailyWorkSchedule.PlannedWorkEnd,
-                    WorkTimeNorm = dailyWorkSchedule.WorkTimeNorm,
-                    BreakTimeNorm = dailyWorkSchedule.BreakTimeNorm,
-                    TypeOfDay = dailyWorkSchedule.TypeOfDay
-                };
-                _context.Add(schedule);
-                await _context.SaveChangesAsync();
+                await _mediator.Send(createDailyWorkSchedule);
                 return RedirectToAction(nameof(Index));
             }
-            return View(dailyWorkSchedule);
+            return View(createDailyWorkSchedule);
         }
 
         [Authorize(Roles = "Director,HR,Manager")]
@@ -170,16 +168,14 @@ namespace WorkTimeTracker.Controllers
                 return NotFound();
             }
 
-            var dailyWorkSchedule = await _context.DailyWorkSchedules
-                .Include(x => x.Employee)
-                .FirstAsync(x => x.Id == id);
+            var dailyWorkSchedule = await _mediator.Send(new DailyWorkScheduleByIdQuery(id));
 
             if (dailyWorkSchedule == null)
             {
                 return NotFound();
             }
 
-            return View(_mapper.Map<DailyWorkScheduleDto>(dailyWorkSchedule));
+            return View(dailyWorkSchedule);
         }
 
         [HttpPost]
