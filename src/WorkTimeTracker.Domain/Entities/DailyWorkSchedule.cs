@@ -22,8 +22,7 @@ namespace WorkTimeTracker.Domain.Entities
         public TimeSpan NightOvertime { get; set; }
         public TimeSpan OvertimeCollected { get; set; }
 
-        public List<WorkActionTime>? WorkActions { get; set; }
-        public List<BreakActionTime>? BreakActions { get; set; }
+        public List<ActionTime>? ActionTimes { get; set; }
         public Employee? Employee { get; set; }
     }
 

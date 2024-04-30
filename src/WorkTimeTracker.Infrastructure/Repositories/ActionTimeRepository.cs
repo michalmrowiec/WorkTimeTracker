@@ -21,9 +21,31 @@ namespace WorkTimeTracker.Infrastructure.Repositories
 
         }
 
+        public async Task<ActionTime> GetActionTimeById(string id)
+        {
+            return await _context.ActionTimes
+                .Include(at => at.Employee)
+                .FirstAsync(at => at.Id == id);
+        }
+
         public async Task<IEnumerable<ActionTime>> GetAllActionTimes()
         {
             return await _context.ActionTimes.ToListAsync();
+        }
+
+        public async Task<IEnumerable<ActionTime>> GetAllIncompleteActionTimesForEmployee(string employeeId)
+        {
+            return await _context.ActionTimes
+                .Where(at => at.EmployeeId == employeeId
+                    && !at.End.HasValue)
+                .OrderBy(at => at.Start)
+                .ToListAsync();
+        }
+
+        public async Task UpdateActionTimeAsync(ActionTime actionTime)
+        {
+            _context.ActionTimes.Entry(actionTime).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
     }
 }

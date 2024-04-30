@@ -34,7 +34,6 @@ namespace WorkTimeTracker.Application.DailyWorkSchedules
 
         public EmployeeDto? Employee { get; set; }
 
-        public List<WorkActionTimeDto>? WorkActions { get; set; }
-        public List<BreakActionTimeDto>? BreakActions { get; set; }
+        public List<ActionTimeDto>? ActionTimes { get; set; }
     }
 }

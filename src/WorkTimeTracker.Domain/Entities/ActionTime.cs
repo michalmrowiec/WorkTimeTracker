@@ -1,6 +1,6 @@
 ﻿namespace WorkTimeTracker.Domain.Entities
 {
-    public abstract class ActionTime
+    public class ActionTime
     {
         public string Id { get; set; }
         public string EmployeeId { get; set; }
@@ -9,5 +9,7 @@
         public TimeSpan? TimeOfAction { get; set; }
         public string? DailyWorkScheduleId { get; set; }
         public DailyWorkSchedule? DailyWorkSchedule { get; set; }
+        public Employee? Employee { get; set; }
+        public bool IsWork { get; set; }
     }
 }

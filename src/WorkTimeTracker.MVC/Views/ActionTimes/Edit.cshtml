@@ -1,0 +1,87 @@
+﻿@model WorkTimeTracker.Application.ActionTimes.ActionTimeDto
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>ActionTimeDto</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input asp-for="Id" class="form-control" type="hidden" />
+
+            <div class="form-group">
+                <label asp-for="EmployeeId" class="control-label"></label>
+                <input asp-for="EmployeeId" class="form-control" />
+                <span asp-validation-for="EmployeeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Start" class="control-label"></label>
+                <input asp-for="Start" class="form-control" id="ActionTimeStart" />
+                <span asp-validation-for="Start" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="End" class="control-label"></label>
+                <input asp-for="End" class="form-control" id="ActionTimeEnd" />
+                <span asp-validation-for="End" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="TimeOfAction" class="control-label"></label>
+                <input asp-for="TimeOfAction" class="form-control" id="TimeOfAction" disabled />
+                <span asp-validation-for="TimeOfAction" class="text-danger"></span>
+            </div>
+
+            <input asp-for="DailyWorkSchedule" class="form-control" type="hidden" />
+
+            @*             <div class="form-group">
+            <label asp-for="DailyWorkScheduleId" class="control-label"></label>
+            <input asp-for="DailyWorkScheduleId" class="form-control" />
+            <span asp-validation-for="DailyWorkScheduleId" class="text-danger"></span>
+            </div> *@
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsWork" /> @Html.DisplayNameFor(model => model.IsWork)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        function calculateTimeOfAction () {
+            $('#ActionTimeStart, #ActionTimeEnd').change(function () {
+                var start = new Date($('#ActionTimeStart').val());
+                var end = new Date($('#ActionTimeEnd').val());
+
+                if (start && end) {
+                    var diff = end - start;
+                    var diffInHours = diff / 1000 / 60 / 60; // convert milliseconds to hours
+
+                    $('#TimeOfAction').val(diffInHours.toFixed(2));
+                }
+            });
+        }
+        $('#ActionTimeStart').on('change', calculateTimeOfAction);
+        $('#ActionTimeEnd').on('change', calculateTimeOfAction);
+
+
+    </script>
+}

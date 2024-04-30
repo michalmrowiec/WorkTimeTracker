@@ -9,8 +9,6 @@ namespace WorkTimeTracker.Infrastructure
         public DbSet<Employee> Employees { get; set; }
         public DbSet<DailyWorkSchedule> DailyWorkSchedules { get; set; }
         public DbSet<ActionTime> ActionTimes { get; set; }
-        public DbSet<WorkActionTime> WorkActionTimes { get; set; }
-        public DbSet<BreakActionTime> BreakActionTimes { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<DepartmentManager> DepartmentManagers { get; set; }
         public DbSet<Holiday> Holidays { get; set; }

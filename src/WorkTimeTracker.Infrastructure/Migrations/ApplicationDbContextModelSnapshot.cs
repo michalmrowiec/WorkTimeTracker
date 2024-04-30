@@ -241,17 +241,15 @@ namespace WorkTimeTracker.Infrastructure.Migrations
                     b.Property<string>("DailyWorkScheduleId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(21)
-                        .HasColumnType("nvarchar(21)");
-
                     b.Property<string>("EmployeeId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("End")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsWork")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("Start")
                         .HasColumnType("datetime2");
@@ -261,11 +259,11 @@ namespace WorkTimeTracker.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DailyWorkScheduleId");
+
+                    b.HasIndex("EmployeeId");
+
                     b.ToTable("ActionTimes");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("ActionTime");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("WorkTimeTracker.Domain.Entities.DailyWorkSchedule", b =>
@@ -415,24 +413,6 @@ namespace WorkTimeTracker.Infrastructure.Migrations
                     b.HasDiscriminator().HasValue("Employee");
                 });
 
-            modelBuilder.Entity("WorkTimeTracker.Domain.Entities.BreakActionTime", b =>
-                {
-                    b.HasBaseType("WorkTimeTracker.Domain.Entities.ActionTime");
-
-                    b.HasIndex("DailyWorkScheduleId");
-
-                    b.HasDiscriminator().HasValue("BreakActionTime");
-                });
-
-            modelBuilder.Entity("WorkTimeTracker.Domain.Entities.WorkActionTime", b =>
-                {
-                    b.HasBaseType("WorkTimeTracker.Domain.Entities.ActionTime");
-
-                    b.HasIndex("DailyWorkScheduleId");
-
-                    b.HasDiscriminator().HasValue("WorkActionTime");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -484,6 +464,23 @@ namespace WorkTimeTracker.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("WorkTimeTracker.Domain.Entities.ActionTime", b =>
+                {
+                    b.HasOne("WorkTimeTracker.Domain.Entities.DailyWorkSchedule", "DailyWorkSchedule")
+                        .WithMany("ActionTimes")
+                        .HasForeignKey("DailyWorkScheduleId");
+
+                    b.HasOne("WorkTimeTracker.Domain.Entities.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DailyWorkSchedule");
+
+                    b.Navigation("Employee");
+                });
+
             modelBuilder.Entity("WorkTimeTracker.Domain.Entities.DailyWorkSchedule", b =>
                 {
                     b.HasOne("WorkTimeTracker.Domain.Entities.Employee", "Employee")
@@ -532,29 +529,9 @@ namespace WorkTimeTracker.Infrastructure.Migrations
                     b.Navigation("Department");
                 });
 
-            modelBuilder.Entity("WorkTimeTracker.Domain.Entities.BreakActionTime", b =>
-                {
-                    b.HasOne("WorkTimeTracker.Domain.Entities.DailyWorkSchedule", "DailyWorkSchedule")
-                        .WithMany("BreakActions")
-                        .HasForeignKey("DailyWorkScheduleId");
-
-                    b.Navigation("DailyWorkSchedule");
-                });
-
-            modelBuilder.Entity("WorkTimeTracker.Domain.Entities.WorkActionTime", b =>
-                {
-                    b.HasOne("WorkTimeTracker.Domain.Entities.DailyWorkSchedule", "DailyWorkSchedule")
-                        .WithMany("WorkActions")
-                        .HasForeignKey("DailyWorkScheduleId");
-
-                    b.Navigation("DailyWorkSchedule");
-                });
-
             modelBuilder.Entity("WorkTimeTracker.Domain.Entities.DailyWorkSchedule", b =>
                 {
-                    b.Navigation("BreakActions");
-
-                    b.Navigation("WorkActions");
+                    b.Navigation("ActionTimes");
                 });
 
             modelBuilder.Entity("WorkTimeTracker.Domain.Entities.Department", b =>

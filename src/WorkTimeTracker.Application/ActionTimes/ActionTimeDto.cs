@@ -2,7 +2,7 @@
 
 namespace WorkTimeTracker.Application.ActionTimes
 {
-    public abstract class ActionTimeDto
+    public class ActionTimeDto
     {
         public string Id { get; set; }
         public string EmployeeId { get; set; }
@@ -11,5 +11,6 @@ namespace WorkTimeTracker.Application.ActionTimes
         public TimeSpan? TimeOfAction { get; set; }
         public string? DailyWorkScheduleId { get; set; }
         public DailyWorkSchedule? DailyWorkSchedule { get; set; }
+        public bool IsWork {  get; set; }
     }
 }

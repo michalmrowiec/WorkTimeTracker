@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using WorkTimeTracker.Application.Employees;
 using WorkTimeTracker.Application.Employees.Queries.GetMonthlySummaryForEmployee;
 using WorkTimeTracker.Domain.Interfaces.Repositories;
 
@@ -39,19 +38,19 @@ namespace WorkTimeTracker.Application.DailyWorkSchedules.Queries.GetByDepartment
                 foreach (var item in workSchedule)
                 {
                     item.RealWorkTime = TimeSpan.FromMinutes(
-                        item.WorkActions?.Where(x => x.TimeOfAction.HasValue).Sum(x => x.TimeOfAction!.Value.TotalMinutes) ?? 0);
+                        item.ActionTimes?.Where(x => x.IsWork && x.TimeOfAction.HasValue).Sum(x => x.TimeOfAction!.Value.TotalMinutes) ?? 0);
 
                     item.RealBreakTime = TimeSpan.FromMinutes(
-                        item.BreakActions?.Where(x => x.TimeOfAction.HasValue).Sum(x => x.TimeOfAction!.Value.TotalMinutes) ?? 0);
+                        item.ActionTimes?.Where(x => !x.IsWork && x.TimeOfAction.HasValue).Sum(x => x.TimeOfAction!.Value.TotalMinutes) ?? 0);
 
-                    if(item.WorkActions?.Any() ?? false)
+                    if(item.ActionTimes?.Where(x => x.IsWork)?.Any() ?? false)
                     {
-                        item.RealWorkStart = item.WorkActions?.Min(x => x.Start);
+                        item.RealWorkStart = item.ActionTimes?.Where(x => x.IsWork).Min(x => x.Start);
                     }
 
-                    if (item.WorkActions?.Any(x => x.End.HasValue) ?? false)
+                    if (item.ActionTimes?.Where(x => x.IsWork)?.Any(x => x.End.HasValue) ?? false)
                     {
-                        item.RealWorkEnd = item.WorkActions?.Min(x => x.End);
+                        item.RealWorkEnd = item.ActionTimes?.Where(x => x.IsWork).Min(x => x.End);
                     }
 
                     item.Overtime = item.WorkTimeNorm - item.RealWorkTime; // to change

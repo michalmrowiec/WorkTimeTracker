@@ -77,8 +77,7 @@ namespace WorkTimeTracker.Infrastructure.Repositories
             foreach (var employee in employees)
             {
                 schedules[employee] = await _context.DailyWorkSchedules
-                    .Include(schedule => schedule.WorkActions)
-                    .Include(schedule => schedule.BreakActions)
+                    .Include(schedule => schedule.ActionTimes)
                     .Where(schedule => schedule.EmployeeId == employee.Id && schedule.Date.Month == month && schedule.Date.Year == year)
                     .OrderBy(schedule => schedule.Date)
                     .AsNoTracking()

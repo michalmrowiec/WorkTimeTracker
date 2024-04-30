@@ -16,7 +16,7 @@
                 @Html.DisplayNameFor(model => model.Id)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EmployeeId)
+                Employee
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Start)
@@ -40,7 +40,7 @@
                 @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.EmployeeId)
+                @string.Concat(item.Employee?.FirstName, ' ', item.Employee?.LastName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Start)
@@ -55,7 +55,7 @@
                 @Html.DisplayFor(modelItem => item.DailyWorkScheduleId)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Edit", "Edit", new {  id=item.Id }) |
                 @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
             </td>

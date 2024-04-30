@@ -1,8 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WorkTimeTracker.Application.ActionTimes.Commands;
-using WorkTimeTracker.Domain.Entities;
+using WorkTimeTracker.Application.ActionTimes.Commands.CreateActionTime;
+using WorkTimeTracker.Application.ActionTimes.Commands.UpdateActionTime;
+using WorkTimeTracker.Application.ActionTimes.Queries.GetActionTimeById;
 using WorkTimeTracker.Infrastructure;
 
 namespace WorkTimeTracker.MVC.Controllers
@@ -22,7 +23,10 @@ namespace WorkTimeTracker.MVC.Controllers
         // GET: ActionTimesController
         public ActionResult Index()
         {
-            var actinos = _context.ActionTimes.ToList();
+            var actinos = _context.ActionTimes
+                .Include(x => x.Employee)
+                .AsNoTracking()
+                .ToList();
             return View(actinos);
         }
 
@@ -55,29 +59,35 @@ namespace WorkTimeTracker.MVC.Controllers
             else
             {
                 return View(actionTime);
-
             }
         }
 
         // GET: ActionTimesController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(string id)
         {
-            return View();
+            var actionTime = await _mediator.Send(new GetActionTimeByIdQuery(id));
+
+            if (actionTime == null)
+            {
+                return NotFound();
+            }
+
+            return View(actionTime);
         }
 
         // POST: ActionTimesController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, ActionTime actionTime)
+        public async Task<ActionResult> Edit(UpdateActionTimeCommand updateActionTimeCommand)
         {
-            try
+            if (ModelState.IsValid || updateActionTimeCommand.Start > updateActionTimeCommand.End)
             {
-                _context.ActionTimes.Add(actionTime);
+                await _mediator.Send(updateActionTimeCommand);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            else
             {
-                return View(actionTime);
+                return View(updateActionTimeCommand);
             }
         }
 
