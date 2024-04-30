@@ -7,6 +7,7 @@ namespace WorkTimeTracker.Application.DailyWorkSchedules
 {
     public class DailyWorkScheduleDto
     {
+        public string Id { get; set; }
         [Required]
         public string EmployeeId { get; set; }
         [Required]

@@ -69,6 +69,12 @@ namespace WorkTimeTracker.Infrastructure.Repositories
             return schedules;
         }
 
+        public async Task UpdateDailyWorkSchedule(DailyWorkSchedule dailyWorkSchedule)
+        {
+            _context.DailyWorkSchedules.Entry(dailyWorkSchedule).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
+
         private async Task<IDictionary<Employee, IEnumerable<DailyWorkSchedule>>> GetDailyWorkSchedule(
             int year, int month, IList<Employee> employees)
         {

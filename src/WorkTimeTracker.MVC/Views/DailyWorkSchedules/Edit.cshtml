@@ -1,4 +1,6 @@
-﻿@model WorkTimeTracker.Domain.Entities.DailyWorkSchedule
+﻿@using WorkTimeTracker.Domain.Entities
+@using WorkTimeTracker.Domain.Utils
+@model WorkTimeTracker.Application.DailyWorkSchedules.DailyWorkScheduleDto
 
 @{
     ViewData["Title"] = "Edit";
@@ -6,23 +8,39 @@
 
 <h1>Edit</h1>
 
-<h4>DailyWorkSchedule</h4>
+<h4>UpdateDailyWorkScheduleCommand</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="EmployeeId" class="control-label"></label>
-                <select asp-for="EmployeeId" class="form-control" asp-items="ViewBag.EmployeeId"></select>
-                <span asp-validation-for="EmployeeId" class="text-danger"></span>
+
+            <input asp-for="Id" class="form-control" type="hidden" />
+
+            <input asp-for="EmployeeId" class="form-control" type="hidden" />
+
+            <input asp-for="Date" class="form-control" type="hidden" />
+
+            @string.Concat(Model.Employee?.FirstName, ' ', Model.Employee?.LastName)
+
+            <div class="form-floating mb-1">
+                <select asp-for="TypeOfDay" class="form-control form-select" id="item-select">
+                    @foreach (var typeOfDay in EnumToListDisplay.GetEnumValuesAndDisplayNames<TypeOfDay>())
+                    {
+                        @if (Model.TypeOfDay.ToString() == typeOfDay.value)
+                        {
+                            <option selected value="@typeOfDay.value">@typeOfDay.displayName</option>
+                        }
+                        else
+                        {
+                            <option value="@typeOfDay.value">@typeOfDay.displayName</option>
+                        }
+                    }
+                </select>
+                <label asp-for="TypeOfDay">Type Of Day</label>
+                <span asp-validation-for="TypeOfDay" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Date" class="control-label"></label>
-                <input asp-for="Date" class="form-control" />
-                <span asp-validation-for="Date" class="text-danger"></span>
-            </div>
+
             <div class="form-group">
                 <label asp-for="PlannedWorkStart" class="control-label"></label>
                 <input asp-for="PlannedWorkStart" class="form-control" />
@@ -79,6 +97,16 @@
                 <span asp-validation-for="OvertimeCollected" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="RealWorkTime" class="control-label"></label>
+                <input asp-for="RealWorkTime" class="form-control" />
+                <span asp-validation-for="RealWorkTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RealBreakTime" class="control-label"></label>
+                <input asp-for="RealBreakTime" class="form-control" />
+                <span asp-validation-for="RealBreakTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
@@ -90,5 +118,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

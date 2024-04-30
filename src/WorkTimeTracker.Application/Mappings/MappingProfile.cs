@@ -2,6 +2,7 @@
 using WorkTimeTracker.Application.ActionTimes;
 using WorkTimeTracker.Application.ActionTimes.Commands.UpdateActionTime;
 using WorkTimeTracker.Application.DailyWorkSchedules;
+using WorkTimeTracker.Application.DailyWorkSchedules.Commands.UpdateDailyWorkSchedule;
 using WorkTimeTracker.Application.Departments;
 using WorkTimeTracker.Application.Departments.Queries;
 using WorkTimeTracker.Application.Employees;
@@ -35,6 +36,11 @@ namespace WorkTimeTracker.Application.Mappings
                 .ReverseMap();
 
             CreateMap<UpdateActionTimeCommand, ActionTime>();
+
+            CreateMap<UpdateDailyWorkScheduleCommand, DailyWorkSchedule>();
+
+            CreateMap<DailyWorkScheduleDto, UpdateDailyWorkScheduleCommand>();
+
         }
     }
 }

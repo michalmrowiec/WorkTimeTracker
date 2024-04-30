@@ -32,7 +32,7 @@
 }
 
 <!-- Button trigger modal -->
-<button type="button" class="btn @cl" data-bs-toggle="modal" data-bs-target="#@modalId" style="font-size:small; padding:unset; width:42px; height:42px;">
+<button type="button" class="btn @cl" data-bs-toggle="modal" data-bs-target="#@modalId" style="font-size:small; padding:unset; width:42px; height:63px;">
     <p style="margin:unset;">
         @*         @string.Concat(
         Model.PlannedWorkStart.ToString("t") ?? "-",
@@ -41,6 +41,8 @@
         @Model.PlannedWorkStart.ToString("t")
         <br />
         @Model.PlannedWorkEnd.ToString("t")
+        <br/>
+        @Model.RealWorkTime.ToString(@"hh\:mm")
     </p>
 
 </button>
@@ -58,6 +60,7 @@
             <div class="modal-body">
                 <div class="card">
                     <div class="card-body">
+                        @Model.TypeOfDay
                         <table>
                             <thead>
                                 <tr>
@@ -130,6 +133,7 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <a asp-controller="DailyWorkSchedules" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>

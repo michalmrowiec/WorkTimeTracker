@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using WorkTimeTracker.Application.DailyWorkSchedules.Commands.UpdateDailyWorkSchedule;
 using WorkTimeTracker.Application.Employees.Queries.GetMonthlySummaryForEmployee;
 using WorkTimeTracker.Domain.Interfaces.Repositories;
 
@@ -53,7 +54,9 @@ namespace WorkTimeTracker.Application.DailyWorkSchedules.Queries.GetByDepartment
                         item.RealWorkEnd = item.ActionTimes?.Where(x => x.IsWork).Min(x => x.End);
                     }
 
-                    item.Overtime = item.WorkTimeNorm - item.RealWorkTime; // to change
+                    //item.Overtime = item.WorkTimeNorm - item.RealWorkTime; // to change
+
+                    await _mediator.Send(_mapper.Map<UpdateDailyWorkScheduleCommand>(item));
                 }
             }
 
