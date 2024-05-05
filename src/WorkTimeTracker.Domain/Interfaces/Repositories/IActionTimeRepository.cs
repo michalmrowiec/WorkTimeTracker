@@ -9,5 +9,6 @@ namespace WorkTimeTracker.Domain.Interfaces.Repositories
         Task<ActionTime> GetActionTimeById(string id);
         Task CreateActionTimeAsync(ActionTime actionTime);
         Task UpdateActionTimeAsync(ActionTime actionTime);
+        Task DeleteActionTime(ActionTime actionTime);
     }
 }

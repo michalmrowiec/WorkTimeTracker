@@ -29,6 +29,9 @@ namespace WorkTimeTracker.Application.DailyWorkSchedules.Commands.UpdateDailyWor
             dws.PlannedWorkStart = request.PlannedWorkStart;
             dws.PlannedWorkEnd = request.PlannedWorkEnd;
             dws.PlannedWorkTime = request.PlannedWorkEnd - request.PlannedWorkStart;
+            dws.RealWorkTime = request.RealWorkTime;
+            dws.RealBreakTime = request.RealBreakTime;
+            dws.RealOvertimeMinutes = request.RealOvertimeMinutes;
 
             if (dws.PlannedWorkTime > TimeSpan.FromHours(16))
             {

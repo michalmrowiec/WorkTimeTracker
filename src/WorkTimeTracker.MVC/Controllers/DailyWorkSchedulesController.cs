@@ -7,6 +7,7 @@ using NuGet.Packaging;
 using System.Security.Claims;
 using WorkTimeTracker.Application.ApplicationUser;
 using WorkTimeTracker.Application.DailyWorkSchedules;
+using WorkTimeTracker.Application.DailyWorkSchedules.Commands.CalcTimesForDailyWorkSchedule;
 using WorkTimeTracker.Application.DailyWorkSchedules.Commands.CreateDailyWorkSchedule;
 using WorkTimeTracker.Application.DailyWorkSchedules.Commands.UpdateDailyWorkSchedule;
 using WorkTimeTracker.Application.DailyWorkSchedules.Queries.DailyWorkScheduleById;
@@ -168,6 +169,7 @@ namespace WorkTimeTracker.Controllers
                 return NotFound();
             }
 
+            await _mediator.Send(new CalcTimesForDailyWorkScheduleCommand(id));
             var dailyWorkSchedule = await _mediator.Send(new DailyWorkScheduleByIdQuery(id));
 
             if (dailyWorkSchedule == null)

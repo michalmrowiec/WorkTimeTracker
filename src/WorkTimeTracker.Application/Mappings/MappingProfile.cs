@@ -23,6 +23,8 @@ namespace WorkTimeTracker.Application.Mappings
                 opt => opt.MapFrom(src => src.Department));
 
             CreateMap<DailyWorkSchedule, DailyWorkScheduleDto>()
+                .ForMember(dto => dto.RealOvertime,
+                opt => opt.MapFrom(src => TimeSpan.FromMinutes(src.RealOvertimeMinutes)))
                 .ReverseMap();
 
             CreateMap<Department, DepartmentDto>()

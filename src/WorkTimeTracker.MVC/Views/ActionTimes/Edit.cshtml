@@ -1,4 +1,5 @@
-﻿@model WorkTimeTracker.Application.ActionTimes.ActionTimeDto
+﻿@using WorkTimeTracker.Application.ActionTimes.Commands.UpdateActionTime
+@model UpdateActionTimeCommand
 
 @{
     ViewData["Title"] = "Edit";
@@ -14,6 +15,8 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <input asp-for="Id" class="form-control" type="hidden" />
+
+            <input asp-for="BackLink" class="form-control" type="hidden" />
 
             <div class="form-floating">
                 <label asp-for="EmployeeId" class="control-label"></label>
@@ -57,7 +60,8 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Back to List</a> |
+    <a href="@Model.BackLink">Back</a>
 </div>
 
 @section Scripts {

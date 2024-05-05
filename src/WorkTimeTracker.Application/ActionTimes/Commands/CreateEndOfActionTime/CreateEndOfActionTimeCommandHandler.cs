@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using WorkTimeTracker.Application.ActionTimes.Commands.CreateActionTime;
+using WorkTimeTracker.Application.DailyWorkSchedules.Commands.CalcTimesForDailyWorkSchedule;
 using WorkTimeTracker.Domain.Entities;
 using WorkTimeTracker.Domain.Interfaces.Repositories;
 
@@ -46,6 +47,12 @@ namespace WorkTimeTracker.Application.ActionTimes.Commands.CreateEndOfActionTime
             }
 
             await _repository.UpdateActionTimeAsync(actionTimeToUpdate);
+
+            if (actionTimeToUpdate.DailyWorkScheduleId != null)
+            {
+                await _mediator.Send(new CalcTimesForDailyWorkScheduleCommand(actionTimeToUpdate.DailyWorkScheduleId));
+            }
+
             return;
         }
     }

@@ -68,9 +68,10 @@
                         @a.ToString("ddd")
                     </th>
                 }
-                <th>WorkHoursNorm</th>
-                <th>PlannedWorkHours</th>
-                <th>RealWorkHours</th>
+                <th>Work<br />Hours<br />Norm</th>
+                <th>Planned<br />Work<br />Hours</th>
+                <th>Real<br />Work<br />Hours</th>
+                <th>Overtime</th>
             </tr>
         </thead>
         <tbody>
@@ -87,7 +88,7 @@
                         {
                             <td style="padding: 1px;">
                                 <partial name="_ModalDialogDetails"
-                                    model="item.Value.FirstOrDefault(x => x.Date.Day == i)" />
+                                         model="item.Value.FirstOrDefault(x => x.Date.Day == i)" />
                             </td>
                         }
                         else
@@ -101,7 +102,21 @@
                     }
                     <td>@string.Format("{0}:{1:00}", (int)item.Key.MonthlyHourNorm.TotalHours, item.Key.MonthlyHourNorm.Minutes)</td>
                     <td>@string.Format("{0}:{1:00}", (int)item.Key.SumOfPlannedWorkHours.TotalHours, item.Key.SumOfPlannedWorkHours.Minutes)</td>
-                    <td>@string.Format("{0}:{1:00}", (int)item.Value.Sum(x => x.RealWorkTime.TotalHours), item.Value.Sum(x => x.RealWorkTime.Minutes))</td>
+                    <td>
+                        @string.Format("{0}:{1:00}", (int)TimeSpan.FromMinutes(item.Value.Sum(x => x.RealWorkTime.TotalMinutes)).TotalHours, TimeSpan.FromMinutes(item.Value.Sum(x => x.RealWorkTime.TotalMinutes)).Minutes)
+                    </td>
+                    @if (item.Value.Sum(x => x.RealOvertime.TotalMinutes) < 0)
+                    {
+                        <td>
+                            @string.Format("-{0}:{1:00}", Math.Abs((int)TimeSpan.FromMinutes(item.Value.Sum(x => x.RealOvertime.TotalMinutes)).TotalHours), Math.Abs(TimeSpan.FromMinutes(item.Value.Sum(x => x.RealOvertime.TotalMinutes)).Minutes))
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            @string.Format("-{0}:{1:00}", Math.Abs((int)TimeSpan.FromMinutes(item.Value.Sum(x => x.RealOvertime.TotalMinutes)).TotalHours), Math.Abs(TimeSpan.FromMinutes(item.Value.Sum(x => x.RealOvertime.TotalMinutes)).Minutes))
+                        </td>
+                    }
                 </tr>
             }
         </tbody>

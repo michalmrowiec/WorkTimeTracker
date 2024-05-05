@@ -55,6 +55,22 @@
                 <label asp-for="PlannedWorkEnd" class="control-label"></label>
                 <span asp-validation-for="PlannedWorkEnd" class="text-danger"></span>
             </div>
+
+            <div class="form-floating mb-1">
+                <input class="form-control" disabled value="@string.Concat(Model.PlannedWorkTime.ToString(@"hh\:mm"))" />
+                <label class="control-label">Planned Work Time</label>
+            </div>
+
+            <div class="form-floating mb-1">
+                <input class="form-control" disabled value="@string.Concat(Model.PlannedBreakTime.ToString(@"hh\:mm"))" />
+                <label class="control-label">Planned Break Time</label>
+            </div>
+
+            <div class="form-floating mb-1">
+                <input class="form-control" disabled value="@string.Concat(Model?.RealOvertime < TimeSpan.Zero ? "-" : "", Model?.RealOvertime.ToString(@"hh\:mm"))" />
+                <label class="control-label">Real Overtime</label>
+            </div>
+
             <div class="form-group mt-2">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
@@ -67,7 +83,7 @@
                  model="new CreateActionTimeCommand() { EmployeeId = Model.EmployeeId, Start = Model.PlannedWorkStart, End = Model.PlannedWorkEnd, IsWork = true }" />
 
         <partial name="../ActionTimes/_ListOfActionTimes"
-                 model="Model.ActionTimes" />
+                 model="Model.ActionTimes?.OrderBy(x => x.Start)" />
     </div>
 </div>
 

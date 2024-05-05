@@ -21,6 +21,12 @@ namespace WorkTimeTracker.Infrastructure.Repositories
 
         }
 
+        public async Task DeleteActionTime(ActionTime actionTime)
+        {
+            _context.ActionTimes.Remove(actionTime);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<ActionTime> GetActionTimeById(string id)
         {
             return await _context.ActionTimes

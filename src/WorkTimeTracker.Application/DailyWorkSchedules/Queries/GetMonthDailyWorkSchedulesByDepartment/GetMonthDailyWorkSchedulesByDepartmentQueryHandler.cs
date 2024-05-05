@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using WorkTimeTracker.Application.DailyWorkSchedules.Commands.CalcTimesForDailyWorkSchedule;
 using WorkTimeTracker.Application.DailyWorkSchedules.Commands.UpdateDailyWorkSchedule;
 using WorkTimeTracker.Application.Employees.Queries.GetMonthlySummaryForEmployee;
 using WorkTimeTracker.Domain.Interfaces.Repositories;
@@ -38,25 +39,7 @@ namespace WorkTimeTracker.Application.DailyWorkSchedules.Queries.GetByDepartment
             {
                 foreach (var item in workSchedule)
                 {
-                    item.RealWorkTime = TimeSpan.FromMinutes(
-                        item.ActionTimes?.Where(x => x.IsWork && x.TimeOfAction.HasValue).Sum(x => x.TimeOfAction!.Value.TotalMinutes) ?? 0);
-
-                    item.RealBreakTime = TimeSpan.FromMinutes(
-                        item.ActionTimes?.Where(x => !x.IsWork && x.TimeOfAction.HasValue).Sum(x => x.TimeOfAction!.Value.TotalMinutes) ?? 0);
-
-                    if(item.ActionTimes?.Where(x => x.IsWork)?.Any() ?? false)
-                    {
-                        item.RealWorkStart = item.ActionTimes?.Where(x => x.IsWork).Min(x => x.Start);
-                    }
-
-                    if (item.ActionTimes?.Where(x => x.IsWork)?.Any(x => x.End.HasValue) ?? false)
-                    {
-                        item.RealWorkEnd = item.ActionTimes?.Where(x => x.IsWork).Min(x => x.End);
-                    }
-
-                    //item.Overtime = item.WorkTimeNorm - item.RealWorkTime; // to change
-
-                    await _mediator.Send(_mapper.Map<UpdateDailyWorkScheduleCommand>(item));
+                    await _mediator.Send(new CalcTimesForDailyWorkScheduleCommand(item.Id));
                 }
             }
 

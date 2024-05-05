@@ -13,6 +13,9 @@ namespace WorkTimeTracker.Application.DailyWorkSchedules.Commands.UpdateDailyWor
         public TypeOfDay TypeOfDay { get; set; }
         public DateTime PlannedWorkStart { get; set; }
         public DateTime PlannedWorkEnd { get; set; }
+        public TimeSpan RealWorkTime { get; set; }
+        public TimeSpan RealBreakTime { get; set; }
+        public double RealOvertimeMinutes { get; set; }
         public EmployeeDetailsDto? Employee { get; set; }
         public List<ActionTimeDto>? ActionTimes { get; set; }
     }

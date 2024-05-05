@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using WorkTimeTracker.Application.DailyWorkSchedules.Commands.CalcTimesForDailyWorkSchedule;
 using WorkTimeTracker.Domain.Entities;
 using WorkTimeTracker.Domain.Interfaces.Repositories;
 
@@ -8,11 +9,15 @@ namespace WorkTimeTracker.Application.ActionTimes.Commands.CreateActionTime
     {
         private readonly IActionTimeRepository _repository;
         private readonly IDailyWorkScheduleRepository _repositoryWs;
+        private readonly IMediator _mediator;
 
-        public CreateActionTimeCommandHandler(IActionTimeRepository repository, IDailyWorkScheduleRepository repositoryWs)
+        public CreateActionTimeCommandHandler(IActionTimeRepository repository,
+            IDailyWorkScheduleRepository repositoryWs,
+            IMediator mediator)
         {
             _repository = repository;
             _repositoryWs = repositoryWs;
+            _mediator = mediator;
         }
 
         public async Task Handle(CreateActionTimeCommand request, CancellationToken cancellationToken)
@@ -48,6 +53,7 @@ namespace WorkTimeTracker.Application.ActionTimes.Commands.CreateActionTime
             };
 
             await _repository.CreateActionTimeAsync(actionTime);
+            await _mediator.Send(new CalcTimesForDailyWorkScheduleCommand(wds.Id));
             return;
         }
     }
