@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using WorkTimeTracker.Application;
 using WorkTimeTracker.Application.ApplicationUser;
 using WorkTimeTracker.Domain.Entities;
 using WorkTimeTracker.Infrastructure;
+using WorkTimeTracker.MVC;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,8 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddHttpClient();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
+
+builder.Services.AddScoped<IDisplayService, DisplayService>(provider => new DisplayService(new CultureInfo("en-US")));
 
 builder.Services.ConfigureApplicationCookie(options =>
 {

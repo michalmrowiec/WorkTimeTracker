@@ -53,6 +53,7 @@
             </div>
             <div class="form-floating mb-1">
                 <select asp-for="DepartmentId" class="form-control form-select" id="item-select">
+                    <option value="@null">@string.Concat("No department")</option>
                     @foreach (DepartmentDetailsDto department in ViewBag.Departments)
                     {
                         <option value="@department.Id">@string.Concat(department.Name)</option>

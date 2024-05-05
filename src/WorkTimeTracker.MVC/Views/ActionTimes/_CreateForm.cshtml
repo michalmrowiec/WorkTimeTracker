@@ -1,0 +1,69 @@
+﻿@using WorkTimeTracker.Application.ActionTimes.Commands.CreateActionTime
+@model CreateActionTimeCommand
+@{
+    Model.BackLink = Context.Request.Path + Context.Request.QueryString;
+}
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalId">
+    Add Action Time
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="modalId" tabindex="-1" aria-labelledby="createCarWorkshopServiceModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createCarWorkshopServiceModalLabel">
+                    test
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-controller="ActionTimes" asp-action="CreatePartial">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <input type="hidden" asp-for="BackLink" />
+
+                    <input type="hidden" asp-for="EmployeeId" />
+
+                    @*                             <div class="form-floating mb-1">
+                    <input asp-for="EmployeeId" class="form-control" />
+                    <label asp-for="EmployeeId">EmployeeId</label>
+                    <span asp-validation-for="EmployeeId" class="text-danger"></span>
+                    </div> *@
+
+                    <div class="form-floating mb-1">
+                        <input asp-for="Start" class="form-control" />
+                        <label asp-for="Start" class="control-label"></label>
+                        <span asp-validation-for="Start" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-1">
+                        <input asp-for="End" class="form-control" />
+                        <label asp-for="End" class="control-label"></label>
+                        <span asp-validation-for="End" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-1">
+                        <input asp-for="TimeOfAction" class="form-control" />
+                        <label asp-for="TimeOfAction" class="control-label"></label>
+                        <span asp-validation-for="TimeOfAction" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-1">
+                        <select asp-for="IsWork" class="form-control form-select" id="item-select">
+                            <option value="@true">@string.Concat("Work time")</option>
+                            <option value="@false">@string.Concat("Break time")</option>
+                        </select>
+                        <label asp-for="IsWork">Type</label>
+                        <span asp-validation-for="IsWork" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-2">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

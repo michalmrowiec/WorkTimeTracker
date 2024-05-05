@@ -1,49 +1,52 @@
-﻿using AutoMapper;
-using MediatR;
-using WorkTimeTracker.Application.DailyWorkSchedules.Queries.GetByEmployeeIdMonthDailyWorkSchedules;
+﻿using MediatR;
+using WorkTimeTracker.Domain.Entities;
 using WorkTimeTracker.Domain.Interfaces.Repositories;
-using WorkTimeTracker.Domain.Interfaces.Services;
-using WorkTimeTracker.Domain.Utils;
-using WorkTimeTracker.Domain.Services;
 
 namespace WorkTimeTracker.Application.DailyWorkSchedules.Commands.CreateDailyWorkSchedule
 {
     internal class CreateDailyWorkScheduleCommandHandler : IRequestHandler<CreateDailyWorkScheduleCommand>
     {
         private readonly IDailyWorkScheduleRepository _repository;
-        private readonly IMapper _mapper;
-        private readonly IMediator _mediator;
-        private readonly IHolidaysProvider _holidaysProvider;
 
         public CreateDailyWorkScheduleCommandHandler
-            (IDailyWorkScheduleRepository repository, IMapper mapper, IMediator mediator, IHolidaysProvider holidaysProvider)
+            (IDailyWorkScheduleRepository repository)
         {
             _repository = repository;
-            _mapper = mapper;
-            _mediator = mediator;
-            _holidaysProvider = holidaysProvider;
         }
 
         public async Task Handle(CreateDailyWorkScheduleCommand request, CancellationToken cancellationToken)
         {
-            var holidays = await _holidaysProvider.GetHolidaysAsync(request.Date.Year);
-            var holidaysDates = holidays.Select(h => h.Date).ToList();
+            if (request.PlannedWorkStart >= request.PlannedWorkEnd)
+            {
+                return;
+            }
 
-            var norm = WorkTimeCalculator.CalculateWorkingTimeDimension(
-                request.Date.StartOfMonth(),
-                request.Date.EndOfMonth(),
-                holidaysDates).hours;
+            var dailySchedule = new DailyWorkSchedule()
+            {
+                Id = Guid.NewGuid().ToString(),
+                EmployeeId = request.EmployeeId,
+                Date = request.Date,
+                TypeOfDay = request.TypeOfDay,
+                PlannedWorkStart = request.PlannedWorkStart,
+                PlannedWorkEnd = request.PlannedWorkEnd,
+                PlannedWorkTime = request.PlannedWorkEnd - request.PlannedWorkStart
+            };
 
-            var dailyWorkShedule = await _mediator
-                .Send(new GetMonthDailyWorkSchedulesByEmployeeIdQuery(request.EmployeeId, request.Date.Year, request.Date.Month), cancellationToken);
+            if (dailySchedule.PlannedWorkTime > TimeSpan.FromHours(16))
+            {
+                dailySchedule.PlannedBreakTime = TimeSpan.FromMinutes(45);
+            }
+            else if (dailySchedule.PlannedWorkTime > TimeSpan.FromHours(9))
+            {
+                dailySchedule.PlannedBreakTime = TimeSpan.FromMinutes(30);
+            }
+            else if (dailySchedule.PlannedWorkTime > TimeSpan.FromHours(6))
+            {
+                dailySchedule.PlannedBreakTime = TimeSpan.FromMinutes(15);
+            }
 
-            decimal plannedWorkHours = dailyWorkShedule.Sum(d => d.WorkHours.Minutes) / 60;
-
-            //if (norm < plannedWorkHours + (request.WorkHours.Minutes / 60))...
-
+            await _repository.CreateDailyWorkSchedule(dailySchedule);
         }
-
-
 
     }
 }

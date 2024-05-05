@@ -2,6 +2,8 @@
 @using WorkTimeTracker.Application.Departments.Queries
 @using WorkTimeTracker.Application.Employees
 @using WorkTimeTracker.Application.Employees.Queries.GetMonthlySummaryForEmployee
+@using WorkTimeTracker.MVC
+@inject IDisplayService _displayService;
 @model IDictionary<MonthlyScheduleEmployeeDto, List<DailyWorkScheduleDto>>
 
 @{
@@ -12,7 +14,7 @@
 }
 
 <body class="no-margin">
-    <h1>Index @year @month</h1>
+    <h1>Plan on @_displayService.DisplayNameOfMonth(month) @year</h1>
 
     @using (Html.BeginForm("Index", "DailyWorkSchedules", FormMethod.Get, new { id = "myForm" }))
     {
@@ -30,7 +32,7 @@
                 <select class="form-control form-select mx-2" asp-for="@month" name="Month" onchange="document.getElementById('myForm').submit();">
                     @for (int i = 1; i < 13; i++)
                     {
-                        <option value="@i">@i</option>
+                        <option value="@i">@_displayService.DisplayNameOfMonth(i)</option>
                     }
                 </select>
                 <button class="btn btn-sm btn-outline-secondary" type="button" onclick="changeMonth(1)">@string.Concat('>')</button>
@@ -44,7 +46,7 @@
                 </select>
             </div>
             <div class="col-2 d-flex">
-                <button class="btn btn-outline-secondary me-3" type="button" onclick="goToToday()">Dzisiaj</button>
+                <button class="btn btn-outline-secondary me-3" type="button" onclick="goToToday()">Today</button>
                 <input class="btn btn-primary" type="submit" value="Submit" />
             </div>
         </div>
@@ -66,8 +68,10 @@
                         @a.ToString("ddd")
                     </th>
                 }
-                <th>WorkHoursNorm</th>
-                <th>PlannedWorkHours</th>
+                <th>Work<br />Hours<br />Norm</th>
+                <th>Planned<br />Work<br />Hours</th>
+                <th>Real<br />Work<br />Hours</th>
+                <th>Overtime</th>
             </tr>
         </thead>
         <tbody>
@@ -83,13 +87,14 @@
                         @if (item.Value.Exists(schedule => schedule.Date.Date == new DateTime(year, month, i).Date))
                         {
                             <td style="padding: 1px;">
-                                <partial name="_ModalDialogDetails" model="new DailyWorkScheduleDto() { EmployeeId = item.Key.Id, Employee = item.Key, PlannedWorkStart = item.Value.FirstOrDefault(x => x.Date.Day == i)?.PlannedWorkStart ?? default,  PlannedWorkEnd = item.Value.FirstOrDefault(x => x.Date.Day == i)?.PlannedWorkEnd ?? default, Date = new DateTime(year, month, i), WorkTimeNorm = item.Value.FirstOrDefault(x => x.Date.Day == i)?.WorkTimeNorm ?? new(), BreakTimeNorm = item.Value.FirstOrDefault(x => x.Date.Day == i)?.BreakTimeNorm ?? new() }" />
+                                <partial name="_ModalDialogDetails"
+                                         model="item.Value.FirstOrDefault(x => x.Date.Day == i)" />
                             </td>
                         }
                         else
                         {
                             <td style="padding: 1px;">
-                                <button class="btn btn-outline-secondary" style="font-size:small; padding:unset; width:42px; height:42px;">
+                                <button class="btn btn-outline-secondary" style="font-size:small; padding:unset; width:42px; height:63px;">
                                     <a asp-action="create" asp-route-employeeid="@item.Key.Id" asp-route-date="@(new DateTime(year, month, i).Date)" style="color: grey; text-decoration: none;">Add</a>
                                 </button>
                             </td>
@@ -97,6 +102,21 @@
                     }
                     <td>@string.Format("{0}:{1:00}", (int)item.Key.MonthlyHourNorm.TotalHours, item.Key.MonthlyHourNorm.Minutes)</td>
                     <td>@string.Format("{0}:{1:00}", (int)item.Key.SumOfPlannedWorkHours.TotalHours, item.Key.SumOfPlannedWorkHours.Minutes)</td>
+                    <td>
+                        @string.Format("{0}:{1:00}", (int)TimeSpan.FromMinutes(item.Value.Sum(x => x.RealWorkTime.TotalMinutes)).TotalHours, TimeSpan.FromMinutes(item.Value.Sum(x => x.RealWorkTime.TotalMinutes)).Minutes)
+                    </td>
+                    @if (item.Value.Sum(x => x.RealOvertime.TotalMinutes) < 0)
+                    {
+                        <td>
+                            @string.Format("-{0}:{1:00}", Math.Abs((int)TimeSpan.FromMinutes(item.Value.Sum(x => x.RealOvertime.TotalMinutes)).TotalHours), Math.Abs(TimeSpan.FromMinutes(item.Value.Sum(x => x.RealOvertime.TotalMinutes)).Minutes))
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            @string.Format("-{0}:{1:00}", Math.Abs((int)TimeSpan.FromMinutes(item.Value.Sum(x => x.RealOvertime.TotalMinutes)).TotalHours), Math.Abs(TimeSpan.FromMinutes(item.Value.Sum(x => x.RealOvertime.TotalMinutes)).Minutes))
+                        </td>
+                    }
                 </tr>
             }
         </tbody>

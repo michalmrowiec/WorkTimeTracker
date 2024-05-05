@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +7,10 @@ using NuGet.Packaging;
 using System.Security.Claims;
 using WorkTimeTracker.Application.ApplicationUser;
 using WorkTimeTracker.Application.DailyWorkSchedules;
+using WorkTimeTracker.Application.DailyWorkSchedules.Commands.CalcTimesForDailyWorkSchedule;
+using WorkTimeTracker.Application.DailyWorkSchedules.Commands.CreateDailyWorkSchedule;
+using WorkTimeTracker.Application.DailyWorkSchedules.Commands.UpdateDailyWorkSchedule;
+using WorkTimeTracker.Application.DailyWorkSchedules.Queries.DailyWorkScheduleById;
 using WorkTimeTracker.Application.DailyWorkSchedules.Queries.GetByDepartmentDailyWorkSchedules;
 using WorkTimeTracker.Application.Departments.Queries;
 using WorkTimeTracker.Application.Departments.Queries.GetAllDepartment;
@@ -23,11 +28,13 @@ namespace WorkTimeTracker.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IMediator _mediator;
+        private readonly IMapper _mapper;
 
-        public DailyWorkSchedulesController(ApplicationDbContext context, IMediator mediator)
+        public DailyWorkSchedulesController(ApplicationDbContext context, IMediator mediator, IMapper mapper)
         {
             _context = context;
             _mediator = mediator;
+            _mapper = mapper;
         }
 
         public async Task<IActionResult> Index(int? year, int? month, string? departmentId = null)
@@ -126,36 +133,32 @@ namespace WorkTimeTracker.Controllers
         [Authorize(Roles = "Director,HR,Manager,Admin")]
         public async Task<IActionResult> Create(string employeeId, string date)
         {
-            var dailyWorkSchedule = new DailyWorkScheduleDto { EmployeeId = employeeId, Date = DateTime.Parse(date) };
-            var empl = await _context.Employees.FindAsync(employeeId);
-            dailyWorkSchedule.Employee = new EmployeeDto { Id = empl.Id, FirstName = empl.FirstName, LastName = empl.LastName };
-            return View(dailyWorkSchedule);
+            //var dailyWorkSchedule = new DailyWorkScheduleDto { EmployeeId = employeeId, Date = DateTime.Parse(date) };
+            //var empl = await _context.Employees.FindAsync(employeeId);
+            //dailyWorkSchedule.Employee = new EmployeeDto { Id = empl.Id, FirstName = empl.FirstName, LastName = empl.LastName };
+
+            var employee = await _mediator.Send(new GetEmployeeDetailsQuery(employeeId));
+
+            var dailySchedule = new CreateDailyWorkScheduleCommand()
+            {
+                EmployeeId = employeeId,
+                Employee = employee,
+                Date = DateTime.Parse(date)
+            };
+            return View(dailySchedule);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Director,HR,Manager,Admin")]
-        public async Task<IActionResult> Create(
-            [Bind("EmployeeId,Date,PlannedWorkStart,PlannedWorkEnd,WorkTimeNorm,BreakTimeNorm,TypeOfDay")] DailyWorkScheduleDto dailyWorkSchedule)
+        public async Task<IActionResult> Create(CreateDailyWorkScheduleCommand createDailyWorkSchedule)
         {
             if (ModelState.IsValid)
             {
-                var schedule = new DailyWorkSchedule
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    EmployeeId = dailyWorkSchedule.EmployeeId,
-                    Date = dailyWorkSchedule.PlannedWorkStart.Date,
-                    PlannedWorkStart = dailyWorkSchedule.PlannedWorkStart,
-                    PlannedWorkEnd = dailyWorkSchedule.PlannedWorkEnd,
-                    WorkTimeNorm = dailyWorkSchedule.WorkTimeNorm,
-                    BreakTimeNorm = dailyWorkSchedule.BreakTimeNorm,
-                    TypeOfDay = dailyWorkSchedule.TypeOfDay
-                };
-                _context.Add(schedule);
-                await _context.SaveChangesAsync();
+                await _mediator.Send(createDailyWorkSchedule);
                 return RedirectToAction(nameof(Index));
             }
-            return View(dailyWorkSchedule);
+            return View(createDailyWorkSchedule);
         }
 
         [Authorize(Roles = "Director,HR,Manager")]
@@ -166,45 +169,35 @@ namespace WorkTimeTracker.Controllers
                 return NotFound();
             }
 
-            var dailyWorkSchedule = await _context.DailyWorkSchedules.FindAsync(id);
+            await _mediator.Send(new CalcTimesForDailyWorkScheduleCommand(id));
+            var dailyWorkSchedule = await _mediator.Send(new DailyWorkScheduleByIdQuery(id));
+
             if (dailyWorkSchedule == null)
             {
                 return NotFound();
             }
+
             return View(dailyWorkSchedule);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Director,HR,Manager,Admin")]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,Id,Date,PlannedWorkStart,PlannedWorkEnd,WorkTimeNorm,BreakTimeNorm,RealWorkStart,RealWorkEnd,WorkHours,NightWorkHours,Overtime,NightOvertime,OvertimeCollected")] DailyWorkSchedule dailyWorkSchedule)
+        public async Task<IActionResult> Edit(UpdateDailyWorkScheduleCommand updateDailyWorkScheduleCommand)
         {
-            if (id != dailyWorkSchedule.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(dailyWorkSchedule);
-                    await _context.SaveChangesAsync();
+                    await _mediator.Send(updateDailyWorkScheduleCommand);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DailyWorkScheduleExists(dailyWorkSchedule.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(dailyWorkSchedule);
+            return View(updateDailyWorkScheduleCommand);
         }
 
         [Authorize(Roles = "Director,HR,Manager,Admin")]

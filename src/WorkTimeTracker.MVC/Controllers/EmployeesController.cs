@@ -49,8 +49,10 @@ namespace WorkTimeTracker.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _mediator.Send(employeeModel);
-                return RedirectToAction(nameof(Index));
+                var result = await _mediator.Send(employeeModel);
+
+                if (result.Success)
+                    return RedirectToAction(nameof(Index));
             }
             return View(employeeModel);
         }
@@ -94,7 +96,7 @@ namespace WorkTimeTracker.Controllers
             if (ModelState.IsValid)
             {
                 await _mediator.Send(updateEmployeeCommand);
-                
+
                 return RedirectToAction(nameof(Index));
             }
             return View(updateEmployeeCommand);

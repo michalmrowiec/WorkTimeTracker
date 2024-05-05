@@ -1,0 +1,75 @@
+﻿@using WorkTimeTracker.Application.ActionTimes
+@using WorkTimeTracker.Application.ActionTimes.Commands.DeleteActionTime
+@model IEnumerable<ActionTimeDto>
+
+@{
+
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Start)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.End)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeOfAction)
+            </th>
+            <th>
+                Type
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Start.ToString("dd/MM/yyyy HH:mm")
+                </td>
+                <td>
+                    @string.Concat(item.End?.ToString("dd/MM/yyyy HH:mm") ?? "")
+                </td>
+                <td>
+                    @string.Concat(item.TimeOfAction?.ToString(@"hh\:mm") ?? "")
+                </td>
+                <td>
+                    @string.Concat(item.IsWork ? "Work" : "Break")
+                </td>
+                <td>
+                    @Html.ActionLink(linkText: "Edit", actionName: "Edit", controllerName: "ActionTimes", routeValues: new { id = item.Id, backLink = Context.Request.Path + Context.Request.QueryString }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink(linkText: "Delete", actionName: "Delete", controllerName: "ActionTimes", routeValues: new { id = item.Id, backLink = Context.Request.Path + Context.Request.QueryString })
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>Work Time</td>
+            <td>
+                @string.Concat(
+                         TimeSpan.FromMinutes(
+                         Model
+                         .Where(x => x.IsWork && x.TimeOfAction.HasValue)
+                         .Sum(x => x.TimeOfAction!.Value.TotalMinutes))
+                         .ToString(@"hh\:mm"))
+            </td>
+        </tr>
+        <tr>
+            <td>Break Time</td>
+            <td>
+                @string.Concat(
+                         TimeSpan.FromMinutes(
+                         Model
+                         .Where(x => !x.IsWork && x.TimeOfAction.HasValue)
+                         .Sum(x => x.TimeOfAction!.Value.TotalMinutes))
+                         .ToString(@"hh\:mm"))
+            </td>
+        </tr>
+    </tfoot>
+</table>

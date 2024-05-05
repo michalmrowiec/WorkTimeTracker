@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
-using WorkTimeTracker.Application.Employees;
+using WorkTimeTracker.Application.DailyWorkSchedules.Commands.CalcTimesForDailyWorkSchedule;
+using WorkTimeTracker.Application.DailyWorkSchedules.Commands.UpdateDailyWorkSchedule;
 using WorkTimeTracker.Application.Employees.Queries.GetMonthlySummaryForEmployee;
 using WorkTimeTracker.Domain.Interfaces.Repositories;
 
@@ -29,9 +30,17 @@ namespace WorkTimeTracker.Application.DailyWorkSchedules.Queries.GetByDepartment
 
             foreach (var workSchedule in workSchedules)
             {
-                dtos.Add(/*(MonthlyScheduleEmployeeDto)_mapper.Map<EmployeeDto>(workSchedule.Key),*/
+                dtos.Add(
                     await _mediator.Send(new GetMonthlySummaryForEmployeeQuery(workSchedule.Key.Id, request.Year, request.Month), cancellationToken),
                     _mapper.Map<List<DailyWorkScheduleDto>>(workSchedule.Value));
+            }
+
+            foreach (var workSchedule in dtos.Values)
+            {
+                foreach (var item in workSchedule)
+                {
+                    await _mediator.Send(new CalcTimesForDailyWorkScheduleCommand(item.Id));
+                }
             }
 
             return dtos.ToDictionary(k => k.Key, v => v.Value as IEnumerable<DailyWorkScheduleDto>);

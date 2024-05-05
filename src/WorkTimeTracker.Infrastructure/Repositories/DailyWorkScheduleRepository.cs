@@ -16,6 +16,14 @@ namespace WorkTimeTracker.Infrastructure.Repositories
             _departmentRepository = departmentRepository;
         }
 
+        public async Task CreateDailyWorkSchedule(DailyWorkSchedule dailyWorkSchedule)
+        {
+            await _context.DailyWorkSchedules
+                .AddAsync(dailyWorkSchedule);
+
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<IDictionary<Employee, IEnumerable<DailyWorkSchedule>>> GetAll(int year, int month)
         {
             var employees = await _context.Employees
@@ -41,6 +49,7 @@ namespace WorkTimeTracker.Infrastructure.Repositories
 
             var employees = await _context.Employees
                 .Where(e => entireDepartments.Contains(e.DepartmentId ?? string.Empty))
+                .AsNoTracking()
                 .ToListAsync();
 
             var schedules = await GetDailyWorkSchedule(year, month, employees);
@@ -60,6 +69,20 @@ namespace WorkTimeTracker.Infrastructure.Repositories
             return schedules;
         }
 
+        public Task<DailyWorkSchedule?> GetById(string id)
+        {
+            return _context.DailyWorkSchedules
+                .Include(x => x.Employee)
+                .Include(x => x.ActionTimes)
+                .FirstOrDefaultAsync(schedule => schedule.Id == id);
+        }
+
+        public async Task UpdateDailyWorkSchedule(DailyWorkSchedule dailyWorkSchedule)
+        {
+            _context.DailyWorkSchedules.Entry(dailyWorkSchedule).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
+
         private async Task<IDictionary<Employee, IEnumerable<DailyWorkSchedule>>> GetDailyWorkSchedule(
             int year, int month, IList<Employee> employees)
         {
@@ -68,8 +91,10 @@ namespace WorkTimeTracker.Infrastructure.Repositories
             foreach (var employee in employees)
             {
                 schedules[employee] = await _context.DailyWorkSchedules
+                    .Include(schedule => schedule.ActionTimes)
                     .Where(schedule => schedule.EmployeeId == employee.Id && schedule.Date.Month == month && schedule.Date.Year == year)
                     .OrderBy(schedule => schedule.Date)
+                    .AsNoTracking()
                     .ToListAsync();
             }
 
