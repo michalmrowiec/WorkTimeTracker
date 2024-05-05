@@ -37,9 +37,13 @@ namespace WorkTimeTracker.Application.DailyWorkSchedules.Commands.CalcTimesForDa
                 item.RealWorkEnd = item.ActionTimes?.Where(x => x.IsWork).Min(x => x.End);
             }
 
-            var breakOvertime = item.RealBreakTime - item.PlannedBreakTime;
+            double breakOvertime = 0;
+            if(item.PlannedBreakTime.TotalMinutes < item.RealBreakTime.TotalMinutes)
+            {
+                breakOvertime = item.RealBreakTime.TotalMinutes - item.PlannedBreakTime.TotalMinutes;
+            }
             var workOvertime = item.RealWorkTime - item.PlannedWorkTime;
-            item.RealOvertimeMinutes = TimeSpan.FromMinutes(workOvertime.TotalMinutes - breakOvertime.TotalMinutes).TotalMinutes;
+            item.RealOvertimeMinutes = TimeSpan.FromMinutes(workOvertime.TotalMinutes - breakOvertime).TotalMinutes;
 
             await _repository.UpdateDailyWorkSchedule(item);
         }
