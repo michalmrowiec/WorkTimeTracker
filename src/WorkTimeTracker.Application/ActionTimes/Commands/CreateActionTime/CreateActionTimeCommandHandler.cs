@@ -22,6 +22,9 @@ namespace WorkTimeTracker.Application.ActionTimes.Commands.CreateActionTime
 
         public async Task Handle(CreateActionTimeCommand request, CancellationToken cancellationToken)
         {
+            request.Start = request.Start.AddSeconds(-request.Start.Second);
+            request.End = request.End?.AddSeconds(-request.End?.Second ?? 0);
+
             var ws = await _repositoryWs.GetByEmployeeId(request.EmployeeId, request.Start.Year, request.Start.Month);
             DailyWorkSchedule? wds = ws.FirstOrDefault(x => x.Date.Date == request.Start.Date);
 

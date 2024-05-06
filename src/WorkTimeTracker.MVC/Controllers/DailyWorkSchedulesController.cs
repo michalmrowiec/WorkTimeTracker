@@ -15,10 +15,8 @@ using WorkTimeTracker.Application.DailyWorkSchedules.Queries.GetByDepartmentDail
 using WorkTimeTracker.Application.Departments.Queries;
 using WorkTimeTracker.Application.Departments.Queries.GetAllDepartment;
 using WorkTimeTracker.Application.Departments.Queries.GetDepartmentWithChilds;
-using WorkTimeTracker.Application.Employees;
 using WorkTimeTracker.Application.Employees.Queries.GetEmployeeDetails;
 using WorkTimeTracker.Application.Employees.Queries.GetMonthlySummaryForEmployee;
-using WorkTimeTracker.Domain.Entities;
 using WorkTimeTracker.Infrastructure;
 
 namespace WorkTimeTracker.Controllers

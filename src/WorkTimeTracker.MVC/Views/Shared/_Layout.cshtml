@@ -23,21 +23,22 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="ActionTimes" asp-action="WorkTime">Work Time</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="DailyWorkSchedules" asp-action="Index">DailyWorkSchedules</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="DailyWorkSchedules" asp-action="Index">Work Plan</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="ActionTimes" asp-action="Index">ActionTimes</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Employees" asp-action="Index">Empls</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Employees" asp-action="Index">Employees</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Departments" asp-action="Index">Departments</a>
                         </li>
                     </ul>
+                    @Html.ActionLink(linkText: "Add+", actionName: "CreateForEmployees", controllerName: "ActionTimes")
                     <partial name="_LoginPartial" />
                 </div>
             </div>

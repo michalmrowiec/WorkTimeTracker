@@ -1,15 +1,19 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using WorkTimeTracker.Application.ActionTimes.Commands.CreateActionTime;
+using WorkTimeTracker.Application.ActionTimes.Commands.CreateEndOfActionTime;
 using WorkTimeTracker.Application.ActionTimes.Commands.DeleteActionTime;
 using WorkTimeTracker.Application.ActionTimes.Commands.UpdateActionTime;
 using WorkTimeTracker.Application.ActionTimes.Queries.GetActionTimeById;
-using WorkTimeTracker.Domain.Entities;
 using WorkTimeTracker.Infrastructure;
+using WorkTimeTracker.MVC.Models;
 
 namespace WorkTimeTracker.MVC.Controllers
 {
+    [Authorize]
     public class ActionTimesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -30,6 +34,57 @@ namespace WorkTimeTracker.MVC.Controllers
                 .AsNoTracking()
                 .ToList();
             return View(actinos);
+        }
+
+        public ActionResult WorkTime()
+        {
+            return View();
+        }
+
+        public ActionResult CreateForEmployees()
+        {
+            var employeeId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (employeeId == null)
+            {
+                return NotFound();
+            }
+
+            var createForEmployees = new CreateForEmployees();
+            createForEmployees.EmployeeId = employeeId;
+            createForEmployees.ActionTime = DateTime.Now;
+            createForEmployees.IsWork = true;
+            createForEmployees.IsStart = true;
+
+            return View(createForEmployees);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateForEmployees(CreateForEmployees createForEmployees)
+        {
+            IRequest request;
+            if (createForEmployees.IsStart)
+            {
+                request = new CreateActionTimeCommand()
+                {
+                    EmployeeId = createForEmployees.EmployeeId,
+                    IsWork = createForEmployees.IsWork,
+                    Start = createForEmployees.ActionTime
+                };
+            }
+            else
+            {
+                request = new CreateEndOfActionTimeCommand()
+                {
+                    EmployeeId = createForEmployees.EmployeeId,
+                    IsWork = createForEmployees.IsWork,
+                    End = createForEmployees.ActionTime
+                };
+            }
+
+            await _mediator.Send(request);
+
+            return RedirectToAction(actionName: "Index", controllerName: "Home");
         }
 
         // GET: ActionTimesController/Details/5

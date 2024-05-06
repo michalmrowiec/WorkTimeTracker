@@ -20,6 +20,8 @@ namespace WorkTimeTracker.Application.ActionTimes.Commands.CreateEndOfActionTime
         }
         public async Task Handle(CreateEndOfActionTimeCommand request, CancellationToken cancellationToken)
         {
+            request.End = request.End.AddSeconds(-request.End.Second);
+
             var incompleteActionTimes = await _repository.GetAllIncompleteActionTimesForEmployee(request.EmployeeId);
 
             if (!incompleteActionTimes.Where(x => x.IsWork == request.IsWork).Any())

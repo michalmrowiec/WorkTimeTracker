@@ -14,6 +14,9 @@ namespace WorkTimeTracker.Application.DailyWorkSchedules.Commands.UpdateDailyWor
 
         public async Task Handle(UpdateDailyWorkScheduleCommand request, CancellationToken cancellationToken)
         {
+            request.PlannedWorkStart = request.PlannedWorkStart.AddSeconds(-request.PlannedWorkStart.Second);
+            request.PlannedWorkEnd = request.PlannedWorkEnd.AddSeconds(-request.PlannedWorkEnd.Second);
+
             if (request.PlannedWorkStart >= request.PlannedWorkEnd)
             {
                 return;
