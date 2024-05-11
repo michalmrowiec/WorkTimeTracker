@@ -19,7 +19,7 @@ namespace WorkTimeTracker.Application.DailyWorkSchedules.Commands.CreateDailyWor
             request.PlannedWorkStart = request.PlannedWorkStart.AddSeconds(-request.PlannedWorkStart.Second);
             request.PlannedWorkEnd = request.PlannedWorkEnd.AddSeconds(-request.PlannedWorkEnd.Second);
 
-            if (request.PlannedWorkStart >= request.PlannedWorkEnd)
+            if (request.PlannedWorkStart > request.PlannedWorkEnd)
             {
                 return;
             }

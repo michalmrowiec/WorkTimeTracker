@@ -31,7 +31,8 @@ namespace WorkTimeTracker.Application.DailyWorkSchedules.Queries.GetByDepartment
             foreach (var workSchedule in workSchedules)
             {
                 dtos.Add(
-                    await _mediator.Send(new GetMonthlySummaryForEmployeeQuery(workSchedule.Key.Id, request.Year, request.Month), cancellationToken),
+                    await _mediator.Send(new GetMonthlySummaryForEmployeeQuery(
+                        workSchedule.Key.Id, request.Year, request.Month), cancellationToken),
                     _mapper.Map<List<DailyWorkScheduleDto>>(workSchedule.Value));
             }
 
